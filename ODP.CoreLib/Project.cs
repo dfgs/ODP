@@ -4,36 +4,44 @@ namespace ODP.CoreLib
 {
 	public class Project
 	{
-		private static Regex CDRRegex = new Regex(@"[^|]+\|(?<CDR>.*)");
+		
 		public string? Name { get; set; }
 
 
-		public List<string> CDRs
+		public List<Report> Reports
 		{
 			get;
 			set;
 		}
+
 		public Project()
 		{
-			CDRs= new List<string>(); 
+			Reports= new List<Report>(); 
 		}
 
-		public async Task AddFileAsync(string FileName)
+		public async Task AddFileAsync(string FileName,ISyslogParser SyslogParser,IReportParser ReportParser)
 		{
-			string? line;
-			Match match;
+			string? syslogLine;
+			string? reportLine;
+			Report? report;
+
+			if (FileName== null) throw new ArgumentNullException(nameof(FileName));
+			if (SyslogParser == null) throw new ArgumentNullException(nameof(SyslogParser));
+			if (ReportParser == null) throw new ArgumentNullException(nameof(ReportParser));
 
 			using (FileStream stream = new FileStream(FileName, FileMode.Open))
 			{
 				StreamReader reader= new StreamReader(stream);
 				while (!reader.EndOfStream)
 				{
-					line = await reader.ReadLineAsync();
-					if (line == null) continue;
-					match= CDRRegex.Match(line);
-					if (!match.Success) continue;
+					syslogLine = await reader.ReadLineAsync();
+					reportLine=SyslogParser.Parse(syslogLine);
+					if (reportLine == null) continue;
 
-					CDRs.Add(match.Groups["CDR"].Value);
+					report=ReportParser.Parse(reportLine);
+					if (report == null) continue;
+					
+					Reports.Add(report);
 				}
 
 			}

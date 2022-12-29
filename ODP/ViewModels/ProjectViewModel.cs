@@ -23,10 +23,10 @@ namespace ODP.ViewModels
 
 
 
-		public static readonly DependencyProperty CDRsProperty = DependencyProperty.Register("CDRs", typeof(ViewModelCollection<string>), typeof(ProjectViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<string> CDRs
+		public static readonly DependencyProperty CDRsProperty = DependencyProperty.Register("CDRs", typeof(ViewModelCollection<CDRViewModel>), typeof(ProjectViewModel), new PropertyMetadata(null));
+		public ViewModelCollection<CDRViewModel> CDRs
 		{
-			get { return (ViewModelCollection<string>)GetValue(CDRsProperty); }
+			get { return (ViewModelCollection<CDRViewModel>)GetValue(CDRsProperty); }
 			set { SetValue(CDRsProperty, value); }
 		}
 
@@ -35,7 +35,7 @@ namespace ODP.ViewModels
 
 		public ProjectViewModel(ILogger Logger) : base(Logger)
 		{
-			CDRs = new ViewModelCollection<string>(Logger);
+			CDRs = new ViewModelCollection<CDRViewModel>(Logger);
 		}
 
 		public string Path
@@ -46,10 +46,16 @@ namespace ODP.ViewModels
 
 		public async Task AddFileAsync(string FileName)
 		{
+			ISyslogParser syslogParser;
+			IReportParser reportParser;
+
 			if (Model == null) return;
 
-			await TryAsync(() => Model.AddFileAsync(FileName)).OrThrow($"Failed to read syslog file {FileName}");
-			await CDRs.LoadAsync(Model.CDRs);
+			syslogParser= new SyslogParser();
+			reportParser = new ReportParser();
+
+			await TryAsync(() => Model.AddFileAsync(FileName,syslogParser,reportParser)).OrThrow($"Failed to read syslog file {FileName}");
+			await CDRs.LoadAsync(await Model.Reports.ToViewModelsAsync(() => new CDRViewModel(Logger)));
 			
 		}
 
