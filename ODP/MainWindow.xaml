@@ -1,0 +1,50 @@
+﻿<Window x:Class="ODP.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:root="clr-namespace:ODP"
+		xmlns:views="clr-namespace:ODP.Views"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip"
+        Title="ODP" Height="450" Width="800">
+
+	<Window.CommandBindings>
+		<CommandBinding Command="New" CanExecute="NewCommandBinding_CanExecute" Executed="NewCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static root:RoutedCommands.AddFile}" CanExecute="AddFileCommandBinding_CanExecute" Executed="AddFileCommandBinding_Executed"/>
+	</Window.CommandBindings>
+    
+	<DockPanel>
+		<StatusBar DockPanel.Dock="Bottom">
+			<TextBlock Text="{Binding Projects.SelectedItem.Name}"/>
+		</StatusBar>
+		<ToolBarTray DockPanel.Dock="Top">
+			<ToolBar >
+				<Button Command="New" ToolTip="New project" ToolTipService.ShowOnDisabled="true">
+					<Image Source="Images\page_white.png"  Stretch="None"/>
+				</Button>
+				<Button Command="Open" ToolTip="Open project" ToolTipService.ShowOnDisabled="true">
+					<Image Source="Images\folder.png" Stretch="None"/>
+				</Button>
+				<Button Command="{x:Static root:RoutedCommands.AddFile}"  ToolTip="Add file" ToolTipService.ShowOnDisabled="true">
+					<Image Source="/Images/folder_add.png" Stretch="None"/>
+				</Button>
+				<Button Command="{x:Static root:RoutedCommands.CopyLogs}"  ToolTip="Copy logs" ToolTipService.ShowOnDisabled="true">
+					<Image Source="/Images/bug_edit.png" Stretch="None"/>
+				</Button>
+			</ToolBar>
+		</ToolBarTray>
+		<TabControl ItemsSource="{Binding Projects}" SelectedItem="{Binding Projects.SelectedItem}">
+			<TabControl.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Name}"/>
+				</DataTemplate>
+			</TabControl.ItemTemplate>
+			<TabControl.ContentTemplate>
+				<DataTemplate>
+					<views:ProjectView/>
+				</DataTemplate>
+			</TabControl.ContentTemplate>
+		</TabControl>
+		
+	</DockPanel>
+</Window>

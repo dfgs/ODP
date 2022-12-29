@@ -1,0 +1,69 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\arrow_refresh.png" />
+    <None Remove="Images\attach.png" />
+    <None Remove="Images\bug_edit.png" />
+    <None Remove="Images\bullet_black.png" />
+    <None Remove="Images\bullet_green.png" />
+    <None Remove="Images\bullet_orange.png" />
+    <None Remove="Images\bullet_pink.png" />
+    <None Remove="Images\bullet_red.png" />
+    <None Remove="Images\bullet_yellow.png" />
+    <None Remove="Images\folder.png" />
+    <None Remove="Images\folder_add.png" />
+    <None Remove="Images\folder_delete.png" />
+    <None Remove="Images\magifier_zoom_out.png" />
+    <None Remove="Images\magnifier_zoom_in.png" />
+    <None Remove="Images\page_white.png" />
+    <None Remove="Images\server_add.png" />
+    <None Remove="Images\server_delete.png" />
+    <None Remove="Images\sound.png" />
+    <None Remove="Images\sound_none.png" />
+    <None Remove="Images\textfield_add.png" />
+    <None Remove="Images\textfield_delete.png" />
+    <None Remove="Images\textfield_rename.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\attach.png" />
+    <Resource Include="Images\bug_edit.png" />
+    <Resource Include="Images\bullet_black.png" />
+    <Resource Include="Images\bullet_green.png" />
+    <Resource Include="Images\bullet_orange.png" />
+    <Resource Include="Images\bullet_pink.png" />
+    <Resource Include="Images\bullet_red.png" />
+    <Resource Include="Images\bullet_yellow.png" />
+    <Resource Include="Images\folder.png" />
+    <Resource Include="Images\folder_add.png" />
+    <Resource Include="Images\folder_delete.png" />
+    <Resource Include="Images\magifier_zoom_out.png" />
+    <Resource Include="Images\magnifier_zoom_in.png" />
+    <Resource Include="Images\page_white.png" />
+    <Resource Include="Images\server_add.png" />
+    <Resource Include="Images\server_delete.png" />
+    <Resource Include="Images\sound.png" />
+    <Resource Include="Images\sound_none.png" />
+    <Resource Include="Images\textfield_add.png" />
+    <Resource Include="Images\textfield_delete.png" />
+    <Resource Include="Images\textfield_rename.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\LogLib\LogLib\LogLib.csproj" />
+    <ProjectReference Include="..\..\ViewModelLib\ViewModelLib\ViewModelLib.csproj" />
+    <ProjectReference Include="..\ODP.CoreLib\ODP.CoreLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+</Project>
