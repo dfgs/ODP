@@ -9,9 +9,9 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class CDRViewModel : ViewModel<Report>
+	public class ReportViewModel : ViewModel<Report>
 	{
-		public CDRViewModel(ILogger Logger) : base(Logger)
+		public ReportViewModel(ILogger Logger) : base(Logger)
 		{
 		}
 	}

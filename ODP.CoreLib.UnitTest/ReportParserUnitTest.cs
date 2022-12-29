@@ -19,6 +19,7 @@ namespace ODP.CoreLib.UnitTest
 			report = reportParser.Parse(Line);
 			Assert.IsNotNull(report);
 			Assert.IsInstanceOfType(report, typeof(SBCReport));
+			Assert.AreEqual("SBC", ((SBCReport)report).EPTyp);
 		}
 
 		[DataTestMethod]
@@ -35,6 +36,8 @@ namespace ODP.CoreLib.UnitTest
 			report = reportParser.Parse(Line);
 			Assert.IsNotNull(report);
 			Assert.IsInstanceOfType(report, typeof(MediaReport));
+			Assert.AreEqual("AUDIO", ((MediaReport)report).MediaType);
+
 		}
 
 		[DataTestMethod]
@@ -87,6 +90,16 @@ namespace ODP.CoreLib.UnitTest
 			reportParser = new ReportParser();
 
 			Assert.ThrowsException<InvalidDataException>(() => reportParser.Parse(Line));
+		}
+
+		[TestMethod]
+		public void ShouldNotParseNullReportLine()
+		{
+			ReportParser reportParser;
+
+			reportParser = new ReportParser();
+
+			Assert.ThrowsException<ArgumentNullException>(() => reportParser.Parse(null));
 		}
 
 

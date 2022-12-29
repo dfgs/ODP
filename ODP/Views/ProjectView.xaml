@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ODP.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <ListBox ItemsSource="{Binding CDRs}" SelectedItem="{Binding CDRs.SelectedItem}">
+    <ListBox ItemsSource="{Binding Reports}" SelectedItem="{Binding Reports.SelectedItem}">
             
     </ListBox>
 </UserControl>
