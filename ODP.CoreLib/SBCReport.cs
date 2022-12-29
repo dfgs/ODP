@@ -11,8 +11,6 @@ namespace ODP.CoreLib
 	{
 		public string? SBCReportType { get; set; }
 		public string? EPTyp { get; set; }
-		public string? SIPCallId { get; set; }
-		public string? SessionId	{ get; set; }
 		public string? Orig { get; set; }
 		public string? SourceIp { get; set; }
 		public string? SourcePort { get; set; }

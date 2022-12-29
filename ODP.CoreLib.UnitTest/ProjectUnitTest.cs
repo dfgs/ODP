@@ -25,6 +25,18 @@ namespace ODP.CoreLib.UnitTest
 
 		}
 
+		[TestMethod]
+		public void AddReportShouldCheckParameter()
+		{
+			Project project;
+
+			project = new Project();
+
+			Assert.ThrowsException<ArgumentNullException>(() => project.AddReport(null));
+
+		}
+
+
 	}
 
 

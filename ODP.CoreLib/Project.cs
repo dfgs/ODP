@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Reflection.Metadata;
+using System.Text.RegularExpressions;
 
 namespace ODP.CoreLib
 {
@@ -8,16 +9,37 @@ namespace ODP.CoreLib
 		public string? Name { get; set; }
 
 
-		public List<Report> Reports
+	
+
+		public List<Session> Sessions
 		{
 			get;
 			set;
 		}
 
+
 		public Project()
 		{
-			Reports= new List<Report>(); 
+			Sessions= new List<Session>();
 		}
+
+		public void AddReport(Report Report)
+		{
+			Session? session;
+			
+			if (Report==null) throw new ArgumentNullException(nameof(Report));
+
+			session = Sessions.FirstOrDefault(item => item.SessionId == Report.SessionId);
+			if (session==null)
+			{
+				session = new Session();
+				session.SessionId= Report.SessionId;
+				Sessions.Add(session);
+			}
+			session.AddReport(Report);
+
+		}
+
 
 		public async Task AddFileAsync(string FileName,ISyslogParser SyslogParser,IReportParser ReportParser)
 		{
@@ -40,8 +62,8 @@ namespace ODP.CoreLib
 
 					report=ReportParser.Parse(reportLine);
 					if (report == null) continue;
-					
-					Reports.Add(report);
+
+					AddReport(report);
 				}
 
 			}

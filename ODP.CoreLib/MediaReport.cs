@@ -10,8 +10,6 @@ namespace ODP.CoreLib
 	public class MediaReport:Report
 	{
 		public string? MediaReportType { get; set; }
-		public string? SIPCallId { get; set; }
-		public string? SessionId { get; set; }
 		public string? Cid { get; set; }
 		public string? MediaType { get; set; }
 		public string? Coder { get; set; }

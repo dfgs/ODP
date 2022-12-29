@@ -55,7 +55,7 @@ namespace ODP.ViewModels
 			reportParser = new ReportParser();
 
 			await TryAsync(() => Model.AddFileAsync(FileName,syslogParser,reportParser)).OrThrow($"Failed to read syslog file {FileName}");
-			await Reports.LoadAsync(await Model.Reports.ToViewModelsAsync(() => new ReportViewModel(Logger)));
+			//await Reports.LoadAsync(await Model.Reports.ToViewModelsAsync(() => new ReportViewModel(Logger)));
 			
 		}
 
