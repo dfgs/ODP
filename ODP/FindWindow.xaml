@@ -1,0 +1,38 @@
+﻿<Window x:Class="ODP.FindWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:root="clr-namespace:ODP" x:Name="findWindow"
+        xmlns:viewModels="clr-namespace:ODP.ViewModels" 
+        mc:Ignorable="d" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" SizeToContent="Height"
+        Title="Find"  Width="300" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+	
+	<Window.CommandBindings>
+		<CommandBinding Command="{x:Static root:RoutedCommands.OK}" CanExecute="OKCommandBinding_CanExecute" Executed="OKCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static root:RoutedCommands.FindPrevious}" CanExecute="FindPreviousCommandBinding_CanExecute" Executed="FindPreviousCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static root:RoutedCommands.FindNext}" CanExecute="FindNextCommandBinding_CanExecute" Executed="FindNextCommandBinding_Executed"/>
+	</Window.CommandBindings>
+
+    <StackPanel Margin="10">
+		<TextBlock Text="Find session by:" FontWeight="Bold"/>
+		<ComboBox Margin="5" ItemsSource="{x:Static root:FindWindow.SearchCriterias}" SelectedItem="{Binding ElementName=findWindow,Path=SearchCriteria,Mode=TwoWay}">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Name}"/>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
+
+		<TextBlock Text="Value:" FontWeight="Bold"/>
+		<TextBox Margin="5" Text="{Binding ElementName=findWindow,Path=SearchValue,UpdateSourceTrigger=PropertyChanged}"/>
+		
+		<UniformGrid Columns="3" >
+			<Button Content="Find previous" Margin="5" Command="{x:Static root:RoutedCommands.FindPrevious}"/>
+			<Button Content="Find next" Margin="5" Command="{x:Static root:RoutedCommands.FindNext}"/>
+			<Button Content="OK" Margin="5" Command="{x:Static root:RoutedCommands.OK}"/>
+		</UniformGrid>
+	</StackPanel>
+	
+
+</Window>

@@ -67,6 +67,18 @@ namespace ODP.ViewModels
 			await Calls.LoadAsync(await Model.Calls.ToViewModelsAsync(() => new CallViewModel(Logger)));
 
 		}
+		public bool Match(SearchCriteria Criteria, string Value)
+		{
+			switch(Criteria)
+			{
+				case SearchCriteria.SessionID: return SessionID?.Contains(Value)??false;
+				case SearchCriteria.SrcURI:return SrcURI?.Contains(Value) ?? false;
+				case SearchCriteria.DstURI:return DstURI?.Contains(Value) ?? false;
+				case SearchCriteria.Quality:return Quality?.ToString().Contains(Value) ?? false;
+				default: return false;
+			}
+		}
+
 
 
 	}

@@ -69,6 +69,40 @@ namespace ODP.ViewModels
 			
 		}
 
+		public void FindNext(SearchCriteria Criteria,string Value)
+		{
+			int index;
+
+			if (Sessions.SelectedItem == null) index = -1;
+			else index = Sessions.IndexOf(Sessions.SelectedItem);
+			
+			for(int t=index+1;t<Sessions.Count;t++)
+			{
+				if (Sessions[t].Match(Criteria,Value))
+				{
+					Sessions.SelectedItem= Sessions[t];
+					return;
+				}
+			}
+
+		}
+		public void FindPrevious(SearchCriteria Criteria, string Value)
+		{
+			int index;
+
+			if (Sessions.SelectedItem == null) index = Sessions.Count;
+			else index = Sessions.IndexOf(Sessions.SelectedItem);
+
+			for (int t = index - 1; t >= 0; t--)
+			{
+				if (Sessions[t].Match(Criteria, Value))
+				{
+					Sessions.SelectedItem = Sessions[t];
+					return;
+				}
+			}
+
+		}
 
 	}
 }

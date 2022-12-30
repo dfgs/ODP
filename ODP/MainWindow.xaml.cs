@@ -85,7 +85,20 @@ namespace ODP
 
 
 		}
+		private void FindCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.Handled = true; e.CanExecute = applicationViewModel.Projects.SelectedItem != null;
+		}
 
+		private void FindCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			FindWindow dialog;
+
+			dialog = new FindWindow();
+			dialog.Owner = this;
+			dialog.ApplicationViewModel= applicationViewModel;
+			dialog.Show();
+		}
 
 
 	}
