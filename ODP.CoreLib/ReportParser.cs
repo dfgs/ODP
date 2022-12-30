@@ -79,6 +79,10 @@ namespace ODP.CoreLib
 				return sbcReport;
 
 			}
+			
+			// skip media start
+			if (Line.StartsWith("MEDIA_START")) return null;
+
 			if (Line.StartsWith("MEDIA_"))
 			{
 				MediaReport mediaReport;
@@ -98,12 +102,12 @@ namespace ODP.CoreLib
 				mediaReport.LocalRtpPort = parts[8].Trim();
 				mediaReport.RemoteRtpIp = parts[9].Trim();
 				mediaReport.RemoteRtpPort = parts[10].Trim();
-				mediaReport.InPackets = parts[11].Trim();
-				mediaReport.OutPackets = parts[12].Trim();
-				mediaReport.LocalPackLoss = parts[13].Trim();
-				mediaReport.RemotePackLoss = parts[14].Trim();
-				mediaReport.RTPdelay = parts[15].Trim();
-				mediaReport.RTPjitter = parts[16].Trim();
+				mediaReport.InPackets = int.Parse(parts[11].Trim());
+				mediaReport.OutPackets = int.Parse(parts[12].Trim());
+				mediaReport.LocalPackLoss = int.Parse(parts[13].Trim());
+				mediaReport.RemotePackLoss = int.Parse(parts[14].Trim());
+				mediaReport.RTPdelay = int.Parse(parts[15].Trim());
+				mediaReport.RTPjitter = int.Parse(parts[16].Trim());
 				mediaReport.TxRTPssrc = parts[17].Trim();
 				mediaReport.RxRTPssrc = parts[18].Trim();
 				mediaReport.LocalRFactor = parts[19].Trim();

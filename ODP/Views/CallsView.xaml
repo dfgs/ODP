@@ -4,14 +4,41 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:ODP.Views"
+			 xmlns:viewModels="clr-namespace:ODP.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+	<UserControl.Resources>
+
+		<Style x:Key="bulletImageStyle" TargetType="{x:Type Image}">
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding Quality}" Value="Good" >
+					<Setter Property="Source" Value="/Images/bullet_green.png"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding Quality}" Value="Average" >
+					<Setter Property="Source" Value="/Images/bullet_orange.png"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding Quality}" Value="Bad" >
+					<Setter Property="Source" Value="/Images/bullet_red.png"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+
+	</UserControl.Resources>
+
+
 	<DockPanel>
 		<views:MediaReportsView DockPanel.Dock="Bottom" MinHeight="50" DataContext="{Binding SelectedItem.MediaReports}"/>
 		<ListView ItemsSource="{Binding}" SelectedItem="{Binding SelectedItem}">
 			<ListView.View>
 				<GridView>
 					<GridView.Columns>
+						<GridViewColumn  Width="30">
+							<GridViewColumn.CellTemplate>
+								<DataTemplate>
+									<Image Stretch="None" Style="{StaticResource bulletImageStyle}"/>
+								</DataTemplate>
+							</GridViewColumn.CellTemplate>
+						</GridViewColumn>
 						<GridViewColumn Width="200" Header="Call ID" DisplayMemberBinding="{Binding SIPCallID}"/>
 						<GridViewColumn Width="200" Header="Setup time" DisplayMemberBinding="{Binding SetupTime}"/>
 						<GridViewColumn Width="200" Header="Connect time" DisplayMemberBinding="{Binding ConnectTime}"/>

@@ -4,29 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:ODP.Views"
-             mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
-             d:DesignWidth="300">
-    <Border BorderThickness="1" BorderBrush="#55000000" Background="#55FFFFFF">
+             mc:Ignorable="d" Background="{Binding Background}"
+             Width="300" d:DesignHeight="92" >
+    <Border BorderThickness="1" BorderBrush="#55000000" Background="#AAFFFFFF">
 		<StackPanel>
-			<TextBlock Text="{Binding RTPdelay,StringFormat=Delay: {0} ms}"/>
-			<TextBlock Text="{Binding RTPjitter,StringFormat=Jitter: {0} ms}"/>
-			<TextBlock Text="{Binding LocalPackLoss,StringFormat=Packet loss: {0}}"/>
-			<Grid>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="1*"/>
-					<ColumnDefinition Width="1*"/>
-				</Grid.ColumnDefinitions>
-				<StackPanel Grid.Column="0">
-					<TextBlock Text="Local RTP:" TextDecorations="Underline"/>
-					<TextBlock Text="{Binding LocalRtpIp}"/>
-					<TextBlock Text="{Binding LocalRtpPort}"/>
-				</StackPanel>
-				<StackPanel Grid.Column="1">
-					<TextBlock Text="Remote RTP:" TextDecorations="Underline"/>
-					<TextBlock Text="{Binding RemoteRtpIp}"/>
-					<TextBlock Text="{Binding RemoteRtpPort}"/>
-				</StackPanel>
-			</Grid>
+			<UniformGrid Columns="3">
+				<TextBlock Text="{Binding RTPdelay,StringFormat=Delay: {0} ms,FallbackValue=Delay: NA}"/>
+				<TextBlock Text="{Binding RTPjitter,StringFormat=Jitter: {0} ms,FallbackValue=Jitter: NA}"/>
+				<TextBlock Text="{Binding PacketLossPercent,StringFormat=Packet loss: {0}%,FallbackValue=Packet loss: NA}"/>
+			</UniformGrid>
+			<views:RTPView />
 		</StackPanel>
 	</Border>
 </UserControl>

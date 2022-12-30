@@ -6,6 +6,25 @@
              xmlns:views="clr-namespace:ODP.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+	<UserControl.Resources>
+
+		<Style x:Key="bulletImageStyle" TargetType="{x:Type Image}">
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding Quality}" Value="Good" >
+					<Setter Property="Source" Value="/Images/bullet_green.png"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding Quality}" Value="Average" >
+					<Setter Property="Source" Value="/Images/bullet_orange.png"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding Quality}" Value="Bad" >
+					<Setter Property="Source" Value="/Images/bullet_red.png"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+
+	</UserControl.Resources>
+
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="1*"/>
@@ -16,6 +35,13 @@
 			<ListView.View>
 				<GridView>
 					<GridView.Columns>
+						<GridViewColumn  Width="30">
+							<GridViewColumn.CellTemplate>
+								<DataTemplate>
+									<Image Stretch="None" Style="{StaticResource bulletImageStyle}"/>
+								</DataTemplate>
+							</GridViewColumn.CellTemplate>
+						</GridViewColumn>
 						<GridViewColumn Width="200" Header="Session ID" DisplayMemberBinding="{Binding SessionID}"/>
 						<GridViewColumn Width="200" Header="Start time" DisplayMemberBinding="{Binding StartTime}"/>
 						<GridViewColumn Width="200" Header="Stop time" DisplayMemberBinding="{Binding StopTime}"/>

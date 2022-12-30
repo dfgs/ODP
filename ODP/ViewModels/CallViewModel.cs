@@ -61,6 +61,12 @@ namespace ODP.ViewModels
 			get => Model?.SBCReports.FirstOrDefault(item => item.SIPInterfaceId != null)?.SIPInterfaceId;
 		}
 
+		public Quality? Quality
+		{
+			get => MediaReports.Select(item => item.Quality).Min();
+		}
+
+
 		public static readonly DependencyProperty SBCReportsProperty = DependencyProperty.Register("SBCReports", typeof(ViewModelCollection<SBCReportViewModel>), typeof(CallViewModel), new PropertyMetadata(null));
 		public ViewModelCollection<SBCReportViewModel> SBCReports
 		{

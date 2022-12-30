@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using ViewModelLib;
 
 namespace ODP.ViewModels
@@ -47,27 +48,27 @@ namespace ODP.ViewModels
 		{
 			get => Model?.RemoteRtpPort ;
 		}
-		public string? InPackets
+		public int? InPackets
 		{
 			get => Model?.InPackets ;
 		}
-		public string? OutPackets
+		public int? OutPackets
 		{
 			get => Model?.OutPackets ;
 		}
-		public string? LocalPackLoss
+		public int? LocalPackLoss
 		{
 			get => Model?.LocalPackLoss ;
 		}
-		public string? RemotePackLoss
+		public int? RemotePackLoss
 		{
 			get => Model?.RemotePackLoss ;
 		}
-		public string? RTPdelay
+		public int? RTPdelay
 		{
 			get => Model?.RTPdelay ;
 		}
-		public string? RTPjitter
+		public int? RTPjitter
 		{
 			get => Model?.RTPjitter ;
 		}
@@ -123,6 +124,42 @@ namespace ODP.ViewModels
 		{
 			get => Model?.LegId ;
 		}
+
+		public int? PacketLossPercent
+		{
+			get
+			{
+				if (Model == null) return null;
+				if (LocalPackLoss==null) return null;
+				if (InPackets==null) return null;
+				if (InPackets == 0) return 0;
+				return LocalPackLoss*100 / InPackets ;
+			}
+		}
+
+		public Quality? Quality
+		{
+			get
+			{
+				if ((LocalPackLoss > 1) || (RTPjitter >= 30) || (RTPdelay >= 250)) return ODP.ViewModels.Quality.Bad;
+				if ((RTPjitter >= 20) || (RTPdelay >= 150)) return ODP.ViewModels.Quality.Average;
+				return ODP.ViewModels.Quality.Good;
+			}
+		}
+
+		public Brush Background
+		{
+			get
+			{
+				switch (Quality)
+				{
+					case ViewModels.Quality.Bad: return new SolidColorBrush(Colors.Red);
+					case ViewModels.Quality.Average: return new SolidColorBrush(Colors.Orange);
+					default: return new SolidColorBrush(Colors.Green);
+				}
+			}
+		}
+
 
 		public MediaReportViewModel(ILogger Logger) : base(Logger)
 		{

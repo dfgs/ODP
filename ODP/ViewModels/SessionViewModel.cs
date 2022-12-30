@@ -42,6 +42,15 @@ namespace ODP.ViewModels
 		{
 			get => Calls.FirstOrDefault(item => item.DstURI != null)?.DstURI;
 		}
+
+
+		public Quality? Quality
+		{
+			get => Calls.Select(item => item.Quality).Min();
+		}
+
+
+
 		public SessionViewModel(ILogger Logger) : base(Logger)
 		{
 			Calls = new ViewModelCollection<CallViewModel>(Logger);
