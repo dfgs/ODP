@@ -23,11 +23,11 @@ namespace ODP.ViewModels
 
 
 
-		public static readonly DependencyProperty ReportsProperty = DependencyProperty.Register("Reports", typeof(ViewModelCollection<ReportViewModel>), typeof(ProjectViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<ReportViewModel> Reports
+		public static readonly DependencyProperty SessionsProperty = DependencyProperty.Register("Sessions", typeof(ViewModelCollection<SessionViewModel>), typeof(ProjectViewModel), new PropertyMetadata(null));
+		public ViewModelCollection<SessionViewModel> Sessions
 		{
-			get { return (ViewModelCollection<ReportViewModel>)GetValue(ReportsProperty); }
-			set { SetValue(ReportsProperty, value); }
+			get { return (ViewModelCollection<SessionViewModel>)GetValue(SessionsProperty); }
+			set { SetValue(SessionsProperty, value); }
 		}
 
 
@@ -35,7 +35,7 @@ namespace ODP.ViewModels
 
 		public ProjectViewModel(ILogger Logger) : base(Logger)
 		{
-			Reports = new ViewModelCollection<ReportViewModel>(Logger);
+			Sessions = new ViewModelCollection<SessionViewModel>(Logger);
 		}
 
 		public string Path
@@ -44,6 +44,13 @@ namespace ODP.ViewModels
 			set { SetValue(PathProperty, value); }
 		}
 
+
+		/*protected override async Task OnLoadedAsync()
+		{
+			await base.OnLoadedAsync();
+			OnPropertyChanged(nameof(Name));
+		}*/
+
 		public async Task AddFileAsync(string FileName)
 		{
 			ISyslogParser syslogParser;
@@ -51,11 +58,14 @@ namespace ODP.ViewModels
 
 			if (Model == null) return;
 
+			//this.Path = FileName;
+			//this.Name = System.IO.Path.GetFileNameWithoutExtension(FileName);
+
 			syslogParser= new SyslogParser();
 			reportParser = new ReportParser();
 
 			await TryAsync(() => Model.AddFileAsync(FileName,syslogParser,reportParser)).OrThrow($"Failed to read syslog file {FileName}");
-			//await Reports.LoadAsync(await Model.Reports.ToViewModelsAsync(() => new ReportViewModel(Logger)));
+			await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(() => new SessionViewModel(Logger)));
 			
 		}
 

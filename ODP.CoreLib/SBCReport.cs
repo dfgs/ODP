@@ -25,9 +25,9 @@ namespace ODP.CoreLib
 		public string? TrmSd { get; set; }
 		public string? TrmReason { get; set; }
 		public string? TrmReasonCategory { get; set; }
-		public string? SetupTime { get; set; }
-		public string? ConnectTime{ get; set; }
-		public string? ReleaseTime{ get; set; }
+		public DateTime? SetupTime { get; set; }
+		public DateTime? ConnectTime{ get; set; }
+		public DateTime? ReleaseTime{ get; set; }
 		public string? RedirectReason{ get; set; }
 		public string? RedirectURINum { get; set; }
 		public string? RedirectURINumBeforeMap{ get; set; }

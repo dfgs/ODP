@@ -45,7 +45,7 @@ namespace ODP.CoreLib
 				sbcReport.TrmSd = parts[15].Trim();
 				sbcReport.TrmReason = parts[16].Trim();
 				sbcReport.TrmReasonCategory = parts[17].Trim();
-				sbcReport.SetupTime = parts[18].Trim();
+				sbcReport.SetupTime = DateTime.Parse( parts[18].Trim());
 				sbcReport.ConnectTime = parts[19].Trim();
 				sbcReport.ReleaseTime = parts[20].Trim();
 				sbcReport.RedirectReason = parts[21].Trim();

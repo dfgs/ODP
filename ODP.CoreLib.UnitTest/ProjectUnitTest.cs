@@ -33,7 +33,84 @@ namespace ODP.CoreLib.UnitTest
 			project = new Project();
 
 			Assert.ThrowsException<ArgumentNullException>(() => project.AddReport(null));
+		}
 
+		[TestMethod]
+		public void AddReportShouldAddSBCReport()
+		{
+			Report report;
+			Project project;
+
+
+			report = new SBCReport() { SessionId = "Session1", SIPCallId = "CallID1" };
+
+			project = new Project();
+
+			project.AddReport(report);
+			Assert.AreEqual(1, project.Sessions.Count);
+			Assert.AreEqual("Session1", project.Sessions[0].SessionId);
+			Assert.AreEqual(1, project.Sessions[0].Calls.Count);
+			Assert.AreEqual("CallID1", project.Sessions[0].Calls[0].SIPCallId);
+			Assert.AreEqual(1, project.Sessions[0].Calls[0].SBCReports.Count);
+			Assert.AreEqual(0, project.Sessions[0].Calls[0].MediaReports.Count);
+		}
+
+
+		[TestMethod]
+		public void AddReportShouldAddMediaReport()
+		{
+			Report report;
+			Project project;
+
+
+			report = new MediaReport() { SessionId = "Session1", SIPCallId = "CallID1" };
+
+			project = new Project();
+
+			project.AddReport(report);
+			Assert.AreEqual(1, project.Sessions.Count);
+			Assert.AreEqual("Session1", project.Sessions[0].SessionId);
+			Assert.AreEqual(1, project.Sessions[0].Calls.Count);
+			Assert.AreEqual("CallID1", project.Sessions[0].Calls[0].SIPCallId);
+			Assert.AreEqual(0, project.Sessions[0].Calls[0].SBCReports.Count);
+			Assert.AreEqual(1, project.Sessions[0].Calls[0].MediaReports.Count);
+		}
+
+		[TestMethod]
+		public void AddSeveralReportShouldAddDifferentsSessionsAndCalls()
+		{
+			Report report;
+			Project project;
+
+			project = new Project();
+
+			report = new SBCReport() { SessionId = "Session1", SIPCallId = "CallID1" };
+			project.AddReport(report);
+			Assert.AreEqual(1, project.Sessions.Count);
+			Assert.AreEqual("Session1", project.Sessions[0].SessionId);
+			Assert.AreEqual(1, project.Sessions[0].Calls.Count);
+			Assert.AreEqual("CallID1", project.Sessions[0].Calls[0].SIPCallId);
+			Assert.AreEqual(1, project.Sessions[0].Calls[0].SBCReports.Count);
+			Assert.AreEqual(0, project.Sessions[0].Calls[0].MediaReports.Count);
+
+
+			report = new SBCReport() { SessionId = "Session2", SIPCallId = "CallID2" };
+			project.AddReport(report);
+			Assert.AreEqual(2, project.Sessions.Count);
+			Assert.AreEqual("Session2", project.Sessions[1].SessionId);
+			Assert.AreEqual(1, project.Sessions[1].Calls.Count);
+			Assert.AreEqual("CallID2", project.Sessions[1].Calls[0].SIPCallId);
+			Assert.AreEqual(1, project.Sessions[1].Calls[0].SBCReports.Count);
+			Assert.AreEqual(0, project.Sessions[1].Calls[0].MediaReports.Count);
+
+			report = new SBCReport() { SessionId = "Session2", SIPCallId = "CallID2" };
+			project.AddReport(report);
+			Assert.AreEqual(2, project.Sessions.Count);
+			Assert.AreEqual("Session2", project.Sessions[1].SessionId);
+			Assert.AreEqual(1, project.Sessions[1].Calls.Count);
+			Assert.AreEqual("CallID2", project.Sessions[1].Calls[0].SIPCallId);
+			Assert.AreEqual(2, project.Sessions[1].Calls[0].SBCReports.Count);
+			Assert.AreEqual(0, project.Sessions[1].Calls[0].MediaReports.Count);
 		}
 
 
