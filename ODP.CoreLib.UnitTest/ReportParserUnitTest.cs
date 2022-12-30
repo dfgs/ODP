@@ -1,9 +1,23 @@
+using System.Globalization;
+
 namespace ODP.CoreLib.UnitTest
 {
 	[TestClass]
 	public class ReportParserUnitTest
 	{
+		[TestMethod]
+		public void ShouldCheckConstructorParameters()
+		{
+			Assert.ThrowsException<ArgumentNullException>(() => new ReportParser(null));
+		}
 
+		[DataTestMethod]
+		[DataRow("18:57:52.320  UTC Mon Dec 05 2022")]
+		public void ShouldParseDateTime(string Line)
+		{
+			// HH:mm:ss.fff  zzz ddd MMM dd yyyy
+			DateTime.ParseExact(Line, "HH:mm:ss.fff  'UTC' ddd MMM dd yyyy", CultureInfo.InvariantCulture);
+		}
 
 		[DataTestMethod]
 		[DataRow("CALL_START     |SBC       |4341598405122022185752@10.0.2.11                                |c62532:22:625           |LCL  |10.0.2.11           |5060         |10.0.2.12           |5060       |TCP             |+33001@10.0.1.11                         |+33001@10.0.1.11                         |2001@10.0.1.12                           |2001@10.0.1.11                           |0       |UNKN |REASON N/A                              |UNKNOWN          |18:57:52.320  UTC Mon Dec 05 2022  |                                   |                                   |-1             |                                         |                                         |24             |SBC2                            |SRD1                            |WAN                             |SBC2                            |WAN                             |DefaultRealm                    |no         |            |                          |                                                   |                                     |Normal  |2    |")]
@@ -14,7 +28,7 @@ namespace ODP.CoreLib.UnitTest
 			ReportParser reportParser;
 			Report? report;
 
-			reportParser = new ReportParser();
+			reportParser = new ReportParser(new DateTimeParser());
 
 			report = reportParser.Parse(Line);
 			Assert.IsNotNull(report);
@@ -31,7 +45,7 @@ namespace ODP.CoreLib.UnitTest
 			ReportParser reportParser;
 			Report? report;
 
-			reportParser = new ReportParser();
+			reportParser = new ReportParser(new DateTimeParser());
 
 			report = reportParser.Parse(Line);
 			Assert.IsNotNull(report);
@@ -47,7 +61,7 @@ namespace ODP.CoreLib.UnitTest
 			ReportParser reportParser;
 			Report? report;
 
-			reportParser = new ReportParser();
+			reportParser = new ReportParser(new DateTimeParser());
 
 			report = reportParser.Parse(Line);
 			Assert.IsNull(report);
@@ -60,7 +74,7 @@ namespace ODP.CoreLib.UnitTest
 			ReportParser reportParser;
 			Report? report;
 
-			reportParser = new ReportParser();
+			reportParser = new ReportParser(new DateTimeParser());
 
 			report = reportParser.Parse(Line);
 			Assert.IsNull(report);
@@ -74,7 +88,7 @@ namespace ODP.CoreLib.UnitTest
 		{
 			ReportParser reportParser;
 
-			reportParser = new ReportParser();
+			reportParser = new ReportParser(new DateTimeParser());
 
 			Assert.ThrowsException<InvalidDataException>(()=> reportParser.Parse(Line));
 		}
@@ -87,7 +101,7 @@ namespace ODP.CoreLib.UnitTest
 		{
 			ReportParser reportParser;
 
-			reportParser = new ReportParser();
+			reportParser = new ReportParser(new DateTimeParser());
 
 			Assert.ThrowsException<InvalidDataException>(() => reportParser.Parse(Line));
 		}
@@ -97,7 +111,7 @@ namespace ODP.CoreLib.UnitTest
 		{
 			ReportParser reportParser;
 
-			reportParser = new ReportParser();
+			reportParser = new ReportParser(new DateTimeParser());
 
 			Assert.ThrowsException<ArgumentNullException>(() => reportParser.Parse(null));
 		}

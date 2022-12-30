@@ -77,15 +77,15 @@ namespace ODP.ViewModels
 		{
 			get => Model?.TrmReasonCategory;
 		}
-		public string? SetupTime
+		public DateTime? SetupTime
 		{
 			get => Model?.SetupTime;
 		}
-		public string? ConnectTime
+		public DateTime? ConnectTime
 		{
 			get => Model?.ConnectTime;
 		}
-		public string? ReleaseTime
+		public DateTime? ReleaseTime
 		{
 			get => Model?.ReleaseTime;
 		}

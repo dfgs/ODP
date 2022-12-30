@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,14 @@ namespace ODP.CoreLib
 {
 	public class ReportParser : IReportParser
 	{
+		private IDateTimeParser dateTimeParser;
+
+		public ReportParser(IDateTimeParser DateTimeParser)
+		{
+			if (DateTimeParser == null) throw new ArgumentNullException(nameof(DateTimeParser));
+			this.dateTimeParser = DateTimeParser;
+		}
+
 		public Report? Parse(string Line)
 		{
 			string[] parts;
@@ -45,9 +54,9 @@ namespace ODP.CoreLib
 				sbcReport.TrmSd = parts[15].Trim();
 				sbcReport.TrmReason = parts[16].Trim();
 				sbcReport.TrmReasonCategory = parts[17].Trim();
-				sbcReport.SetupTime = DateTime.Parse( parts[18].Trim());
-				sbcReport.ConnectTime = parts[19].Trim();
-				sbcReport.ReleaseTime = parts[20].Trim();
+				sbcReport.SetupTime = dateTimeParser.Parse(parts[18].Trim());
+				sbcReport.ConnectTime = dateTimeParser.Parse(parts[19].Trim());
+				sbcReport.ReleaseTime = dateTimeParser.Parse(parts[20].Trim());
 				sbcReport.RedirectReason = parts[21].Trim();
 				sbcReport.RedirectURINum = parts[22].Trim();
 				sbcReport.RedirectURINumBeforeMap = parts[23].Trim();

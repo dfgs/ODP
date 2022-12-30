@@ -19,8 +19,8 @@ namespace ODP.CoreLib.UnitTest
 
 			project = new Project();
 
-			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync(null, Mock.Of<SyslogParser>(), Mock.Of<ReportParser>()));
-			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", null, Mock.Of<ReportParser>()));
+			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync(null, Mock.Of<SyslogParser>(), new ReportParser(new DateTimeParser())));
+			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", null, new ReportParser(new DateTimeParser())));
 			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", Mock.Of<SyslogParser>(), null));
 
 		}

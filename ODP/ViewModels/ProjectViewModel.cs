@@ -62,7 +62,7 @@ namespace ODP.ViewModels
 			//this.Name = System.IO.Path.GetFileNameWithoutExtension(FileName);
 
 			syslogParser= new SyslogParser();
-			reportParser = new ReportParser();
+			reportParser = new ReportParser(new DateTimeParser());
 
 			await TryAsync(() => Model.AddFileAsync(FileName,syslogParser,reportParser)).OrThrow($"Failed to read syslog file {FileName}");
 			await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(() => new SessionViewModel(Logger)));

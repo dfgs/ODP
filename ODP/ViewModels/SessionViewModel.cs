@@ -26,17 +26,17 @@ namespace ODP.ViewModels
 
 
 
-		public static readonly DependencyProperty StartTimeProperty = DependencyProperty.Register("StartTime", typeof(string), typeof(SessionViewModel), new PropertyMetadata(null));
-		public string? StartTime
+		public static readonly DependencyProperty StartTimeProperty = DependencyProperty.Register("StartTime", typeof(DateTime), typeof(SessionViewModel), new PropertyMetadata(null));
+		public DateTime? StartTime
 		{
-			get { return (string?)GetValue(StartTimeProperty); }
+			get { return (DateTime?)GetValue(StartTimeProperty); }
 			set { SetValue(StartTimeProperty, value); }
 		}
 
-		public static readonly DependencyProperty StopTimeProperty = DependencyProperty.Register("StopTime", typeof(string), typeof(SessionViewModel), new PropertyMetadata(null));
-		public string? StopTime
+		public static readonly DependencyProperty StopTimeProperty = DependencyProperty.Register("StopTime", typeof(DateTime), typeof(SessionViewModel), new PropertyMetadata(null));
+		public DateTime? StopTime
 		{
-			get { return (string?)GetValue(StopTimeProperty); }
+			get { return (DateTime?)GetValue(StopTimeProperty); }
 			set { SetValue(StopTimeProperty, value); }
 		}
 
