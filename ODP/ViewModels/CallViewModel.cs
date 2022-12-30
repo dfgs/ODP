@@ -12,6 +12,55 @@ namespace ODP.ViewModels
 {
 	public class CallViewModel : ViewModel<Call>
 	{
+		public string? SIPCallID
+		{
+			get => Model?.SIPCallId;
+		}
+
+		public string? SrcURI
+		{
+			get => Model?.SBCReports.FirstOrDefault(item => item.SrcURI != null)?.SrcURI;
+		}
+		public string? DstURI
+		{
+			get => Model?.SBCReports.FirstOrDefault(item => item.DstURI != null)?.DstURI;
+		}
+
+		public DateTime? SetupTime
+		{
+			get => Model?.SBCReports.FirstOrDefault(item => item.SetupTime != null)?.SetupTime;
+		}
+		public DateTime? ConnectTime
+		{
+			get => Model?.SBCReports.FirstOrDefault(item => item.ConnectTime != null)?.ConnectTime;
+		}
+		public DateTime? ReleaseTime
+		{
+			get => Model?.SBCReports.FirstOrDefault(item => item.ReleaseTime != null)?.ReleaseTime;
+		}
+		public string? TrmReason
+		{
+			get => Model?.SBCReports.FirstOrDefault(item => item.TrmReason != null)?.TrmReason;
+		}
+
+		public string? SourceIp
+		{
+			get => Model?.SBCReports.FirstOrDefault(item => item.SourceIp!= null)?.SourceIp;
+		}
+		public string? DestIp
+		{
+			get => Model?.SBCReports.FirstOrDefault(item => item.DestIp != null)?.DestIp;
+		}
+
+		public string? IPGroup
+		{
+			get => Model?.SBCReports.FirstOrDefault(item => item.IPGroup != null)?.IPGroup;
+		}
+		public string? SIPInterfaceId
+		{
+			get => Model?.SBCReports.FirstOrDefault(item => item.SIPInterfaceId != null)?.SIPInterfaceId;
+		}
+
 		public static readonly DependencyProperty SBCReportsProperty = DependencyProperty.Register("SBCReports", typeof(ViewModelCollection<SBCReportViewModel>), typeof(CallViewModel), new PropertyMetadata(null));
 		public ViewModelCollection<SBCReportViewModel> SBCReports
 		{
@@ -29,6 +78,7 @@ namespace ODP.ViewModels
 		{
 			SBCReports = new ViewModelCollection<SBCReportViewModel>(Logger);
 			MediaReports = new ViewModelCollection<MediaReportViewModel>(Logger);
+			
 		}
 
 

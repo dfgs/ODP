@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:root="clr-namespace:ODP"
 		xmlns:views="clr-namespace:ODP.Views"
-        mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" WindowState="Maximized"
         Title="ODP" Height="450" Width="800">
 
 	<Window.CommandBindings>

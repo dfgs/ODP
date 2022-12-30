@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="ODP.Views.CallsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views="clr-namespace:ODP.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+	<ListView ItemsSource="{Binding}" SelectedItem="{Binding SelectedItem}">
+		<ListView.View>
+			<GridView>
+				<GridView.Columns>
+					<GridViewColumn Width="200" Header="Call ID" DisplayMemberBinding="{Binding SIPCallID}"/>
+					<GridViewColumn Width="200" Header="Setup time" DisplayMemberBinding="{Binding SetupTime}"/>
+					<GridViewColumn Width="200" Header="Connect time" DisplayMemberBinding="{Binding ConnectTime}"/>
+					<GridViewColumn Width="200" Header="Release time" DisplayMemberBinding="{Binding ReleaseTime}"/>
+					<GridViewColumn Width="200" Header="Termination reason" DisplayMemberBinding="{Binding TrmReason}"/>
+					<GridViewColumn Width="200" Header="Source URI" DisplayMemberBinding="{Binding SrcURI}"/>
+					<GridViewColumn Width="200" Header="Destination URI" DisplayMemberBinding="{Binding DstURI}"/>
+					<GridViewColumn Width="200" Header="Source IP" DisplayMemberBinding="{Binding SourceIp}"/>
+					<GridViewColumn Width="200" Header="Destination IP" DisplayMemberBinding="{Binding DestIp}"/>
+					<GridViewColumn Width="200" Header="IP group" DisplayMemberBinding="{Binding IPGroup}"/>
+					<GridViewColumn Width="200" Header="SIP interface" DisplayMemberBinding="{Binding SIPInterfaceId}"/>
+				</GridView.Columns>
+			</GridView>
+		</ListView.View>
+	</ListView>
+</UserControl>

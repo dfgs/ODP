@@ -6,15 +6,26 @@
              xmlns:views="clr-namespace:ODP.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-	<ListView ItemsSource="{Binding}" SelectedItem="{Binding SelectedItem}">
-		<ListView.View>
-			<GridView>
-				<GridView.Columns>
-					<GridViewColumn Width="200" Header="Session ID" DisplayMemberBinding="{Binding SessionID}"/>
-					<GridViewColumn Width="200" Header="Start time" DisplayMemberBinding="{Binding StartTime}"/>
-					<GridViewColumn Width="200" Header="Stop time" DisplayMemberBinding="{Binding StopTime}"/>
-				</GridView.Columns>
-            </GridView>
-		</ListView.View>
-	</ListView>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="1*"/>
+			<RowDefinition Height="5"/>
+			<RowDefinition Height="200"/>
+		</Grid.RowDefinitions>
+		<ListView Grid.Row="0" ItemsSource="{Binding}" SelectedItem="{Binding SelectedItem}">
+			<ListView.View>
+				<GridView>
+					<GridView.Columns>
+						<GridViewColumn Width="200" Header="Session ID" DisplayMemberBinding="{Binding SessionID}"/>
+						<GridViewColumn Width="200" Header="Start time" DisplayMemberBinding="{Binding StartTime}"/>
+						<GridViewColumn Width="200" Header="Stop time" DisplayMemberBinding="{Binding StopTime}"/>
+						<GridViewColumn Width="200" Header="Source URI" DisplayMemberBinding="{Binding SrcURI}"/>
+						<GridViewColumn Width="200" Header="Destination URI" DisplayMemberBinding="{Binding DstURI}"/>
+					</GridView.Columns>
+				</GridView>
+			</ListView.View>
+		</ListView>
+		<GridSplitter Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+		<views:CallsView Grid.Row="2" DataContext="{Binding SelectedItem.Calls}"/>
+	</Grid>
 </UserControl>

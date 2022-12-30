@@ -12,11 +12,6 @@ namespace ODP.ViewModels
 {
 	public class SessionViewModel : ViewModel<Session>
 	{
-		public string? SessionID
-		{
-			get => Model?.SessionId;
-		}
-
 		public static readonly DependencyProperty CallsProperty = DependencyProperty.Register("Calls", typeof(ViewModelCollection<CallViewModel>), typeof(SessionViewModel), new PropertyMetadata(null));
 		public ViewModelCollection<CallViewModel> Calls
 		{
@@ -25,22 +20,28 @@ namespace ODP.ViewModels
 		}
 
 
-
-		public static readonly DependencyProperty StartTimeProperty = DependencyProperty.Register("StartTime", typeof(DateTime), typeof(SessionViewModel), new PropertyMetadata(null));
+		public string? SessionID
+		{
+			get => Model?.SessionId;
+		}
+		
 		public DateTime? StartTime
 		{
-			get { return (DateTime?)GetValue(StartTimeProperty); }
-			set { SetValue(StartTimeProperty, value); }
+			get => Calls.SelectMany(item => item.SBCReports.Select(item => item.SetupTime)).Min();
 		}
 
-		public static readonly DependencyProperty StopTimeProperty = DependencyProperty.Register("StopTime", typeof(DateTime), typeof(SessionViewModel), new PropertyMetadata(null));
 		public DateTime? StopTime
 		{
-			get { return (DateTime?)GetValue(StopTimeProperty); }
-			set { SetValue(StopTimeProperty, value); }
+			get => Calls.SelectMany(item => item.SBCReports.Select(item => item.ReleaseTime)).Max();
+	}
+		public string? SrcURI
+		{
+			get => Calls.FirstOrDefault(item => item.SrcURI != null)?.SrcURI;
 		}
-
-
+		public string? DstURI
+		{
+			get => Calls.FirstOrDefault(item => item.DstURI != null)?.DstURI;
+		}
 		public SessionViewModel(ILogger Logger) : base(Logger)
 		{
 			Calls = new ViewModelCollection<CallViewModel>(Logger);
@@ -51,15 +52,10 @@ namespace ODP.ViewModels
 			if (Model==null)
 			{
 				Calls.Clear();
-				StartTime= null; 
-				StopTime= null;
 				return;
 			}
 
 			await Calls.LoadAsync(await Model.Calls.ToViewModelsAsync(() => new CallViewModel(Logger)));
-
-			StartTime = Calls.SelectMany(item => item.SBCReports.Select(item => item.SetupTime)).Min();
-			StopTime = Calls.SelectMany(item => item.SBCReports.Select(item => item.ReleaseTime)).Max();
 
 		}
 
