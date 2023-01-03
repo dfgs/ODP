@@ -25,7 +25,9 @@ namespace ODP
 	{
 		private ILogger logger;
 		private ApplicationViewModel applicationViewModel;
-
+		
+		
+		
 		public MainWindow()
 		{
 			logger = NullLogger.Instance;
@@ -81,6 +83,8 @@ namespace ODP
 				{
 					ShowError(ex);
 				}
+
+				
 			}
 
 

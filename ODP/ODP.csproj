@@ -64,6 +64,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\LogLib\LogLib\LogLib.csproj" />
+    <ProjectReference Include="..\..\ScottPlot\src\ScottPlot4\ScottPlot.WPF\ScottPlot.WPF.csproj" />
     <ProjectReference Include="..\..\ViewModelLib\ViewModelLib\ViewModelLib.csproj" />
     <ProjectReference Include="..\ODP.CoreLib\ODP.CoreLib.csproj" />
   </ItemGroup>

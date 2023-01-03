@@ -36,6 +36,7 @@
 				<Button Command="{x:Static root:RoutedCommands.Find}"  ToolTip="Find" ToolTipService.ShowOnDisabled="true">
 					<Image Source="/Images/magnifier.png" Stretch="None"/>
 				</Button>
+				
 			</ToolBar>
 		</ToolBarTray>
 		<TabControl ItemsSource="{Binding Projects}" SelectedItem="{Binding Projects.SelectedItem}">

@@ -37,7 +37,6 @@ namespace ODP.CoreLib.UnitTest
 		}
 
 		[DataTestMethod]
-		[DataRow("MEDIA_START    |349551015122022195348@10.0.2.11                                 |c62532:22:998           |7    |AUDIO     |g711Ulaw64k    |20   |10.0.2.11           |6008           |10.0.2.12           |6008         |0         |0         |0            |0             |0        |0        |0             |0             |127         |127          |127       |127        |46             |                    |0              |                    |0              |NO_TRANSCODING   |2")]
 		[DataRow("MEDIA_END      |14575679645122022191045@10.0.2.11                               |c62532:22:710           |10   |AUDIO     |g711Ulaw64k    |20   |10.0.2.11           |6000           |10.0.2.12           |6000         |397       |367       |0            |23            |0        |4        |3770524341    |2947629489    |127         |127          |127       |127        |46             |                    |0              |                    |0              |NO_TRANSCODING   |2")]
 		[DataRow("MEDIA_UPDATE   |8719331645122022191524@10.0.2.11                                |c62532:22:743           |8    |AUDIO     |g711Ulaw64k    |20   |10.0.2.11           |6004           |10.0.2.12           |6004         |209       |188       |0            |22            |0        |4        |3073419205    |3900521493    |127         |127          |127       |127        |46             |                    |0              |                    |0              |NO_TRANSCODING   |2")]
 		public void ShouldParseValidMediaReportLine(string Line)
@@ -53,7 +52,19 @@ namespace ODP.CoreLib.UnitTest
 			Assert.AreEqual("AUDIO", ((MediaReport)report).MediaType);
 
 		}
+		[DataTestMethod]
+		[DataRow("MEDIA_START    |349551015122022195348@10.0.2.11                                 |c62532:22:998           |7    |AUDIO     |g711Ulaw64k    |20   |10.0.2.11           |6008           |10.0.2.12           |6008         |0         |0         |0            |0             |0        |0        |0             |0             |127         |127          |127       |127        |46             |                    |0              |                    |0              |NO_TRANSCODING   |2")]
+		public void ShouldSkipValidMediaStartReportLine(string Line)
+		{
+			ReportParser reportParser;
+			Report? report;
 
+			reportParser = new ReportParser(new DateTimeParser());
+
+			report = reportParser.Parse(Line);
+			Assert.IsNull(report);
+
+		}
 		[DataTestMethod]
 		[DataRow("SBCReportType  |EPTyp     |SIPCallId                                                       |SessionId               |Orig |SourceIp            |SourcePort   |DestIp              |DestPort   |TransportType   |SrcURI                                   |SrcURIBeforeMap                          |DstURI                                   |DstURIBeforeMap                          |Duration|TrmSd|TrmReason                               |TrmReasonCategory|SetupTime                          |ConnectTime                        |ReleaseTime                        |RedirectReason |RedirectURINum                           |RedirectURINumBeforeMap                  |TxSigIPDiffServ|IPGroup (name)                  |SrdId (name)                    |SIPInterfaceId (name)           |ProxySetId (name)               |IpProfileId (name)              |MediaRealmId (name)             |DirectMedia|SIPTrmReason|SIPTermDesc               |Caller                                             |Callee                               |Trigger |LegId|VoiceAIConnectorName")]
 		public void ShouldParseValidSBCReportHeader(string Line)
