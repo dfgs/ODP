@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ODP.CoreLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,5 +18,47 @@ namespace ODP.ViewModels
 		{
 			return SIPInterfaces.GroupJoin(Items, sipInterface => sipInterface, item => item.SIPInterfaceId, (sipInterface, item) => item);
 		}
+
+		public static int MaxPacketLoss(this IEnumerable<CallViewModel> Calls)
+		{
+			return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.PacketLossPercent ?? 0).Max();
+		}
+		public static int MaxDelay(this IEnumerable<CallViewModel> Calls)
+		{
+			return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPdelay ?? 0).Max();
+		}
+		public static int MaxJitter(this IEnumerable<CallViewModel> Calls)
+		{
+			return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPjitter ?? 0).Max();
+		}
+
+		public static double AvgPacketLoss(this IEnumerable<CallViewModel> Calls)
+		{
+			return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.PacketLossPercent ?? 0).Average();
+		}
+		public static double AvgDelay(this IEnumerable<CallViewModel> Calls)
+		{
+			return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPdelay ?? 0).Average();
+		}
+		public static double AvgJitter(this IEnumerable<CallViewModel> Calls)
+		{
+			return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPjitter ?? 0).Average();
+		}
+
+
+		public static IEnumerable<string> SIPInterfaces(this IEnumerable<CallViewModel> Calls)
+		{
+			return Calls.Select(call => call.SIPInterfaceId).Where(item => item != null).Cast<string>().Distinct();
+		}
+
+		public static IEnumerable<CallViewModel> Calls(this IEnumerable<SessionViewModel> Sessions)
+		{
+			return Sessions.SelectMany(session => session.Calls); 
+		}
+		public static IEnumerable<MediaReportViewModel> MediaReports(this IEnumerable<CallViewModel> Calls)
+		{
+			return Calls.SelectMany(call => call.MediaReports);
+		}
+
 	}
 }
