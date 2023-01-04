@@ -10,7 +10,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class SessionViewModel : ViewModel<Session>
+	public class SessionViewModel : ViewModel<Session>, IQualityProvider
 	{
 		public static readonly DependencyProperty CallsProperty = DependencyProperty.Register("Calls", typeof(ViewModelCollection<CallViewModel>), typeof(SessionViewModel), new PropertyMetadata(null));
 		public ViewModelCollection<CallViewModel> Calls
@@ -44,7 +44,7 @@ namespace ODP.ViewModels
 		}
 
 
-		public Quality? Quality
+		public Quality Quality
 		{
 			get => Calls.Select(item => item.Quality).Min();
 		}
@@ -74,7 +74,7 @@ namespace ODP.ViewModels
 				case SearchCriteria.SessionID: return SessionID?.Contains(Value)??false;
 				case SearchCriteria.SrcURI:return SrcURI?.Contains(Value) ?? false;
 				case SearchCriteria.DstURI:return DstURI?.Contains(Value) ?? false;
-				case SearchCriteria.Quality:return Quality?.ToString().Contains(Value) ?? false;
+				case SearchCriteria.Quality:return Quality.ToString().Contains(Value);
 				default: return false;
 			}
 		}

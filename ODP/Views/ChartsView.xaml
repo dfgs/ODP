@@ -15,7 +15,8 @@
 			<ColumnDefinition Width="1*"/>
 			<ColumnDefinition Width="1*"/>
 		</Grid.ColumnDefinitions>
-		<WpfPlot Name="WpfPlot1"  Grid.Row="0" />
+		<WpfPlot Name="WpfPlotMediaReportCountByQuality" Grid.Column="0" />
+		<WpfPlot Name="WpfPlotCallsCountByInterface"  Grid.Column="1" />
 	</Grid>
 
 </UserControl>

@@ -10,7 +10,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class CallViewModel : ViewModel<Call>
+	public class CallViewModel : ViewModel<Call>, IQualityProvider
 	{
 		public string? SIPCallID
 		{
@@ -61,7 +61,7 @@ namespace ODP.ViewModels
 			get => Model?.SBCReports.FirstOrDefault(item => item.SIPInterfaceId != null)?.SIPInterfaceId;
 		}
 
-		public Quality? Quality
+		public Quality Quality
 		{
 			get => MediaReports.Select(item => item.Quality).Min();
 		}

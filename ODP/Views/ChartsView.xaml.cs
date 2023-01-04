@@ -25,42 +25,74 @@ namespace ODP.Views
 	/// </summary>
 	public partial class ChartsView : UserControl
 	{
+		private static Quality[] Qualities = Enum.GetValues<Quality>();
+		private static string[] QualityLabels = new string[] { "Bad quality", "Average quality", "Good quality" };
+
 		public ChartsView()
 		{
 			InitializeComponent();
 			
 		}
+		
 
-		private void RefreshWpfPlotMediaReportCountByQuality(ViewModelCollection<SessionViewModel> Sessions)
+		private void RefreshWpfPlotMediaReportCountByQuality(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
 		{
-			var mediaReports = sessions.SelectMany(session => session.Calls).SelectMany(call => call.MediaReports);
-			double[] values = Enum.GetValues<Quality>().GroupJoin(mediaReports, quality => quality, mediaReport => mediaReport.Quality, (quality, mediaReports) => mediaReports)
-				.Select(mediaReports => (double)mediaReports.Count()).ToArray();
-			string[] labels = new string[] { "Bad quality", "Average quality", "Good quality" };
+			var mediaReports = Sessions.SelectMany(session => session.Calls).SelectMany(call => call.MediaReports);
+			double[] values = mediaReports.GroupByQuality(Qualities).Select(mediaReports => (double)mediaReports.Count()).ToArray();
 			System.Drawing.Color[] sliceColors = { System.Drawing.Color.Red, System.Drawing.Color.Orange, System.Drawing.Color.Green };
 
 
-			WpfPlotMediaReportCountByQuality.Plot.Clear();
-			WpfPlotMediaReportCountByQuality.Plot.Title("Number of media reports by quality");
+			WpfPlot.Plot.Clear();
+			WpfPlot.Plot.Title("Number of media reports by quality");
 
-			var pie = WpfPlotMediaReportCountByQuality.Plot.AddPie(values);
+			var pie = WpfPlot.Plot.AddPie(values);
 			pie.DonutSize = .6;
 			pie.Explode = true;
 			pie.ShowValues = true;
-			pie.SliceLabels = labels;
+			pie.SliceLabels = QualityLabels;
 			pie.SliceFillColors = sliceColors;
 
-			WpfPlotMediaReportCountByQuality.Plot.Legend();
+			WpfPlot.Plot.Legend(true,Alignment.UpperRight);
 			try
 			{
-
-				WpfPlotMediaReportCountByQuality.Refresh();
+				WpfPlot.Refresh();
 			}
 			catch (ArgumentException)
 			{
 				// bug in graphics.drawPie
 			}
 		}
+
+
+		private void RefreshWpfPlotCallsCountByInterface(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
+		{
+			var calls = Sessions.SelectMany(session => session.Calls);
+			string[] sipInterfaces = calls.Select(call => call.SIPInterfaceId).Where(item=> item!= null).Cast<string>().Distinct().ToArray();
+			double[][] values = calls.GroupByQuality(Qualities)
+				.Select(groupedCalls => groupedCalls.GroupByInterface(sipInterfaces).Select(calls => (double)calls.Count()).ToArray()
+				).ToArray();
+
+			System.Drawing.Color[] sliceColors = { System.Drawing.Color.Red, System.Drawing.Color.Orange, System.Drawing.Color.Green };
+
+
+			WpfPlot.Plot.Clear();
+			WpfPlot.Plot.Title("Number of calls by interface");
+
+			// add the grouped bar plots and show a legend
+			var bars=WpfPlot.Plot.AddBarGroups(sipInterfaces, QualityLabels, values, null);
+			for(int t=0;t<bars.Length;t++)
+			{
+				bars[t].FillColor= sliceColors[t];
+				bars[t].ShowValuesAboveBars = true;
+			}
+
+			WpfPlot.Plot.Legend(location: Alignment.UpperRight);
+			// adjust axis limits so there is no padding below the bar graph
+			WpfPlot.Plot.SetAxisLimits(yMin: 0);
+						
+			WpfPlot.Refresh();
+		}
+
 		private void RefreshCharts()
 		{
 			ViewModelCollection<SessionViewModel>? sessions;
@@ -68,7 +100,8 @@ namespace ODP.Views
 			sessions = DataContext as ViewModelCollection<SessionViewModel>;
 			if (sessions == null) return;
 
-			RefreshWpfPlotMediaReportCountByQuality(sessions);
+			RefreshWpfPlotMediaReportCountByQuality(WpfPlotMediaReportCountByQuality, sessions);
+			RefreshWpfPlotCallsCountByInterface(WpfPlotCallsCountByInterface, sessions);
 		}
 		
 		

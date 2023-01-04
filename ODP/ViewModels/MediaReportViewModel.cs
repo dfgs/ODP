@@ -10,7 +10,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class MediaReportViewModel : ReportViewModel<MediaReport>
+	public class MediaReportViewModel : ReportViewModel<MediaReport>, IQualityProvider
 	{
 		public string? MediaReportType
 		{
@@ -137,7 +137,7 @@ namespace ODP.ViewModels
 			}
 		}
 
-		public Quality? Quality
+		public Quality Quality
 		{
 			get
 			{
