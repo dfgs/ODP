@@ -24,5 +24,10 @@ namespace ODP.Views
 		{
 			InitializeComponent();
 		}
-	}
+
+		private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			listView.ScrollIntoView(listView.SelectedItem);
+        }
+    }
 }

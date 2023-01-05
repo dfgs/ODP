@@ -131,6 +131,7 @@ namespace ODP
 			dialog = new FindWindow();
 			dialog.Owner = this;
 			dialog.ApplicationViewModel= applicationViewModel;
+
 			dialog.ShowDialog();
 		}
 
