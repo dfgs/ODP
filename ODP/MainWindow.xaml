@@ -4,10 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:root="clr-namespace:ODP"
-		xmlns:views="clr-namespace:ODP.Views"
+		xmlns:views="clr-namespace:ODP.Views" x:Name="window"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" WindowState="Maximized"
         Title="ODP" Height="450" Width="800">
 
+	<Window.Style>
+		<Style TargetType="{x:Type Window}">
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding ElementName=window,Path=TaskIsRunning}" Value="true">
+					<Setter Property="IsEnabled" Value="False"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+	</Window.Style>
+	
 	<Window.InputBindings>
 		<KeyBinding Modifiers="Ctrl" Key="F" Command="{x:Static root:RoutedCommands.Find}"/>
 		<KeyBinding Modifiers="Ctrl" Key="S" Command="Save"/>
@@ -28,6 +38,18 @@
 	<DockPanel>
 		<StatusBar DockPanel.Dock="Bottom">
 			<TextBlock Text="{Binding Projects.SelectedItem.Name}"/>
+			<TextBlock Text="Task in progress...">
+				<TextBlock.Style>
+					<Style TargetType="{x:Type TextBlock}">
+						<Setter Property="Visibility" Value="Collapsed"/>
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding ElementName=window,Path=TaskIsRunning}" Value="true">
+								<Setter Property="Visibility" Value="Visible"/>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</TextBlock.Style>
+			</TextBlock>
 		</StatusBar>
 		<ToolBarTray DockPanel.Dock="Top">
 			<ToolBar >

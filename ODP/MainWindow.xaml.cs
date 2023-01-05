@@ -25,9 +25,20 @@ namespace ODP
 	{
 		private ILogger logger;
 		private ApplicationViewModel applicationViewModel;
-		
-		
-		
+
+
+
+		public static readonly DependencyProperty TaskIsRunningProperty = DependencyProperty.Register("TaskIsRunning", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+		public bool TaskIsRunning
+		{
+			get { return (bool)GetValue(TaskIsRunningProperty); }
+			set { SetValue(TaskIsRunningProperty, value); }
+		}
+
+
+
+
+
 		public MainWindow()
 		{
 			logger = new FileLogger(new DefaultLogFormatter(),"Log.txt");
@@ -42,41 +53,56 @@ namespace ODP
 			MessageBox.Show(this, ex.Message, "Error");
 		}
 
+		private async Task RunCommandAsync(Task Task)
+		{
+			TaskIsRunning= true;
+			try
+			{
+				await Task;
+				//await Task.Delay(10000);
+			}
+			catch(Exception ex)
+			{
+				ShowError(ex);
+			}
+			finally { TaskIsRunning = false; }
+		}
+		/*private async Task<T> RunCommand<T>(Task<T> Task)
+		{
+			isRunning = true;
+			try
+			{
+				return await Task;
+			}
+			catch (Exception ex)
+			{
+				ShowError(ex);
+			}
+			finally { isRunning = false; }
+		}*/
+
+
 		private void NewCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.Handled = true; e.CanExecute = true;
+			e.Handled = true; e.CanExecute =  (!TaskIsRunning);
 		}
 
 		private async void NewCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			try
-			{
-				await applicationViewModel.AddNewProjectAsync();
-			}
-			catch (Exception ex)
-			{
-				ShowError(ex);
-			}
+			await RunCommandAsync(applicationViewModel.AddNewProjectAsync());
 		}
 		private void CloseCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.Handled = true; e.CanExecute = applicationViewModel.Projects.SelectedItem != null;
+			e.Handled = true; e.CanExecute = (applicationViewModel.Projects.SelectedItem != null) && (!TaskIsRunning);
 		}
 
 		private async void CloseCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			try
-			{
-				await applicationViewModel.CloseCurrentProjectAsync();
-			}
-			catch (Exception ex)
-			{
-				ShowError(ex);
-			}
+			await RunCommandAsync(applicationViewModel.CloseCurrentProjectAsync());
 		}
 		private void AddFileCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.Handled = true; e.CanExecute = applicationViewModel.Projects.SelectedItem!=null;
+			e.Handled = true; e.CanExecute = (applicationViewModel.Projects.SelectedItem!=null) && (!TaskIsRunning);
 		}
 
 		private async void AddFileCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -93,26 +119,17 @@ namespace ODP
 
 			if (dialog.ShowDialog(this)??false)
 			{
-				try
+				foreach (string fileName in dialog.FileNames)
 				{
-					foreach (string fileName in dialog.FileNames)
-					{
-						await applicationViewModel.Projects.SelectedItem.AddFileAsync(fileName);
-					}
+					await RunCommandAsync( applicationViewModel.Projects.SelectedItem.AddFileAsync(fileName));
 				}
-				catch (Exception ex)
-				{
-					ShowError(ex);
-				}
-
-				
 			}
 
 
 		}
 		private void FindCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.Handled = true; e.CanExecute = applicationViewModel.Projects.SelectedItem != null;
+			e.Handled = true; e.CanExecute = (applicationViewModel.Projects.SelectedItem != null) && (!TaskIsRunning);
 		}
 
 		private void FindCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -127,7 +144,7 @@ namespace ODP
 
 		private void SaveCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.Handled = true; e.CanExecute = applicationViewModel.Projects.SelectedItem != null;
+			e.Handled = true; e.CanExecute = (applicationViewModel.Projects.SelectedItem != null) && (!TaskIsRunning);
 		}
 
 		private async void SaveCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -138,7 +155,7 @@ namespace ODP
 		}
 		private void SaveAsCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.Handled = true; e.CanExecute = applicationViewModel.Projects.SelectedItem != null;
+			e.Handled = true; e.CanExecute = (applicationViewModel.Projects.SelectedItem != null) && (!TaskIsRunning);
 		}
 
 		private async void SaveAsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -152,15 +169,9 @@ namespace ODP
 		private async Task SaveProjectAsync()
 		{
 			if (applicationViewModel.Projects.SelectedItem == null) return;
-			try
-			{
-				await applicationViewModel.Projects.SelectedItem.SaveAsync(applicationViewModel.Projects.SelectedItem.Path);
-			}
-			catch (Exception ex)
-			{
-				ShowError(ex);
-			}
+			await RunCommandAsync( applicationViewModel.Projects.SelectedItem.SaveAsync(applicationViewModel.Projects.SelectedItem.Path));
 		}
+
 		private async Task SaveProjectAsAsync()
 		{
 			SaveFileDialog dialog;
@@ -174,14 +185,7 @@ namespace ODP
 
 			if (dialog.ShowDialog(this) ?? false)
 			{
-				try
-				{
-					await applicationViewModel.Projects.SelectedItem.SaveAsync(dialog.FileName);
-				}
-				catch (Exception ex)
-				{
-					ShowError(ex);
-				}
+				await RunCommandAsync( applicationViewModel.Projects.SelectedItem.SaveAsync(dialog.FileName));
 			}
 
 		}
@@ -189,7 +193,7 @@ namespace ODP
 
 		private void OpenFileCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.Handled = true; e.CanExecute = true;
+			e.Handled = true; e.CanExecute = (!TaskIsRunning);
 		}
 
 		private async void OpenFileCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -204,16 +208,7 @@ namespace ODP
 
 			if (dialog.ShowDialog(this) ?? false)
 			{
-				try
-				{
-					await applicationViewModel.OpenProjectAsync(dialog.FileName);
-				}
-				catch (Exception ex)
-				{
-					ShowError(ex);
-				}
-
-
+				await RunCommandAsync( applicationViewModel.OpenProjectAsync(dialog.FileName));
 			}
 
 

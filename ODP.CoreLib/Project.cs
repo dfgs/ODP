@@ -72,8 +72,7 @@ namespace ODP.CoreLib
 			serializer = new XmlSerializer(typeof(Project));
 			using (FileStream stream = new FileStream(Path, FileMode.OpenOrCreate))
 			{
-				serializer.Serialize(stream, this);
-				await Task.Yield();
+				await Task.Run(() => serializer.Serialize(stream, this));
 			}
 		}
 		public static async Task<Project> LoadAsync(string Path)
@@ -85,10 +84,9 @@ namespace ODP.CoreLib
 			serializer = new XmlSerializer(typeof(Project));
 			using (FileStream stream = new FileStream(Path, FileMode.Open))
 			{
-				data = serializer.Deserialize(stream);
+				data = await Task.Run<object?>(() => serializer.Deserialize(stream));
 				if (data == null) throw new InvalidOperationException("Failed to deserialize project");
 				result =(Project)data;
-				await Task.Yield();
 			}
 			return result;
 		}
