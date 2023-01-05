@@ -1,16 +1,12 @@
 ﻿using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 
 namespace ODP.CoreLib
 {
 	public class Project
 	{
 		
-		public string? Name { get; set; }
-
-
-	
-
 		public List<Session> Sessions
 		{
 			get;
@@ -66,6 +62,18 @@ namespace ODP.CoreLib
 					AddReport(report);
 				}
 
+			}
+		}
+
+		public async Task SaveAsync(string Path)
+		{
+			XmlSerializer serializer;
+
+			serializer = new XmlSerializer(typeof(Project));
+			using (FileStream stream = new FileStream(Path, FileMode.OpenOrCreate))
+			{
+				serializer.Serialize(stream, this);
+				await Task.Yield();
 			}
 		}
 

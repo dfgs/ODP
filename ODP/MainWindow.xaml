@@ -10,12 +10,15 @@
 
 	<Window.InputBindings>
 		<KeyBinding Modifiers="Ctrl" Key="F" Command="{x:Static root:RoutedCommands.Find}"/>
+		<KeyBinding Modifiers="Ctrl" Key="S" Command="Save"/>
 	</Window.InputBindings>
 
 	<Window.CommandBindings>
 		<CommandBinding Command="New" CanExecute="NewCommandBinding_CanExecute" Executed="NewCommandBinding_Executed"/>
 		<CommandBinding Command="{x:Static root:RoutedCommands.AddFile}" CanExecute="AddFileCommandBinding_CanExecute" Executed="AddFileCommandBinding_Executed"/>
 		<CommandBinding Command="{x:Static root:RoutedCommands.Find}" CanExecute="FindCommandBinding_CanExecute" Executed="FindCommandBinding_Executed"/>
+		<CommandBinding Command="Save" CanExecute="SaveCommandBinding_CanExecute" Executed="SaveCommandBinding_Executed"/>
+		<CommandBinding Command="SaveAs" CanExecute="SaveAsCommandBinding_CanExecute" Executed="SaveAsCommandBinding_Executed"/>
 	</Window.CommandBindings>
     
 	<DockPanel>
@@ -29,6 +32,12 @@
 				</Button>
 				<Button Command="Open" ToolTip="Open project" ToolTipService.ShowOnDisabled="true">
 					<Image Source="Images\folder.png" Stretch="None"/>
+				</Button>
+				<Button Command="Save" ToolTip="Save project" ToolTipService.ShowOnDisabled="true">
+					<Image Source="/Images/disk.png" Stretch="None"/>
+				</Button>
+				<Button Command="SaveAs" ToolTip="Save project as" ToolTipService.ShowOnDisabled="true">
+					<Image Source="/Images/disk_multiple.png" Stretch="None"/>
 				</Button>
 				<Button Command="{x:Static root:RoutedCommands.AddFile}"  ToolTip="Add file" ToolTipService.ShowOnDisabled="true">
 					<Image Source="/Images/folder_add.png" Stretch="None"/>

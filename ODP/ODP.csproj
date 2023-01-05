@@ -18,6 +18,8 @@
     <None Remove="Images\bullet_pink.png" />
     <None Remove="Images\bullet_red.png" />
     <None Remove="Images\bullet_yellow.png" />
+    <None Remove="Images\disk.png" />
+    <None Remove="Images\disk_multiple.png" />
     <None Remove="Images\folder.png" />
     <None Remove="Images\folder_add.png" />
     <None Remove="Images\folder_delete.png" />
@@ -45,6 +47,8 @@
     <Resource Include="Images\bullet_pink.png" />
     <Resource Include="Images\bullet_red.png" />
     <Resource Include="Images\bullet_yellow.png" />
+    <Resource Include="Images\disk.png" />
+    <Resource Include="Images\disk_multiple.png" />
     <Resource Include="Images\folder.png" />
     <Resource Include="Images\folder_add.png" />
     <Resource Include="Images\folder_delete.png" />

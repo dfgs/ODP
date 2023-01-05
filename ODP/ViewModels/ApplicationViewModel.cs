@@ -34,7 +34,6 @@ namespace ODP.ViewModels
 			ProjectViewModel projectViewModel;
 
 			project = new Project();
-			project.Name = "New project";
 
 			projectViewModel = new ProjectViewModel(Logger);
 			await projectViewModel.LoadAsync(project);

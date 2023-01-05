@@ -1,4 +1,5 @@
 ﻿using LogLib;
+using Microsoft.Windows.Themes;
 using ODP.CoreLib;
 using System;
 using System.Collections.Generic;
@@ -13,14 +14,23 @@ namespace ODP.ViewModels
 	public class ProjectViewModel:ViewModel<Project>
 	{
 
-		public string? Name
+
+		public static readonly DependencyProperty NameProperty = DependencyProperty.Register("Name", typeof(string), typeof(ProjectViewModel), new PropertyMetadata("New project"));
+		public string Name
 		{
-			get { return Model?.Name; }
-			set { if(Model!=null) Model.Name = value; }
+			get { return (string)GetValue(NameProperty); }
+			set { SetValue(NameProperty, value); }
 		}
 
-		public static readonly DependencyProperty PathProperty = DependencyProperty.Register("Path", typeof(string), typeof(ProjectViewModel), new PropertyMetadata(null));
+		
 
+
+		public static readonly DependencyProperty PathProperty = DependencyProperty.Register("Path", typeof(string), typeof(ProjectViewModel), new PropertyMetadata(null));
+		public string Path
+		{
+			get { return (string)GetValue(PathProperty); }
+			set { SetValue(PathProperty, value); }
+		}
 
 
 		public static readonly DependencyProperty SessionsProperty = DependencyProperty.Register("Sessions", typeof(ViewModelCollection<SessionViewModel>), typeof(ProjectViewModel), new PropertyMetadata(null));
@@ -38,11 +48,7 @@ namespace ODP.ViewModels
 			Sessions = new ViewModelCollection<SessionViewModel>(Logger);
 		}
 
-		public string Path
-		{
-			get { return (string)GetValue(PathProperty); }
-			set { SetValue(PathProperty, value); }
-		}
+		
 
 
 		/*protected override async Task OnLoadedAsync()
@@ -56,12 +62,12 @@ namespace ODP.ViewModels
 			ISyslogParser syslogParser;
 			IReportParser reportParser;
 
-			if (Model == null) return;
+			if (Model == null) throw new InvalidOperationException("Model is not loaded");
 
 			//this.Path = FileName;
 			//this.Name = System.IO.Path.GetFileNameWithoutExtension(FileName);
 
-			syslogParser= new SyslogParser();
+			syslogParser = new SyslogParser();
 			reportParser = new ReportParser(new DateTimeParser());
 
 			await TryAsync(() => Model.AddFileAsync(FileName,syslogParser,reportParser)).OrThrow($"Failed to read syslog file {FileName}");
@@ -102,6 +108,16 @@ namespace ODP.ViewModels
 				}
 			}
 
+		}
+
+		public async Task SaveAsync(string Path)
+		{
+			if (Path == null) throw new ArgumentNullException(nameof(Path));
+			if (Model==null) throw new InvalidOperationException("Model is not loaded");
+			this.Path= Path;
+			this.Name=System.IO.Path.GetFileName(Path);
+			await TryAsync(() => Model.SaveAsync(Path)).OrThrow("Failed to save project file");
+			
 		}
 
 	}

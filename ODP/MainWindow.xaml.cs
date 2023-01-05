@@ -30,7 +30,7 @@ namespace ODP
 		
 		public MainWindow()
 		{
-			logger = NullLogger.Instance;
+			logger = new FileLogger(new DefaultLogFormatter(),"Log.txt");
 			applicationViewModel = new ApplicationViewModel(logger);
 
 			InitializeComponent();
@@ -72,12 +72,16 @@ namespace ODP
 			dialog.Title = "Open syslog file";
 			dialog.DefaultExt = "txt";
 			dialog.Filter = "Text files|*.txt|All files|*.*";
+			dialog.Multiselect = true;
 
 			if (dialog.ShowDialog(this)??false)
 			{
 				try
 				{
-					await applicationViewModel.Projects.SelectedItem.AddFileAsync(dialog.FileName);
+					foreach (string fileName in dialog.FileNames)
+					{
+						await applicationViewModel.Projects.SelectedItem.AddFileAsync(fileName);
+					}
 				}
 				catch (Exception ex)
 				{
@@ -102,6 +106,67 @@ namespace ODP
 			dialog.Owner = this;
 			dialog.ApplicationViewModel= applicationViewModel;
 			dialog.Show();
+		}
+
+		private void SaveCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.Handled = true; e.CanExecute = applicationViewModel.Projects.SelectedItem != null;
+		}
+
+		private async void SaveCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			if (applicationViewModel.Projects.SelectedItem == null) return;
+			if (applicationViewModel.Projects.SelectedItem.Path == null) await SaveProjectAsAsync();
+			else await SaveProjectAsync();
+		}
+		private void SaveAsCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.Handled = true; e.CanExecute = applicationViewModel.Projects.SelectedItem != null;
+		}
+
+		private async void SaveAsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			if (applicationViewModel.Projects.SelectedItem == null) return;
+			await SaveProjectAsync();
+		}
+
+
+
+		private async Task SaveProjectAsync()
+		{
+			if (applicationViewModel.Projects.SelectedItem == null) return;
+			try
+			{
+				await applicationViewModel.Projects.SelectedItem.SaveAsync(applicationViewModel.Projects.SelectedItem.Path);
+			}
+			catch (Exception ex)
+			{
+				ShowError(ex);
+			}
+		}
+		private async Task SaveProjectAsAsync()
+		{
+			SaveFileDialog dialog;
+
+			if (applicationViewModel.Projects.SelectedItem == null) return;
+
+			dialog = new SaveFileDialog();
+			dialog.Title = "Save project as";
+			dialog.DefaultExt = "xml";
+			dialog.Filter = "xml files|*.xml|All files|*.*";
+
+			if (dialog.ShowDialog(this) ?? false)
+			{
+				try
+				{
+					await applicationViewModel.Projects.SelectedItem.SaveAsync(dialog.FileName);
+				}
+				catch (Exception ex)
+				{
+					ShowError(ex);
+				}
+			}
+
 		}
 
 
