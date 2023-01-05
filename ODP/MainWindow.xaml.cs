@@ -58,7 +58,22 @@ namespace ODP
 				ShowError(ex);
 			}
 		}
+		private void CloseCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.Handled = true; e.CanExecute = applicationViewModel.Projects.SelectedItem != null;
+		}
 
+		private async void CloseCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			try
+			{
+				await applicationViewModel.CloseCurrentProjectAsync();
+			}
+			catch (Exception ex)
+			{
+				ShowError(ex);
+			}
+		}
 		private void AddFileCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.Handled = true; e.CanExecute = applicationViewModel.Projects.SelectedItem!=null;
@@ -168,6 +183,42 @@ namespace ODP
 			}
 
 		}
+
+
+		private void OpenFileCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.Handled = true; e.CanExecute = true;
+		}
+
+		private async void OpenFileCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			OpenFileDialog dialog;
+
+			dialog = new OpenFileDialog();
+			dialog.Title = "Open xml file";
+			dialog.DefaultExt = "xml";
+			dialog.Filter = "xml files|*.xml|All files|*.*";
+			dialog.Multiselect = false;
+
+			if (dialog.ShowDialog(this) ?? false)
+			{
+				try
+				{
+					await applicationViewModel.OpenProjectAsync(dialog.FileName);
+				}
+				catch (Exception ex)
+				{
+					ShowError(ex);
+				}
+
+
+			}
+
+
+		}
+
+
+
 
 
 	}

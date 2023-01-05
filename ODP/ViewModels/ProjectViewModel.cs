@@ -51,11 +51,15 @@ namespace ODP.ViewModels
 		
 
 
-		/*protected override async Task OnLoadedAsync()
+		protected override async Task OnLoadedAsync()
 		{
-			await base.OnLoadedAsync();
-			OnPropertyChanged(nameof(Name));
-		}*/
+			if (Model == null)
+			{
+				Sessions.Clear();
+				return;
+			}
+			await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(()=>new SessionViewModel(Logger)));
+		}
 
 		public async Task AddFileAsync(string FileName)
 		{

@@ -76,6 +76,22 @@ namespace ODP.CoreLib
 				await Task.Yield();
 			}
 		}
+		public static async Task<Project> LoadAsync(string Path)
+		{
+			XmlSerializer serializer;
+			Project result;
+			object? data;
+
+			serializer = new XmlSerializer(typeof(Project));
+			using (FileStream stream = new FileStream(Path, FileMode.Open))
+			{
+				data = serializer.Deserialize(stream);
+				if (data == null) throw new InvalidOperationException("Failed to deserialize project");
+				result =(Project)data;
+				await Task.Yield();
+			}
+			return result;
+		}
 
 
 	}

@@ -42,6 +42,30 @@ namespace ODP.ViewModels
 			Projects.SelectedItem = projectViewModel;
 		}
 
+		public async Task CloseCurrentProjectAsync()
+		{
+			if (Projects.SelectedItem == null) return;
 
+			Projects.Remove(Projects.SelectedItem);
+			Projects.SelectedItem = Projects.FirstOrDefault();
+
+			await Task.Yield();
+		}
+
+		public async Task OpenProjectAsync(string Path)
+		{
+			Project project;
+			ProjectViewModel projectViewModel;
+
+			project = await TryAsync(() => Project.LoadAsync(Path)).OrThrow("Failed to open project");
+			
+			projectViewModel = new ProjectViewModel(Logger);
+			await projectViewModel.LoadAsync(project);
+
+			Projects.Add(projectViewModel);
+			Projects.SelectedItem = projectViewModel;
+		}
+
+		
 	}
 }
