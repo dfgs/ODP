@@ -54,6 +54,7 @@ namespace ODP
 		{
 			SearchCriterias = new List<SearchCriteriaViewModel>();
 			SearchCriterias.Add(new SearchCriteriaViewModel() { Value = ViewModels.SearchCriteria.SessionID, Name = "Session ID" });
+			SearchCriterias.Add(new SearchCriteriaViewModel() { Value = ViewModels.SearchCriteria.CallID, Name = "Call ID" });
 			SearchCriterias.Add(new SearchCriteriaViewModel() { Value = ViewModels.SearchCriteria.SrcURI, Name = "Source URI" });
 			SearchCriterias.Add(new SearchCriteriaViewModel() { Value = ViewModels.SearchCriteria.DstURI, Name = "Destination URI" });
 			SearchCriterias.Add(new SearchCriteriaViewModel() { Value = ViewModels.SearchCriteria.Quality, Name = "Quality" });

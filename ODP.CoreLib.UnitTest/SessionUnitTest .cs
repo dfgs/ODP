@@ -19,7 +19,9 @@ namespace ODP.CoreLib.UnitTest
 
 			session= new Session();
 
+#pragma warning disable CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
 			Assert.ThrowsException<ArgumentNullException>(() => session.AddReport(null));
+#pragma warning restore CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
 
 		}
 

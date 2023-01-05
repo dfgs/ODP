@@ -19,9 +19,11 @@ namespace ODP.CoreLib.UnitTest
 
 			project = new Project();
 
+#pragma warning disable CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
 			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync(null, Mock.Of<SyslogParser>(), new ReportParser(new DateTimeParser())));
 			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", null, new ReportParser(new DateTimeParser())));
 			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", Mock.Of<SyslogParser>(), null));
+#pragma warning restore CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
 
 		}
 
@@ -32,7 +34,9 @@ namespace ODP.CoreLib.UnitTest
 
 			project = new Project();
 
+#pragma warning disable CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
 			Assert.ThrowsException<ArgumentNullException>(() => project.AddReport(null));
+#pragma warning restore CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
 		}
 
 		[TestMethod]

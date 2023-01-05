@@ -83,6 +83,8 @@ namespace ODP
 		{
 			OpenFileDialog dialog;
 
+			if (applicationViewModel.Projects.SelectedItem == null) return;
+
 			dialog = new OpenFileDialog();
 			dialog.Title = "Open syslog file";
 			dialog.DefaultExt = "txt";

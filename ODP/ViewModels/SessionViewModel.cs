@@ -71,7 +71,8 @@ namespace ODP.ViewModels
 		{
 			switch(Criteria)
 			{
-				case SearchCriteria.SessionID: return SessionID?.Contains(Value)??false;
+				case SearchCriteria.SessionID: return SessionID?.Contains(Value) ?? false;
+				case SearchCriteria.CallID: return Calls.FirstOrDefault(call=>call.SIPCallID?.Contains(Value)??false)!=null;
 				case SearchCriteria.SrcURI:return SrcURI?.Contains(Value) ?? false;
 				case SearchCriteria.DstURI:return DstURI?.Contains(Value) ?? false;
 				case SearchCriteria.Quality:return Quality.ToString().Contains(Value);

@@ -8,7 +8,9 @@ namespace ODP.CoreLib.UnitTest
 		[TestMethod]
 		public void ShouldCheckConstructorParameters()
 		{
+#pragma warning disable CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
 			Assert.ThrowsException<ArgumentNullException>(() => new ReportParser(null));
+#pragma warning restore CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
 		}
 
 		[DataTestMethod]
@@ -124,7 +126,10 @@ namespace ODP.CoreLib.UnitTest
 
 			reportParser = new ReportParser(new DateTimeParser());
 
+#pragma warning disable CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
 			Assert.ThrowsException<ArgumentNullException>(() => reportParser.Parse(null));
+#pragma warning restore CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
+
 		}
 
 
