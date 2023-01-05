@@ -67,20 +67,7 @@ namespace ODP
 			}
 			finally { TaskIsRunning = false; }
 		}
-		/*private async Task<T> RunCommand<T>(Task<T> Task)
-		{
-			isRunning = true;
-			try
-			{
-				return await Task;
-			}
-			catch (Exception ex)
-			{
-				ShowError(ex);
-			}
-			finally { isRunning = false; }
-		}*/
-
+		
 
 		private void NewCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
@@ -139,7 +126,7 @@ namespace ODP
 			dialog = new FindWindow();
 			dialog.Owner = this;
 			dialog.ApplicationViewModel= applicationViewModel;
-			dialog.Show();
+			dialog.ShowDialog();
 		}
 
 		private void SaveCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -214,7 +201,19 @@ namespace ODP
 
 		}
 
+		private void HelpCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.Handled = true; e.CanExecute = (!TaskIsRunning);
+		}
 
+		private void HelpCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			HelpWindow window;
+
+			window = new HelpWindow();
+			window.Owner = this;
+			window.ShowDialog();
+		}
 
 
 
