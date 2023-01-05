@@ -6,7 +6,7 @@
         xmlns:root="clr-namespace:ODP"
 		xmlns:views="clr-namespace:ODP.Views" x:Name="window"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" WindowState="Maximized"
-        Title="ODP" Height="450" Width="800">
+        Title="ODP" Height="450" Width="800" Icon="/Images/hypnotoad.png">
 
 	<Window.Style>
 		<Style TargetType="{x:Type Window}">

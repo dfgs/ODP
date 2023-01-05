@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ODP"
+        xmlns:local="clr-namespace:ODP" Icon="/Images/hypnotoad.png"
         mc:Ignorable="d"
         Title="Help" Height="450" Width="800">
     <TabControl>
@@ -31,6 +31,9 @@
 						</ListItem>
 						<ListItem>
 							<Paragraph>Basic charts (number of media reports by quality, calls count/quality by interface, max/average delay jitter and packet loss by interface)</Paragraph>
+						</ListItem>
+						<ListItem>
+							<Paragraph>Installer</Paragraph>
 						</ListItem>
 					</List>
 				</FlowDocument>

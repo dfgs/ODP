@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:root="clr-namespace:ODP" x:Name="findWindow"
         xmlns:viewModels="clr-namespace:ODP.ViewModels" 
-        mc:Ignorable="d" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" SizeToContent="Height"
+        mc:Ignorable="d" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" SizeToContent="Height" Icon="/Images/hypnotoad.png"
         Title="Find"  Width="300" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
 	
 	<Window.CommandBindings>

@@ -41,7 +41,12 @@ namespace ODP
 
 		public MainWindow()
 		{
-			logger = new FileLogger(new DefaultLogFormatter(),"Log.txt");
+			string appData;
+
+			appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+			System.IO.Directory.CreateDirectory(System.IO.Path.Combine(appData, "ODP"));
+			logger = new FileLogger(new DefaultLogFormatter(), System.IO.Path.Combine(appData, "ODP","log.txt"));
 			applicationViewModel = new ApplicationViewModel(logger);
 
 			InitializeComponent();

@@ -5,6 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>hypnotoad.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +25,7 @@
     <None Remove="Images\folder.png" />
     <None Remove="Images\folder_add.png" />
     <None Remove="Images\folder_delete.png" />
+    <None Remove="Images\hypnotoad.png" />
     <None Remove="Images\information.png" />
     <None Remove="Images\magifier_zoom_out.png" />
     <None Remove="Images\magnifier.png" />
@@ -37,6 +39,10 @@
     <None Remove="Images\textfield_add.png" />
     <None Remove="Images\textfield_delete.png" />
     <None Remove="Images\textfield_rename.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="hypnotoad.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,6 +61,7 @@
     <Resource Include="Images\folder.png" />
     <Resource Include="Images\folder_add.png" />
     <Resource Include="Images\folder_delete.png" />
+    <Resource Include="Images\hypnotoad.png" />
     <Resource Include="Images\information.png" />
     <Resource Include="Images\magifier_zoom_out.png" />
     <Resource Include="Images\magnifier.png" />
