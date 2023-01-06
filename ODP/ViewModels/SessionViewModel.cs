@@ -2,6 +2,7 @@
 using ODP.CoreLib;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,30 +21,36 @@ namespace ODP.ViewModels
 		}
 
 
+		[Browsable(true)]
 		public string? SessionID
 		{
 			get => Model?.SessionId;
 		}
-		
+
+		[Browsable(true)]
 		public DateTime? StartTime
 		{
 			get => Calls.SelectMany(item => item.SBCReports.Select(item => item.SetupTime)).Min();
 		}
 
+		[Browsable(true)]
 		public DateTime? StopTime
 		{
 			get => Calls.SelectMany(item => item.SBCReports.Select(item => item.ReleaseTime)).Max();
-	}
+		}
+		[Browsable(true)]
 		public string? SrcURI
 		{
 			get => Calls.FirstOrDefault(item => item.SrcURI != null)?.SrcURI;
 		}
+		[Browsable(true)]
 		public string? DstURI
 		{
 			get => Calls.FirstOrDefault(item => item.DstURI != null)?.DstURI;
 		}
 
 
+		[Browsable(true)]
 		public Quality Quality
 		{
 			get => Calls.Select(item => item.Quality).Min();

@@ -2,6 +2,7 @@
 using ODP.CoreLib;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,55 +13,73 @@ namespace ODP.ViewModels
 {
 	public class CallViewModel : ViewModel<Call>, IQualityProvider
 	{
+		[Browsable(true)]
 		public string? SIPCallID
 		{
 			get => Model?.SIPCallId;
 		}
 
+		[Browsable(true)]
 		public string? SrcURI
 		{
 			get => Model?.SBCReports.FirstOrDefault(item => item.SrcURI != null)?.SrcURI;
 		}
+
+		[Browsable(true)]
 		public string? DstURI
 		{
 			get => Model?.SBCReports.FirstOrDefault(item => item.DstURI != null)?.DstURI;
 		}
 
+		[Browsable(true)]
 		public DateTime? SetupTime
 		{
 			get => Model?.SBCReports.FirstOrDefault(item => item.SetupTime != null)?.SetupTime;
 		}
+
+		[Browsable(true)]
 		public DateTime? ConnectTime
 		{
 			get => Model?.SBCReports.FirstOrDefault(item => item.ConnectTime != null)?.ConnectTime;
 		}
+
+		[Browsable(true)]
 		public DateTime? ReleaseTime
 		{
 			get => Model?.SBCReports.FirstOrDefault(item => item.ReleaseTime != null)?.ReleaseTime;
 		}
+
+		[Browsable(true)]
 		public string? TrmReason
 		{
 			get => Model?.SBCReports.FirstOrDefault(item => item.TrmReason != null)?.TrmReason;
 		}
 
+		[Browsable(true)]
 		public string? SourceIp
 		{
 			get => Model?.SBCReports.FirstOrDefault(item => item.SourceIp!= null)?.SourceIp;
 		}
+
+		[Browsable(true)]
 		public string? DestIp
 		{
 			get => Model?.SBCReports.FirstOrDefault(item => item.DestIp != null)?.DestIp;
 		}
 
+		[Browsable(true)]
 		public string? IPGroup
 		{
 			get => Model?.SBCReports.FirstOrDefault(item => item.IPGroup != null)?.IPGroup;
 		}
+
+		[Browsable(true)]
 		public string? SIPInterfaceId
 		{
 			get => Model?.SBCReports.FirstOrDefault(item => item.SIPInterfaceId != null)?.SIPInterfaceId;
 		}
 
+		[Browsable(true)]
 		public Quality Quality
 		{
 			get => MediaReports.Select(item => item.Quality).Min();

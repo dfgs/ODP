@@ -62,12 +62,15 @@ namespace ODP.Views
 		{
 			PropertyInfo[] pis;
 			PropertyViewModel property;
+			BrowsableAttribute? attr;
 
 			Properties.Clear();
 			if (SelectedObject == null) return;
 			pis=SelectedObject.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
 			foreach(PropertyInfo pi in pis)
 			{
+				attr = pi.GetCustomAttribute<BrowsableAttribute>();
+				if (!(attr?.Browsable??false)) continue;
 				property=new PropertyViewModel() { Name=pi.Name,Value=pi.GetValue(SelectedObject) };
 				Properties.Add(property);
 			}
