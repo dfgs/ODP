@@ -28,7 +28,7 @@
 
 	<DockPanel>
 		<views:MediaReportsView DockPanel.Dock="Bottom" MinHeight="50" DataContext="{Binding SelectedItem.MediaReports}"/>
-		<ListView ItemsSource="{Binding}" SelectedItem="{Binding SelectedItem}">
+		<ListView ItemsSource="{Binding}" SelectedItem="{Binding SelectedItem}" MouseDoubleClick="ListView_MouseDoubleClick">
 			<ListView.View>
 				<GridView>
 					<GridView.Columns>

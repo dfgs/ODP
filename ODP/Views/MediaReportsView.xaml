@@ -7,17 +7,32 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	<ScrollViewer  HorizontalScrollBarVisibility="Auto">
-		<ItemsControl ItemsSource="{Binding}">
-			<ItemsControl.ItemsPanel>
+		<ListBox ItemsSource="{Binding}" SelectedItem="{Binding SelectedItem}" MouseDoubleClick="ListBox_MouseDoubleClick" >
+			<ListBox.ItemContainerStyle>
+				<Style TargetType="{x:Type ListBoxItem}">
+					<Setter Property="Template">
+						<Setter.Value>
+							<ControlTemplate TargetType="{x:Type ListBoxItem}">
+								<Border Background="{Binding Background}" BorderThickness="0" Margin="5">
+									<Border BorderThickness="1" BorderBrush="#55000000" Background="#AAFFFFFF">
+										<ContentPresenter/>
+									</Border>
+								</Border>
+							</ControlTemplate>
+						</Setter.Value>
+					</Setter>
+				</Style>
+			</ListBox.ItemContainerStyle>
+			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
 					<StackPanel Orientation="Horizontal"/>
 				</ItemsPanelTemplate>
-			</ItemsControl.ItemsPanel>
-			<ItemsControl.ItemTemplate>
+			</ListBox.ItemsPanel>
+			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<views:MediaReportView Margin="5"/>
 				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-		</ItemsControl>
+			</ListBox.ItemTemplate>
+		</ListBox>
 	</ScrollViewer>
 </UserControl>

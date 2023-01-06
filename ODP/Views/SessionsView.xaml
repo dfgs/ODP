@@ -31,7 +31,7 @@
 			<RowDefinition Height="5"/>
 			<RowDefinition Height="200"/>
 		</Grid.RowDefinitions>
-		<ListView Grid.Row="0" x:Name="listView" ItemsSource="{Binding}" SelectedItem="{Binding SelectedItem}" SelectionChanged="ListView_SelectionChanged" >
+		<ListView Grid.Row="0" x:Name="listView" ItemsSource="{Binding}" SelectedItem="{Binding SelectedItem}" SelectionChanged="ListView_SelectionChanged" MouseDoubleClick="ListView_MouseDoubleClick" >
 			<ListView.View>
 				<GridView>
 					<GridView.Columns>

@@ -10,28 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ODP.Views
+namespace ODP
 {
 	/// <summary>
-	/// Logique d'interaction pour CallsView.xaml
+	/// Logique d'interaction pour DetailsWindow.xaml
 	/// </summary>
-	public partial class CallsView : UserControl
+	public partial class DetailsWindow : Window
 	{
-		public CallsView()
+		public DetailsWindow()
 		{
 			InitializeComponent();
 		}
-
-		private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-		{
-			DetailsWindow window;
-
-			window= new DetailsWindow();
-			window.DataContext = (sender as ListView)!.SelectedItem;
-			window.Show();
-        }
-    }
+	}
 }

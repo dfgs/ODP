@@ -24,5 +24,14 @@ namespace ODP.Views
 		{
 			InitializeComponent();
 		}
+
+		private void ListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			DetailsWindow window;
+
+			window = new DetailsWindow();
+			window.DataContext = (sender as ListBox)!.SelectedItem;
+			window.Show();
+		}
 	}
 }

@@ -29,5 +29,14 @@ namespace ODP.Views
 		{
 			listView.ScrollIntoView(listView.SelectedItem);
         }
-    }
+
+		private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			DetailsWindow window;
+
+			window = new DetailsWindow();
+			window.DataContext = (sender as ListView)!.SelectedItem;
+			window.Show();
+		}
+	}
 }

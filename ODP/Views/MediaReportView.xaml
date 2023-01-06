@@ -4,16 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:ODP.Views"
-             mc:Ignorable="d" Background="{Binding Background}"
-             Width="300" d:DesignHeight="92" >
-    <Border BorderThickness="1" BorderBrush="#55000000" Background="#AAFFFFFF">
-		<StackPanel>
-			<UniformGrid Columns="3">
-				<TextBlock Text="{Binding RTPdelay,StringFormat=Delay: {0} ms,FallbackValue=Delay: NA}"/>
-				<TextBlock Text="{Binding RTPjitter,StringFormat=Jitter: {0} ms,FallbackValue=Jitter: NA}"/>
-				<TextBlock Text="{Binding PacketLossPercent,StringFormat=Packet loss: {0}%,FallbackValue=Packet loss: NA}"/>
-			</UniformGrid>
-			<views:RTPView />
-		</StackPanel>
-	</Border>
+             mc:Ignorable="d" 
+             Width="300" >
+ 	<StackPanel>
+		<UniformGrid Columns="3">
+			<TextBlock Text="{Binding RTPdelay,StringFormat=Delay: {0} ms,FallbackValue=Delay: NA}"/>
+			<TextBlock Text="{Binding RTPjitter,StringFormat=Jitter: {0} ms,FallbackValue=Jitter: NA}"/>
+			<TextBlock Text="{Binding PacketLossPercent,StringFormat=Packet loss: {0}%,FallbackValue=Packet loss: NA}"/>
+		</UniformGrid>
+		<views:RTPView />
+	</StackPanel>
 </UserControl>

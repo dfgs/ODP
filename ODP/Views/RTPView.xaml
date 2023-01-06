@@ -5,17 +5,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:ODP.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="45" d:DesignWidth="200" >
-	<DockPanel>
-		<Image DockPanel.Dock="Left" Source="/Images/audiocodes.png" Margin="3" Height="32" VerticalAlignment="Center"/>
-		<StackPanel VerticalAlignment="Center" DockPanel.Dock="Left">
-			<TextBlock Text="{Binding LocalRtpIp,FallbackValue=NA}"/>
-			<TextBlock Text="{Binding LocalRtpPort,FallbackValue=NA}"/>
+             d:DesignWidth="200" >
+	<StackPanel>
+		<DockPanel>
+			<Image DockPanel.Dock="Left" Source="/Images/audiocodes.png" Margin="3" Height="32" VerticalAlignment="Center"/>
+			<StackPanel VerticalAlignment="Center" DockPanel.Dock="Left">
+				<TextBlock Text="{Binding LocalRtpIp,FallbackValue=NA}"/>
+				<TextBlock Text="{Binding LocalRtpPort,FallbackValue=NA}"/>
+			</StackPanel>
+			<StackPanel VerticalAlignment="Center" DockPanel.Dock="Right">
+				<TextBlock Text="{Binding RemoteRtpIp,FallbackValue=NA}"/>
+				<TextBlock Text="{Binding RemoteRtpPort,FallbackValue=NA}"/>
+			</StackPanel>
+			<views:ArrowView Height="30" VerticalAlignment="Center" />
+		</DockPanel>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+			<Image Source="/Images/sound.png" Stretch="None" VerticalAlignment="Center"/>
+			<TextBlock Margin="3,0,0,0" Text="{Binding Coder,FallbackValue=Unknown}" VerticalAlignment="Center"/>
+			<TextBlock Margin="5,0,0,0" Text="{Binding CoderTranscoding,FallbackValue=Unknown}"/>
 		</StackPanel>
-		<StackPanel VerticalAlignment="Center" DockPanel.Dock="Right">
-			<TextBlock Text="{Binding RemoteRtpIp,FallbackValue=NA}"/>
-			<TextBlock Text="{Binding RemoteRtpPort,FallbackValue=NA}"/>
-		</StackPanel>
-		<views:ArrowView Height="30" VerticalAlignment="Center" />
-	</DockPanel>
+		
+	</StackPanel>
 </UserControl>
