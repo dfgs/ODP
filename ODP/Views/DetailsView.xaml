@@ -6,37 +6,10 @@
              xmlns:local="clr-namespace:ODP.Views"
              mc:Ignorable="d" x:Name="view"
              d:DesignHeight="450" d:DesignWidth="800">
-	<StackPanel Grid.IsSharedSizeScope="True">
-		<Grid >
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" SharedSizeGroup="Name"/>
-				<ColumnDefinition Width="Auto" SharedSizeGroup="Value"/>
-			</Grid.ColumnDefinitions>
-			<Border Grid.Column="0" BorderThickness="1" BorderBrush="Gray">
-				<TextBlock FontWeight="Bold"  Text="Name"/>
-			</Border>
-			<Border Grid.Column="1" BorderThickness="1" BorderBrush="Gray">
-				<TextBlock FontWeight="Bold" Text="Value"/>
-			</Border>
-		</Grid>
-		<ItemsControl ItemsSource="{Binding ElementName=view,Path=Properties}" >
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<Grid >
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto" SharedSizeGroup="Name"/>
-							<ColumnDefinition Width="Auto" SharedSizeGroup="Value"/>
-						</Grid.ColumnDefinitions>
-						<Border Grid.Column="0" BorderThickness="1" BorderBrush="Gray">
-							<TextBlock  Text="{Binding Name}"/>
-						</Border>
-						<Border Grid.Column="1" BorderThickness="1" BorderBrush="Gray">
-							<TextBlock Text="{Binding Value}"/>
-						</Border>
-					</Grid>
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>            
-		</ItemsControl>
-	</StackPanel>
-
+	<DataGrid AutoGenerateColumns="false" ItemsSource="{Binding ElementName=view,Path=Properties}">
+		<DataGrid.Columns >
+			<DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" MinWidth="200" />
+			<DataGridTextColumn Header="Value" Binding="{Binding Path=Value}" MinWidth="250" />
+		</DataGrid.Columns>
+	</DataGrid>
 </UserControl>
