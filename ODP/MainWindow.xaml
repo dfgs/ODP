@@ -55,6 +55,19 @@
 					</Style>
 				</TextBlock.Style>
 			</TextBlock>
+			<ProgressBar Width="100" Height="8" VerticalAlignment="Center" x:Name="progressBar">
+				<ProgressBar.Style>
+					<Style TargetType="{x:Type ProgressBar}">
+						<Setter Property="Visibility" Value="Collapsed"/>
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding ElementName=window,Path=TaskIsRunning}" Value="true">
+								<Setter Property="Visibility" Value="Visible"/>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</ProgressBar.Style>
+			</ProgressBar>
+
 		</StatusBar>
 		<ToolBarTray DockPanel.Dock="Top">
 			<ToolBar >

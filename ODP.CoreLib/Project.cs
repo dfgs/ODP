@@ -37,15 +37,17 @@ namespace ODP.CoreLib
 		}
 
 
-		public async Task AddFileAsync(string FileName,ISyslogParser SyslogParser,IReportParser ReportParser)
+		public async Task AddFileAsync(string FileName,ISyslogParser SyslogParser,IReportParser ReportParser, IProgress<long> Progress)
 		{
 			string? syslogLine;
 			string? reportLine;
 			Report? report;
+			long percent,oldPercent=-1;
 
 			if (FileName== null) throw new ArgumentNullException(nameof(FileName));
 			if (SyslogParser == null) throw new ArgumentNullException(nameof(SyslogParser));
 			if (ReportParser == null) throw new ArgumentNullException(nameof(ReportParser));
+			if (Progress == null) throw new ArgumentNullException(nameof(Progress));
 
 			using (FileStream stream = new FileStream(FileName, FileMode.Open))
 			{
@@ -53,12 +55,20 @@ namespace ODP.CoreLib
 				while (!reader.EndOfStream)
 				{
 					syslogLine = await reader.ReadLineAsync();
-					reportLine=SyslogParser.Parse(syslogLine);
+
+					percent = stream.Position * 100 / stream.Length;
+					if (percent > oldPercent)
+					{
+						oldPercent = percent;
+						Progress.Report(percent);
+					}
+					//await Task.Delay(10);
+
+					reportLine = SyslogParser.Parse(syslogLine);
 					if (reportLine == null) continue;
 
 					report=ReportParser.Parse(reportLine);
 					if (report == null) continue;
-
 					AddReport(report);
 				}
 

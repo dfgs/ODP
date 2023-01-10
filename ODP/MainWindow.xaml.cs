@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ViewModelLib;
 
 namespace ODP
 {
@@ -100,6 +101,7 @@ namespace ODP
 		private async void AddFileCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			OpenFileDialog dialog;
+			IProgress<long> fileProgress;
 
 			if (applicationViewModel.Projects.SelectedItem == null) return;
 
@@ -111,9 +113,11 @@ namespace ODP
 
 			if (dialog.ShowDialog(this)??false)
 			{
-				foreach (string fileName in dialog.FileNames)
+				await foreach (string fileName in dialog.FileNames.AsAsyncEnumerable())
 				{
-					await RunCommandAsync( applicationViewModel.Projects.SelectedItem.AddFileAsync(fileName));
+					fileProgress = new Progress<long>((percent) => progressBar.Value=percent);
+
+					await RunCommandAsync( applicationViewModel.Projects.SelectedItem.AddFileAsync(fileName,fileProgress));
 				}
 			}
 

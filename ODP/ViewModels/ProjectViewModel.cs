@@ -61,7 +61,7 @@ namespace ODP.ViewModels
 			await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(()=>new SessionViewModel(Logger)));
 		}
 
-		public async Task AddFileAsync(string FileName)
+		public async Task AddFileAsync(string FileName,IProgress<long> Progress)
 		{
 			ISyslogParser syslogParser;
 			IReportParser reportParser;
@@ -74,7 +74,7 @@ namespace ODP.ViewModels
 			syslogParser = new SyslogParser();
 			reportParser = new ReportParser(new DateTimeParser());
 
-			await TryAsync(() => Model.AddFileAsync(FileName,syslogParser,reportParser)).OrThrow($"Failed to read syslog file {FileName}");
+			await TryAsync(() => Model.AddFileAsync(FileName,syslogParser,reportParser,Progress)).OrThrow($"Failed to read syslog file {FileName}");
 			await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(() => new SessionViewModel(Logger)));
 			
 		}

@@ -10,7 +10,7 @@ namespace ODP.CoreLib
 {
 	public class SyslogParser : ISyslogParser
 	{
-		private static Regex CDRRegex = new Regex(@"[^|]+\|(?<CDR>.*)");
+		private static Regex CDRRegex = new Regex(@"[^]]+] +\|(?<CDR>(CALL|MEDIA|Call|Media).*)");
 
 		public string? Parse(string? Syslog)
 		{

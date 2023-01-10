@@ -33,7 +33,8 @@ namespace ODP.CoreLib
 				SBCReport sbcReport;
 				
 				parts = Line.Split('|');
-				if (parts.Length != 39) throw new InvalidDataException("Invalid SBC report format, please check SBC configuration");
+				if (parts.Length != 39) 
+					throw new InvalidDataException("Invalid SBC report format, please check SBC configuration");
 
 				sbcReport = new SBCReport();
 				sbcReport.SBCReportType = parts[0].Trim();
@@ -88,7 +89,8 @@ namespace ODP.CoreLib
 				MediaReport mediaReport;
 
 				parts = Line.Split('|');
-				if (parts.Length != 30) throw new InvalidDataException("Invalid media report format, please check SBC configuration");
+				if (parts.Length != 30) 
+					throw new InvalidDataException("Invalid media report format, please check SBC configuration");
 
 				mediaReport = new MediaReport();
 				mediaReport.MediaReportType = parts[0].Trim();
