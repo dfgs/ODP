@@ -183,6 +183,7 @@ namespace ODP.ViewModels
 			{
 				switch (Quality)
 				{
+					case ViewModels.Quality.NA: return new SolidColorBrush(Colors.Gray);
 					case ViewModels.Quality.Bad: return new SolidColorBrush(Colors.Red);
 					case ViewModels.Quality.Average: return new SolidColorBrush(Colors.Orange);
 					default: return new SolidColorBrush(Colors.Green);

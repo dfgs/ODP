@@ -21,28 +21,35 @@ namespace ODP.ViewModels
 
 		public static int MaxPacketLoss(this IEnumerable<CallViewModel> Calls)
 		{
-			return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.PacketLossPercent ?? 0).Max();
+			if (Calls.SelectMany(call => call.MediaReports).Any()) return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.PacketLossPercent ?? 0).Max();
+			else return 0;
 		}
 		public static int MaxDelay(this IEnumerable<CallViewModel> Calls)
 		{
-			return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPdelay ?? 0).Max();
+			if (Calls.SelectMany(call => call.MediaReports).Any()) return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPdelay ?? 0).Max();
+			else return 0;
 		}
 		public static int MaxJitter(this IEnumerable<CallViewModel> Calls)
 		{
-			return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPjitter ?? 0).Max();
+			if (Calls.SelectMany(call => call.MediaReports).Any()) return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPjitter ?? 0).Max();
+			else return 0;
 		}
 
 		public static double AvgPacketLoss(this IEnumerable<CallViewModel> Calls)
 		{
-			return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.PacketLossPercent ?? 0).Average();
+			if (Calls.SelectMany(call => call.MediaReports).Any()) return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.PacketLossPercent ?? 0).Average();
+			else return 0;
 		}
 		public static double AvgDelay(this IEnumerable<CallViewModel> Calls)
 		{
-			return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPdelay ?? 0).Average();
+			if (Calls.SelectMany(call => call.MediaReports).Any()) return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPdelay ?? 0).Average();
+			else return 0;
+
 		}
 		public static double AvgJitter(this IEnumerable<CallViewModel> Calls)
 		{
-			return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPjitter ?? 0).Average();
+			if (Calls.SelectMany(call => call.MediaReports).Any())  return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPjitter ?? 0).Average();
+			else return 0;
 		}
 
 

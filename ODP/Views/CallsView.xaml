@@ -11,6 +11,9 @@
 
 		<Style x:Key="bulletImageStyle" TargetType="{x:Type Image}">
 			<Style.Triggers>
+				<DataTrigger Binding="{Binding Quality}" Value="NA" >
+					<Setter Property="Source" Value="/Images/bullet_black.png"/>
+				</DataTrigger>
 				<DataTrigger Binding="{Binding Quality}" Value="Good" >
 					<Setter Property="Source" Value="/Images/bullet_green.png"/>
 				</DataTrigger>

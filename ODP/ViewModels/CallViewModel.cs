@@ -82,7 +82,12 @@ namespace ODP.ViewModels
 		[Browsable(true)]
 		public Quality Quality
 		{
-			get => MediaReports.Select(item => item.Quality).Min();
+			get
+			{
+				if (MediaReports.Any()) return MediaReports.Select(item => item.Quality).Min();
+				if (ConnectTime==null) return Quality.NA;
+				else return Quality.Bad;
+			}
 		}
 
 

@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace ODP.ViewModels
 {
-	public enum Quality	{ Bad,Average, Good };
+	public enum Quality	{ Bad,Average, Good,NA };
 }

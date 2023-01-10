@@ -26,8 +26,8 @@ namespace ODP.Views
 	public partial class ChartsView : UserControl
 	{
 		private static Quality[] Qualities = Enum.GetValues<Quality>();
-		private static string[] QualityLabels = new string[] { "Bad quality", "Average quality", "Good quality" };
-		private static System.Drawing.Color[] SliceColors = { System.Drawing.Color.Red, System.Drawing.Color.Orange, System.Drawing.Color.Green };
+		private static string[] QualityLabels = new string[] { "Bad quality", "Average quality", "Good quality", "NA" };
+		private static System.Drawing.Color[] SliceColors = { System.Drawing.Color.Red, System.Drawing.Color.Orange, System.Drawing.Color.Green, System.Drawing.Color.Gray };
 
 		public ChartsView()
 		{
