@@ -39,14 +39,17 @@
     
 	<DockPanel>
 		<StatusBar DockPanel.Dock="Bottom">
-			<TextBlock Text="{Binding Projects.SelectedItem.Name}"/>
-			<TextBlock Text="Task in progress...">
+			<TextBlock Text="{Binding Projects.SelectedItem.Name,FallbackValue=No project}"/>
+			<Separator/>
+			<TextBlock Text="{Binding Projects.SelectedItem.Sessions.Count,StringFormat='Number of sessions: {0}',FallbackValue=No session}"/>
+			<Separator/>
+			<TextBlock>
 				<TextBlock.Style>
 					<Style TargetType="{x:Type TextBlock}">
-						<Setter Property="Visibility" Value="Collapsed"/>
+						<Setter Property="Text" Value="Idle"/>
 						<Style.Triggers>
 							<DataTrigger Binding="{Binding ElementName=window,Path=TaskIsRunning}" Value="true">
-								<Setter Property="Visibility" Value="Visible"/>
+								<Setter Property="Text" Value="Task in progress..."/>
 							</DataTrigger>
 						</Style.Triggers>
 					</Style>

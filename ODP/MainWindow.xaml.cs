@@ -154,7 +154,7 @@ namespace ODP
 		private async void SaveAsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			if (applicationViewModel.Projects.SelectedItem == null) return;
-			await SaveProjectAsync();
+			await SaveProjectAsAsync();
 		}
 
 
