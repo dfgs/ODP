@@ -14,42 +14,81 @@ namespace ODP.ViewModels
 		{
 			return Qualities.GroupJoin(Items, quality => quality, item => item.Quality, (quality, item) => item);
 		}
-		public static IEnumerable<IEnumerable<CallViewModel>> GroupByInterface(this IEnumerable<CallViewModel> Items, IEnumerable<string> SIPInterfaces)
+		public static IEnumerable<IEnumerable<CallViewModel>> GroupByInterface(this IEnumerable<CallViewModel> Calls, IEnumerable<string> SIPInterfaces)
 		{
-			return SIPInterfaces.GroupJoin(Items, sipInterface => sipInterface, item => item.SIPInterfaceId, (sipInterface, item) => item);
+			return SIPInterfaces.GroupJoin(Calls, sipInterface => sipInterface, call => call.SIPInterfaceId, (sipInterface, call) => call);
 		}
+		public static IEnumerable<CallViewModel> WithAudio(this IEnumerable<CallViewModel> Calls)
+		{
+			return Calls.Where(call => call.ShouldHaveAudio && call.HasMediaReport);
+		}
+		public static IEnumerable<MediaReportViewModel> WithValidDelay(this IEnumerable<MediaReportViewModel> Reports)
+		{
+			return Reports.Where(report => report.HasValidDelay);
+		}
+		public static IEnumerable<MediaReportViewModel> WithValidjitter(this IEnumerable<MediaReportViewModel> Reports)
+		{
+			return Reports.Where(report => report.HasValidJitter);
+		}
+		public static IEnumerable<MediaReportViewModel> WithValidPacketLoss(this IEnumerable<MediaReportViewModel> Reports)
+		{
+			return Reports.Where(report => report.HasValidPacketLoss);
+		}
+
+		public static T MaxOrDefault<T>(this IEnumerable<T> Items, T DefaultValue)
+		{
+			if (Items.Any()) return Items.Max() ?? DefaultValue;
+			else return DefaultValue;
+		}
+		public static T MinOrDefault<T>(this IEnumerable<T> Items, T DefaultValue)
+		{
+			if (Items.Any()) return Items.Min() ?? DefaultValue;
+			else return DefaultValue;
+		}
+		public static double AverageOrDefault(this IEnumerable<double> Items, double DefaultValue)
+		{
+			if (Items.Any()) return Items.Average();
+			else return DefaultValue;
+		}
+
+		public static double AverageOrDefault(this IEnumerable<int> Items, double DefaultValue)
+		{
+			if (Items.Any()) return Items.Average();
+			else return DefaultValue;
+		}
+
+		public static double AverageOrDefault(this IEnumerable<long> Items, double DefaultValue)
+		{
+			if (Items.Any()) return Items.Average();
+			else return DefaultValue;
+		}
+
 
 		public static int MaxPacketLoss(this IEnumerable<CallViewModel> Calls)
 		{
-			if (Calls.SelectMany(call => call.MediaReports).Any()) return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.PacketLossPercent ?? 0).Max();
-			else return 0;
+			return Calls.WithAudio().SelectMany(call => call.MediaReports.WithValidPacketLoss()).Select(mediaReport => mediaReport.PacketLossPercent ?? 0).MaxOrDefault(0);
 		}
 		public static int MaxDelay(this IEnumerable<CallViewModel> Calls)
 		{
-			if (Calls.SelectMany(call => call.MediaReports).Any()) return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPdelay ?? 0).Max();
-			else return 0;
+			return Calls.WithAudio().SelectMany(call => call.MediaReports.WithValidDelay()).Select(mediaReport => mediaReport.RTPdelay ?? 0).MaxOrDefault(0);
 		}
 		public static int MaxJitter(this IEnumerable<CallViewModel> Calls)
 		{
-			if (Calls.SelectMany(call => call.MediaReports).Any()) return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPjitter ?? 0).Max();
-			else return 0;
+			return Calls.WithAudio().SelectMany(call => call.MediaReports.WithValidjitter()).Select(mediaReport => mediaReport.RTPjitter ?? 0).MaxOrDefault(0);
 		}
 
 		public static double AvgPacketLoss(this IEnumerable<CallViewModel> Calls)
 		{
-			if (Calls.SelectMany(call => call.MediaReports).Any()) return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.PacketLossPercent ?? 0).Average();
-			else return 0;
+			return Calls.WithAudio().SelectMany(call => call.MediaReports.WithValidPacketLoss()).Select(mediaReport => mediaReport.PacketLossPercent??0).AverageOrDefault(0);
 		}
 		public static double AvgDelay(this IEnumerable<CallViewModel> Calls)
 		{
-			if (Calls.SelectMany(call => call.MediaReports).Any()) return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPdelay ?? 0).Average();
-			else return 0;
+			return Calls.WithAudio().SelectMany(call => call.MediaReports.WithValidDelay()).Select(mediaReport => mediaReport.RTPdelay ?? 0).AverageOrDefault(0d);
 
 		}
 		public static double AvgJitter(this IEnumerable<CallViewModel> Calls)
 		{
-			if (Calls.SelectMany(call => call.MediaReports).Any())  return Calls.SelectMany(call => call.MediaReports).Select(mediaReport => mediaReport.RTPjitter ?? 0).Average();
-			else return 0;
+			return Calls.WithAudio().SelectMany(call => call.MediaReports.WithValidjitter()).Select(mediaReport => mediaReport.RTPjitter ?? 0d).AverageOrDefault(0d);
 		}
 
 

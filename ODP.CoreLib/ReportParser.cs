@@ -87,6 +87,7 @@ namespace ODP.CoreLib
 			if (Line.StartsWith("MEDIA_"))
 			{
 				MediaReport mediaReport;
+				string part;
 
 				parts = Line.Split('|');
 				if (parts.Length != 30) 
@@ -109,7 +110,12 @@ namespace ODP.CoreLib
 				mediaReport.LocalPackLoss = int.Parse(parts[13].Trim());
 				mediaReport.RemotePackLoss = int.Parse(parts[14].Trim());
 				mediaReport.RTPdelay = int.Parse(parts[15].Trim());
-				mediaReport.RTPjitter = int.Parse(parts[16].Trim());
+
+				// uint int conversion bug
+				part = parts[16].Trim();
+				if (part == "4294967295") mediaReport.RTPjitter = -1;
+				else mediaReport.RTPjitter = int.Parse(part);
+				
 				mediaReport.TxRTPssrc = parts[17].Trim();
 				mediaReport.RxRTPssrc = parts[18].Trim();
 				mediaReport.LocalRFactor = parts[19].Trim();

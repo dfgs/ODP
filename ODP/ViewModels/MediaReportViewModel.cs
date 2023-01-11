@@ -167,6 +167,20 @@ namespace ODP.ViewModels
 			}
 		}
 
+
+		public bool HasValidDelay
+		{
+			get => RTPdelay > -1;
+		}
+		public bool HasValidJitter
+		{
+			get => RTPjitter > -1;
+		}
+		public bool HasValidPacketLoss
+		{
+			get => LocalPackLoss > -1;
+		}
+
 		public Quality Quality
 		{
 			get

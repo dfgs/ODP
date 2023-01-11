@@ -84,12 +84,20 @@ namespace ODP.ViewModels
 		{
 			get
 			{
-				if (MediaReports.Any()) return MediaReports.Select(item => item.Quality).Min();
-				if (ConnectTime==null) return Quality.NA;
+				if (!ShouldHaveAudio) return Quality.NA;
+				if (HasMediaReport) return MediaReports.Select(item => item.Quality).Min();
 				else return Quality.Bad;
 			}
 		}
 
+		public bool ShouldHaveAudio
+		{
+			get { return ConnectTime.HasValue; }
+		}
+		public bool HasMediaReport
+		{
+			get { return MediaReports.Any(); }
+		}
 
 		public static readonly DependencyProperty SBCReportsProperty = DependencyProperty.Register("SBCReports", typeof(ViewModelCollection<SBCReportViewModel>), typeof(CallViewModel), new PropertyMetadata(null));
 		public ViewModelCollection<SBCReportViewModel> SBCReports

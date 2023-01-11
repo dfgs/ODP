@@ -63,11 +63,23 @@ namespace ODP.CoreLib
 						Progress.Report(percent);
 					}
 					//await Task.Delay(10);
-
-					reportLine = SyslogParser.Parse(syslogLine);
+					try
+					{
+						reportLine = SyslogParser.Parse(syslogLine);
+					}
+					catch(Exception ex)
+					{
+						throw new Exception($"Failed to parse syslog line: {syslogLine}",ex);
+					}
 					if (reportLine == null) continue;
-
-					report=ReportParser.Parse(reportLine);
+					try
+					{
+						report = ReportParser.Parse(reportLine);
+					}
+					catch(Exception ex)
+					{
+						throw new Exception($"Failed to parse report line: {reportLine}", ex);
+					}
 					if (report == null) continue;
 					AddReport(report);
 				}
