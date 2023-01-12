@@ -26,6 +26,16 @@ namespace ODP
 
 
 
+		public static readonly DependencyProperty SessionFoundProperty = DependencyProperty.Register("SessionFound", typeof(bool), typeof(FindWindow), new PropertyMetadata(true));
+		public bool SessionFound
+		{
+			get { return (bool)GetValue(SessionFoundProperty); }
+			set { SetValue(SessionFoundProperty, value); }
+		}
+
+
+
+
 
 		public static readonly DependencyProperty SearchCriteriaProperty = DependencyProperty.Register("SearchCriteria", typeof(SearchCriteriaViewModel), typeof(FindWindow), new PropertyMetadata(null));
 		public SearchCriteriaViewModel SearchCriteria
@@ -89,7 +99,7 @@ namespace ODP
 			if (ApplicationViewModel?.Projects.SelectedItem == null) return;
 			try
 			{
-				ApplicationViewModel.Projects.SelectedItem.FindPrevious(SearchCriteria.Value, SearchValue);
+				SessionFound=ApplicationViewModel.Projects.SelectedItem.FindPrevious(SearchCriteria.Value, SearchValue);
 			}
 			catch (Exception ex)
 			{
@@ -105,8 +115,8 @@ namespace ODP
 		{
 			if (ApplicationViewModel?.Projects.SelectedItem == null) return;
 			try
-			{ 
-				ApplicationViewModel.Projects.SelectedItem.FindNext(SearchCriteria.Value, SearchValue);
+			{
+				SessionFound = ApplicationViewModel.Projects.SelectedItem.FindNext(SearchCriteria.Value, SearchValue);
 			}
 			catch(Exception ex)
 			{

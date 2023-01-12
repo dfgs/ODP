@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ODP.Views"
              mc:Ignorable="d" x:Name="view"
              d:DesignHeight="450" d:DesignWidth="800">
-	<DataGrid AutoGenerateColumns="false" ItemsSource="{Binding ElementName=view,Path=Properties}">
+	<DataGrid AutoGenerateColumns="false" IsReadOnly="True" ItemsSource="{Binding ElementName=view,Path=Properties}">
 		<DataGrid.Columns >
 			<DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" MinWidth="200" />
 			<DataGridTextColumn Header="Value" Binding="{Binding Path=Value}" MinWidth="250" />

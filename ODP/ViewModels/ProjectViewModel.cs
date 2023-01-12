@@ -98,7 +98,7 @@ namespace ODP.ViewModels
 			RunningTask = null;
 		}
 
-		public void FindNext(SearchCriteria Criteria,string Value)
+		public bool FindNext(SearchCriteria Criteria,string Value)
 		{
 			int index;
 
@@ -110,12 +110,13 @@ namespace ODP.ViewModels
 				if (Sessions[t].Match(Criteria,Value))
 				{
 					Sessions.SelectedItem= Sessions[t];
-					return;
+					return true;
 				}
 			}
 
+			return false;
 		}
-		public void FindPrevious(SearchCriteria Criteria, string Value)
+		public bool FindPrevious(SearchCriteria Criteria, string Value)
 		{
 			int index;
 
@@ -127,10 +128,10 @@ namespace ODP.ViewModels
 				if (Sessions[t].Match(Criteria, Value))
 				{
 					Sessions.SelectedItem = Sessions[t];
-					return;
+					return true;
 				}
 			}
-
+			return false;
 		}
 
 		public async Task SaveAsync(string Path)

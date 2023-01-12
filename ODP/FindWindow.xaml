@@ -26,11 +26,24 @@
 
 		<TextBlock Text="Value:" FontWeight="Bold"/>
 		<TextBox Margin="5" Text="{Binding ElementName=findWindow,Path=SearchValue,UpdateSourceTrigger=PropertyChanged}"/>
-		
+
+		<TextBlock Margin="5" Text="No more session found" Foreground="Red" FontWeight="Bold">
+			<TextBlock.Style>
+				<Style TargetType="{x:Type TextBlock}">
+					<Setter Property="Visibility" Value="Collapsed"/>
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding ElementName=findWindow,Path=SessionFound}" Value="false">
+							<Setter Property="Visibility" Value="Visible"/>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</TextBlock.Style>
+		</TextBlock>
+
 		<UniformGrid Columns="3" >
 			<Button Content="Find previous" Margin="5" Command="{x:Static root:RoutedCommands.FindPrevious}"/>
 			<Button Content="Find next" Margin="5" Command="{x:Static root:RoutedCommands.FindNext}"/>
-			<Button Content="OK" Margin="5" Command="{x:Static root:RoutedCommands.OK}"/>
+			<Button Content="Close" Margin="5" Command="{x:Static root:RoutedCommands.OK}"/>
 		</UniformGrid>
 	</StackPanel>
 	
