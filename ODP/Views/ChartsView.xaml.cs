@@ -28,7 +28,7 @@ namespace ODP.Views
 		private static Quality[] Qualities = Enum.GetValues<Quality>();
 		private static string[] QualityLabels = new string[] { "Bad quality", "Average quality", "Good quality", "NA" };
 		private static System.Drawing.Color[] SliceColors = { System.Drawing.Color.Red, System.Drawing.Color.Orange, System.Drawing.Color.Green, System.Drawing.Color.Gray };
-		private static double chartScale = 0.7;
+		//private static double chartScale = 0.7;
 
 		public ChartsView()
 		{
@@ -123,7 +123,7 @@ namespace ODP.Views
 			}
 
 			WpfPlot.Refresh();
-			WpfPlot.Plot.AxisAuto(chartScale,chartScale);
+			//WpfPlot.Plot.AxisAuto(chartScale,chartScale);
 		}
 		private void RefreshWpfPlotMaxDelayByInterface(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
 		{
@@ -151,7 +151,7 @@ namespace ODP.Views
 			}
 
 			WpfPlot.Refresh();
-			WpfPlot.Plot.AxisAuto(chartScale, chartScale);
+			//WpfPlot.Plot.AxisAuto(chartScale, chartScale);
 		}
 		private void RefreshWpfPlotMaxJitterByInterface(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
 		{
@@ -178,7 +178,7 @@ namespace ODP.Views
 			}
 
 			WpfPlot.Refresh();
-			WpfPlot.Plot.AxisAuto(chartScale, chartScale);
+			//WpfPlot.Plot.AxisAuto(chartScale, chartScale);
 		}
 		private void RefreshWpfPlotAvgPacketLossByInterface(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
 		{
@@ -205,7 +205,7 @@ namespace ODP.Views
 			}
 
 			WpfPlot.Refresh();
-			WpfPlot.Plot.AxisAuto(chartScale, chartScale);
+			//WpfPlot.Plot.AxisAuto(chartScale, chartScale);
 		}
 		private void RefreshWpfPlotAvgDelayByInterface(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
 		{
@@ -233,7 +233,7 @@ namespace ODP.Views
 			}
 
 			WpfPlot.Refresh();
-			WpfPlot.Plot.AxisAuto(chartScale, chartScale);
+			//WpfPlot.Plot.AxisAuto(chartScale, chartScale);
 		}
 		private void RefreshWpfPlotAvgJitterByInterface(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
 		{
@@ -261,15 +261,15 @@ namespace ODP.Views
 			}
 
 			WpfPlot.Refresh();
-			WpfPlot.Plot.AxisAuto(chartScale, chartScale);
+			//WpfPlot.Plot.AxisAuto(chartScale, chartScale);
 		}
 
 
 		private void RefreshCharts()
 		{
 			ProjectViewModel? project;
-
 			project = DataContext as ProjectViewModel;
+			  
 			if (project == null) return;
 
 			RefreshWpfPlotMediaReportCountByQuality(WpfPlotMediaReportCountByQuality, project.Sessions);

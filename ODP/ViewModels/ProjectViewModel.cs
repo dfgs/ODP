@@ -23,8 +23,13 @@ namespace ODP.ViewModels
 			set { SetValue(NameProperty, value); }
 		}
 
-		
 
+		public static readonly DependencyProperty RunningTaskProperty = DependencyProperty.Register("RunningTask", typeof(string), typeof(ProjectViewModel), new PropertyMetadata(null));
+		public string? RunningTask
+		{
+			get { return (string?)GetValue(RunningTaskProperty); }
+			set { SetValue(RunningTaskProperty, value); }
+		}
 
 		public static readonly DependencyProperty PathProperty = DependencyProperty.Register("Path", typeof(string), typeof(ProjectViewModel), new PropertyMetadata(null));
 		public string Path
@@ -71,6 +76,7 @@ namespace ODP.ViewModels
 		{
 			ISyslogParser syslogParser;
 			IReportParser reportParser;
+			int index,count;
 
 			if (Model == null) throw new InvalidOperationException("Model is not loaded");
 
@@ -79,13 +85,17 @@ namespace ODP.ViewModels
 			syslogParser = new SyslogParser();
 			reportParser = new ReportParser(new DateTimeParser());
 
+			index = 1;count = FileNames.Count();
 			await foreach(string fileName in FileNames.AsAsyncEnumerable())
 			{
+				RunningTask = $"Loading file ({index}/{count})...";
 				await TryAsync(() => Model.AddFileAsync(fileName,syslogParser,reportParser,Progress)).OrThrow($"Failed to read syslog file {fileName}");
-				await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(() => new SessionViewModel(Logger)));
+				index++;
 			}
+			RunningTask = "Creating items...";
+			await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(() => new SessionViewModel(Logger)));
 			OnSessionsChanged();
-
+			RunningTask = null;
 		}
 
 		public void FindNext(SearchCriteria Criteria,string Value)

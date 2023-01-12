@@ -36,6 +36,7 @@
     <None Remove="Images\server_delete.png" />
     <None Remove="Images\sound.png" />
     <None Remove="Images\sound_none.png" />
+    <None Remove="Images\tag_blue.png" />
     <None Remove="Images\textfield_add.png" />
     <None Remove="Images\textfield_delete.png" />
     <None Remove="Images\textfield_rename.png" />
@@ -72,6 +73,7 @@
     <Resource Include="Images\server_delete.png" />
     <Resource Include="Images\sound.png" />
     <Resource Include="Images\sound_none.png" />
+    <Resource Include="Images\tag_blue.png" />
     <Resource Include="Images\textfield_add.png" />
     <Resource Include="Images\textfield_delete.png" />
     <Resource Include="Images\textfield_rename.png" />
