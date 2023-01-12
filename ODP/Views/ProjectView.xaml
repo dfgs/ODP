@@ -11,7 +11,7 @@
 			<views:SessionsView DataContext="{Binding Sessions}"/>
 		</TabItem>
 		<TabItem Header="Charts">
-			<views:ChartsView DataContext="{Binding Sessions}"/>
+			<views:ChartsView />
 		</TabItem>
 	</TabControl>
 	

@@ -113,12 +113,8 @@ namespace ODP
 
 			if (dialog.ShowDialog(this)??false)
 			{
-				await foreach (string fileName in dialog.FileNames.AsAsyncEnumerable())
-				{
-					fileProgress = new Progress<long>((percent) => progressBar.Value=percent);
-
-					await RunCommandAsync( applicationViewModel.Projects.SelectedItem.AddFileAsync(fileName,fileProgress));
-				}
+				fileProgress = new Progress<long>((percent) => progressBar.Value = percent);
+				await RunCommandAsync( applicationViewModel.Projects.SelectedItem.AddFilesAsync(dialog.FileNames, fileProgress));
 			}
 
 

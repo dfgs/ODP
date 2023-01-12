@@ -97,9 +97,6 @@ namespace ODP.Views
 
 			WpfPlot.Refresh();
 		}
-	
-		
-		
 		private void RefreshWpfPlotMaxPacketLossByInterface(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
 		{
 			CallViewModel[] calls = Sessions.Calls().ToArray();
@@ -270,42 +267,44 @@ namespace ODP.Views
 
 		private void RefreshCharts()
 		{
-			ViewModelCollection<SessionViewModel>? sessions;
+			ProjectViewModel? project;
 
-			sessions = DataContext as ViewModelCollection<SessionViewModel>;
-			if (sessions == null) return;
+			project = DataContext as ProjectViewModel;
+			if (project == null) return;
 
-			RefreshWpfPlotMediaReportCountByQuality(WpfPlotMediaReportCountByQuality, sessions);
-			RefreshWpfPlotCallsCountByInterface(WpfPlotCallsCountByInterface, sessions);
-			RefreshWpfPlotMaxPacketLossByInterface(WpfPlotMaxPacketLossByInterface, sessions);
-			RefreshWpfPlotMaxDelayByInterface(WpfPlotMaxDelayByInterface, sessions);
-			RefreshWpfPlotMaxJitterByInterface(WpfPlotMaxJitterByInterface, sessions);
-			RefreshWpfPlotAvgPacketLossByInterface(WpfPlotAvgPacketLossByInterface, sessions);
-			RefreshWpfPlotAvgDelayByInterface(WpfPlotAvgDelayByInterface, sessions);
-			RefreshWpfPlotAvgJitterByInterface(WpfPlotAvgJitterByInterface, sessions);
+			RefreshWpfPlotMediaReportCountByQuality(WpfPlotMediaReportCountByQuality, project.Sessions);
+			RefreshWpfPlotCallsCountByInterface(WpfPlotCallsCountByInterface, project.Sessions);
+			RefreshWpfPlotMaxPacketLossByInterface(WpfPlotMaxPacketLossByInterface, project.Sessions);
+			RefreshWpfPlotMaxDelayByInterface(WpfPlotMaxDelayByInterface, project.Sessions);
+			RefreshWpfPlotMaxJitterByInterface(WpfPlotMaxJitterByInterface, project.Sessions);
+			RefreshWpfPlotAvgPacketLossByInterface(WpfPlotAvgPacketLossByInterface, project.Sessions);
+			RefreshWpfPlotAvgDelayByInterface(WpfPlotAvgDelayByInterface, project.Sessions);
+			RefreshWpfPlotAvgJitterByInterface(WpfPlotAvgJitterByInterface, project.Sessions);
 		}
 
 
 
 		private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			ViewModelCollection<SessionViewModel>? sessions;
+			ProjectViewModel? project;
 
-			sessions = e.OldValue as ViewModelCollection<SessionViewModel>;
-			if (sessions != null) sessions.CollectionChanged -= Sessions_CollectionChanged;
-			sessions = e.NewValue as ViewModelCollection<SessionViewModel>;
-			if (sessions == null) return;
-			
-			sessions.CollectionChanged += Sessions_CollectionChanged;
+			project = e.OldValue as ProjectViewModel;
+			if (project != null) project.SessionsChanged -= Project_SessionsChanged;
+			project = e.NewValue as ProjectViewModel;
+			if (project == null) return;
+
+			project.SessionsChanged += Project_SessionsChanged;
 			RefreshCharts();
 
 
 		}
 
-		private void Sessions_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		private void Project_SessionsChanged(object? sender, EventArgs e)
 		{
 			RefreshCharts();
 		}
+
+		
 
 
 

@@ -3,6 +3,7 @@ using Microsoft.Windows.Themes;
 using ODP.CoreLib;
 using System;
 using System.Collections.Generic;
+using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace ODP.ViewModels
 {
 	public class ProjectViewModel:ViewModel<Project>
 	{
-
+		public event EventHandler? SessionsChanged;
 
 		public static readonly DependencyProperty NameProperty = DependencyProperty.Register("Name", typeof(string), typeof(ProjectViewModel), new PropertyMetadata("New project"));
 		public string Name
@@ -46,9 +47,13 @@ namespace ODP.ViewModels
 		public ProjectViewModel(ILogger Logger) : base(Logger)
 		{
 			Sessions = new ViewModelCollection<SessionViewModel>(Logger);
+			OnSessionsChanged();
 		}
 
-		
+		protected void OnSessionsChanged()
+		{
+			SessionsChanged?.Invoke(this,EventArgs.Empty);
+		}
 
 
 		protected override async Task OnLoadedAsync()
@@ -59,24 +64,28 @@ namespace ODP.ViewModels
 				return;
 			}
 			await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(()=>new SessionViewModel(Logger)));
+			OnSessionsChanged();
 		}
 
-		public async Task AddFileAsync(string FileName,IProgress<long> Progress)
+		public async Task AddFilesAsync(IEnumerable<string> FileNames,IProgress<long> Progress)
 		{
 			ISyslogParser syslogParser;
 			IReportParser reportParser;
 
 			if (Model == null) throw new InvalidOperationException("Model is not loaded");
 
-			//this.Path = FileName;
-			//this.Name = System.IO.Path.GetFileNameWithoutExtension(FileName);
+			
 
 			syslogParser = new SyslogParser();
 			reportParser = new ReportParser(new DateTimeParser());
 
-			await TryAsync(() => Model.AddFileAsync(FileName,syslogParser,reportParser,Progress)).OrThrow($"Failed to read syslog file {FileName}");
-			await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(() => new SessionViewModel(Logger)));
-			
+			await foreach(string fileName in FileNames.AsAsyncEnumerable())
+			{
+				await TryAsync(() => Model.AddFileAsync(fileName,syslogParser,reportParser,Progress)).OrThrow($"Failed to read syslog file {fileName}");
+				await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(() => new SessionViewModel(Logger)));
+			}
+			OnSessionsChanged();
+
 		}
 
 		public void FindNext(SearchCriteria Criteria,string Value)
