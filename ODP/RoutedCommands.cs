@@ -14,7 +14,8 @@ namespace ODP
 		public static RoutedCommand OK = new RoutedCommand();
 		public static RoutedCommand Cancel = new RoutedCommand();
 		public static RoutedCommand AddFilter = new RoutedCommand();
-		public static RoutedCommand RemoveFilter = new RoutedCommand();
+		public static RoutedCommand EditFilter = new RoutedCommand();
+		public static RoutedCommand DeleteFilter = new RoutedCommand();
 		public static RoutedCommand Find = new RoutedCommand();
 		public static RoutedCommand FindPrevious = new RoutedCommand();
 		public static RoutedCommand FindNext = new RoutedCommand();

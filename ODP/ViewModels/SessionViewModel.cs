@@ -74,15 +74,15 @@ namespace ODP.ViewModels
 			await Calls.LoadAsync(await Model.Calls.ToViewModelsAsync(() => new CallViewModel(Logger)));
 
 		}
-		public bool Match(SearchCriteria Criteria, string Value)
+		public bool Match(MatchProperty Criteria, string Value)
 		{
 			switch(Criteria)
 			{
-				case SearchCriteria.SessionID: return SessionID?.Contains(Value) ?? false;
-				case SearchCriteria.CallID: return Calls.FirstOrDefault(call=>call.SIPCallID?.Contains(Value)??false)!=null;
-				case SearchCriteria.SrcURI:return SrcURI?.Contains(Value) ?? false;
-				case SearchCriteria.DstURI:return DstURI?.Contains(Value) ?? false;
-				case SearchCriteria.Quality:return Quality.ToString().Contains(Value);
+				case MatchProperty.SessionID: return SessionID?.Contains(Value) ?? false;
+				case MatchProperty.CallID: return Calls.FirstOrDefault(call=>call.SIPCallID?.Contains(Value)??false)!=null;
+				case MatchProperty.SrcURI:return SrcURI?.Contains(Value) ?? false;
+				case MatchProperty.DstURI:return DstURI?.Contains(Value) ?? false;
+				case MatchProperty.Quality:return Quality.ToString().Contains(Value);
 				default: return false;
 			}
 		}

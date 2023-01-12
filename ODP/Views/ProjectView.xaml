@@ -8,7 +8,10 @@
              d:DesignHeight="450" d:DesignWidth="800">
 	<TabControl>
 		<TabItem Header="Sessions">
-			<views:SessionsView DataContext="{Binding Sessions}"/>
+			<DockPanel>
+				<views:FiltersView DockPanel.Dock="Top" MinHeight="16" DataContext="{Binding Filters}"/>
+				<views:SessionsView DataContext="{Binding Sessions}"/>
+			</DockPanel>
 		</TabItem>
 		<TabItem Header="Charts">
 			<views:ChartsView />

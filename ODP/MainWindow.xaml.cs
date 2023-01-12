@@ -222,6 +222,73 @@ namespace ODP
 		}
 
 
+		private void AddFilterCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.Handled = true; e.CanExecute = (applicationViewModel.Projects.SelectedItem != null) && (!TaskIsRunning);
+		}
+
+		private void AddFilterCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			FilterWindow dialog;
+			FilterViewModel? filter;
+
+			if (applicationViewModel.Projects.SelectedItem == null) return;
+
+			filter = new FilterViewModel() { MatchProperty = Consts.MatchProperties.First(), MatchOperator = Consts.MatchOperators.First() };
+
+			dialog = new FilterWindow();
+			dialog.Owner = this;
+			dialog.Filter = filter;
+
+			if (dialog.ShowDialog()??false)
+			{
+				applicationViewModel.Projects.SelectedItem.Filters.Add(filter);
+			}
+		}
+
+		private void EditFilterCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.Handled = true; e.CanExecute = (applicationViewModel.Projects?.SelectedItem?.Filters?.SelectedItem != null) && (!TaskIsRunning);
+		}
+
+		private void EditFilterCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			FilterWindow dialog;
+			FilterViewModel? selectedFilter,filter;
+
+			selectedFilter = applicationViewModel.Projects.SelectedItem?.Filters.SelectedItem;
+			if (selectedFilter == null) return;
+
+			filter = new FilterViewModel() { MatchProperty =selectedFilter.MatchProperty,MatchOperator=selectedFilter.MatchOperator,Value=selectedFilter.Value };
+
+			dialog = new FilterWindow();
+			dialog.Owner = this;
+			dialog.Filter = filter;
+
+			if (dialog.ShowDialog() ?? false)
+			{
+				selectedFilter.MatchProperty = filter.MatchProperty;
+				selectedFilter.MatchOperator = filter.MatchOperator;
+				selectedFilter.Value= filter.Value;
+			}
+		}
+		private void DeleteFilterCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.Handled = true; e.CanExecute = (applicationViewModel.Projects?.SelectedItem?.Filters?.SelectedItem != null) && (!TaskIsRunning);
+		}
+
+		private void DeleteFilterCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			FilterViewModel? selectedFilter;
+
+			if (applicationViewModel.Projects.SelectedItem==null) return;
+			
+			selectedFilter = applicationViewModel.Projects.SelectedItem.Filters.SelectedItem;
+			if (selectedFilter == null) return;
+
+			applicationViewModel.Projects.SelectedItem.Filters.Remove(selectedFilter);
+
+		}
 
 	}
 }

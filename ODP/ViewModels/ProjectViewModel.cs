@@ -47,11 +47,18 @@ namespace ODP.ViewModels
 		}
 
 
+		public static readonly DependencyProperty FiltersProperty = DependencyProperty.Register("Filters", typeof(ViewModelCollection<FilterViewModel>), typeof(ProjectViewModel), new PropertyMetadata(null));
+		public ViewModelCollection<FilterViewModel> Filters
+		{
+			get { return (ViewModelCollection<FilterViewModel>)GetValue(FiltersProperty); }
+			set { SetValue(FiltersProperty, value); }
+		}
 
 
 		public ProjectViewModel(ILogger Logger) : base(Logger)
 		{
 			Sessions = new ViewModelCollection<SessionViewModel>(Logger);
+			Filters = new ViewModelCollection<FilterViewModel>(Logger);
 			OnSessionsChanged();
 		}
 
@@ -98,7 +105,7 @@ namespace ODP.ViewModels
 			RunningTask = null;
 		}
 
-		public bool FindNext(SearchCriteria Criteria,string Value)
+		public bool FindNext(MatchProperty Criteria,string Value)
 		{
 			int index;
 
@@ -116,7 +123,7 @@ namespace ODP.ViewModels
 
 			return false;
 		}
-		public bool FindPrevious(SearchCriteria Criteria, string Value)
+		public bool FindPrevious(MatchProperty Criteria, string Value)
 		{
 			int index;
 

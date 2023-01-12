@@ -22,7 +22,6 @@ namespace ODP
 	/// </summary>
 	public partial class FindWindow : Window
 	{
-		public static readonly List<SearchCriteriaViewModel> SearchCriterias;
 
 
 
@@ -37,11 +36,11 @@ namespace ODP
 
 
 
-		public static readonly DependencyProperty SearchCriteriaProperty = DependencyProperty.Register("SearchCriteria", typeof(SearchCriteriaViewModel), typeof(FindWindow), new PropertyMetadata(null));
-		public SearchCriteriaViewModel SearchCriteria
+		public static readonly DependencyProperty MatchPropertyProperty = DependencyProperty.Register("MatchProperty", typeof(MatchPropertyViewModel), typeof(FindWindow), new PropertyMetadata(null));
+		public MatchPropertyViewModel MatchProperty
 		{
-			get { return (SearchCriteriaViewModel)GetValue(SearchCriteriaProperty); }
-			set { SetValue(SearchCriteriaProperty, value); }
+			get { return (MatchPropertyViewModel)GetValue(MatchPropertyProperty); }
+			set { SetValue(MatchPropertyProperty, value); }
 		}
 
 
@@ -60,19 +59,10 @@ namespace ODP
 			set; 
 		}
 
-		static FindWindow()
-		{
-			SearchCriterias = new List<SearchCriteriaViewModel>();
-			SearchCriterias.Add(new SearchCriteriaViewModel() { Value = ViewModels.SearchCriteria.SessionID, Name = "Session ID" });
-			SearchCriterias.Add(new SearchCriteriaViewModel() { Value = ViewModels.SearchCriteria.CallID, Name = "Call ID" });
-			SearchCriterias.Add(new SearchCriteriaViewModel() { Value = ViewModels.SearchCriteria.SrcURI, Name = "Source URI" });
-			SearchCriterias.Add(new SearchCriteriaViewModel() { Value = ViewModels.SearchCriteria.DstURI, Name = "Destination URI" });
-			SearchCriterias.Add(new SearchCriteriaViewModel() { Value = ViewModels.SearchCriteria.Quality, Name = "Quality" });
-		}
-
+		
 		public FindWindow()
 		{
-			SearchCriteria = SearchCriterias.First();
+			MatchProperty = Consts.MatchProperties.First();
 			InitializeComponent();
 		}
 		private void ShowError(Exception ex)
@@ -91,7 +81,7 @@ namespace ODP
 
 		private void FindPreviousCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.Handled = true; e.CanExecute =(ApplicationViewModel?.Projects.SelectedItem!=null) && (SearchCriteria!=null) && (!string.IsNullOrEmpty(SearchValue));
+			e.Handled = true; e.CanExecute =(ApplicationViewModel?.Projects.SelectedItem!=null) && (MatchProperty!=null) && (!string.IsNullOrEmpty(SearchValue));
 		}
 
 		private void FindPreviousCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -99,7 +89,7 @@ namespace ODP
 			if (ApplicationViewModel?.Projects.SelectedItem == null) return;
 			try
 			{
-				SessionFound=ApplicationViewModel.Projects.SelectedItem.FindPrevious(SearchCriteria.Value, SearchValue);
+				SessionFound=ApplicationViewModel.Projects.SelectedItem.FindPrevious(MatchProperty.Value, SearchValue);
 			}
 			catch (Exception ex)
 			{
@@ -108,7 +98,7 @@ namespace ODP
 		}
 		private void FindNextCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
-			e.Handled = true; e.CanExecute = (ApplicationViewModel?.Projects.SelectedItem != null) && (SearchCriteria != null) && (!string.IsNullOrEmpty(SearchValue));
+			e.Handled = true; e.CanExecute = (ApplicationViewModel?.Projects.SelectedItem != null) && (MatchProperty != null) && (!string.IsNullOrEmpty(SearchValue));
 		}
 
 		private void FindNextCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -116,7 +106,7 @@ namespace ODP
 			if (ApplicationViewModel?.Projects.SelectedItem == null) return;
 			try
 			{
-				SessionFound = ApplicationViewModel.Projects.SelectedItem.FindNext(SearchCriteria.Value, SearchValue);
+				SessionFound = ApplicationViewModel.Projects.SelectedItem.FindNext(MatchProperty.Value, SearchValue);
 			}
 			catch(Exception ex)
 			{

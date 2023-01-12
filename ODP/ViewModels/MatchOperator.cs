@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace ODP.ViewModels
 {
-	public enum SearchCriteria { SessionID , CallID, SrcURI ,DstURI, Quality }
+	public enum MatchOperator { Contains,EqualTo, DifferentThan,LowerThan,GreaterThan,LowerOrEqualThan,GreaterOrEqualThan };
 }
