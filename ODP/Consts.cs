@@ -21,8 +21,10 @@ namespace ODP
 			MatchProperties.Add(new MatchPropertyViewModel() { Value = ViewModels.MatchProperty.SrcURI, Name = "Source URI" });
 			MatchProperties.Add(new MatchPropertyViewModel() { Value = ViewModels.MatchProperty.DstURI, Name = "Destination URI" });
 			MatchProperties.Add(new MatchPropertyViewModel() { Value = ViewModels.MatchProperty.Quality, Name = "Quality" });
+			MatchProperties.Add(new MatchPropertyViewModel() { Value = ViewModels.MatchProperty.IPGroup, Name = "IP group" });
+			MatchProperties.Add(new MatchPropertyViewModel() { Value = ViewModels.MatchProperty.SIPInterface, Name = "SIP interface" });
 
-			MatchOperators= new List<MatchOperatorViewModel>();
+			MatchOperators = new List<MatchOperatorViewModel>();
 			MatchOperators.Add(new MatchOperatorViewModel() { Value = ViewModels.MatchOperator.Contains, Name = "≈" });
 			MatchOperators.Add(new MatchOperatorViewModel() { Value = ViewModels.MatchOperator.EqualTo, Name = "=" });
 			MatchOperators.Add(new MatchOperatorViewModel() { Value = ViewModels.MatchOperator.DifferentThan, Name = "≠" });

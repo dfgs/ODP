@@ -46,7 +46,7 @@
 		<StatusBar DockPanel.Dock="Bottom">
 			<TextBlock Text="{Binding Projects.SelectedItem.Name,FallbackValue=No project}"/>
 			<Separator/>
-			<TextBlock Text="{Binding Projects.SelectedItem.Sessions.Count,StringFormat='Number of sessions: {0}',FallbackValue=No session}"/>
+			<TextBlock Text="{Binding Projects.SelectedItem.FilteredSessions.Count,StringFormat='Number of sessions: {0}',FallbackValue=No session}"/>
 			<Separator/>
 			<TextBlock>
 				<TextBlock.Style>

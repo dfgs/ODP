@@ -46,6 +46,13 @@ namespace ODP.ViewModels
 			set { SetValue(SessionsProperty, value); }
 		}
 
+		public static readonly DependencyProperty FilteredSessionsProperty = DependencyProperty.Register("FilteredSessions", typeof(ViewModelCollection<SessionViewModel>), typeof(ProjectViewModel), new PropertyMetadata(null));
+		public ViewModelCollection<SessionViewModel> FilteredSessions
+		{
+			get { return (ViewModelCollection<SessionViewModel>)GetValue(FilteredSessionsProperty); }
+			set { SetValue(FilteredSessionsProperty, value); }
+		}
+
 
 		public static readonly DependencyProperty FiltersProperty = DependencyProperty.Register("Filters", typeof(ViewModelCollection<FilterViewModel>), typeof(ProjectViewModel), new PropertyMetadata(null));
 		public ViewModelCollection<FilterViewModel> Filters
@@ -58,6 +65,7 @@ namespace ODP.ViewModels
 		public ProjectViewModel(ILogger Logger) : base(Logger)
 		{
 			Sessions = new ViewModelCollection<SessionViewModel>(Logger);
+			FilteredSessions = new ViewModelCollection<SessionViewModel>(Logger);
 			Filters = new ViewModelCollection<FilterViewModel>(Logger);
 			OnSessionsChanged();
 		}
@@ -77,6 +85,34 @@ namespace ODP.ViewModels
 			}
 			await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(()=>new SessionViewModel(Logger)));
 			OnSessionsChanged();
+			await RefreshSessionsAsync();
+		}
+
+		public async Task RefreshSessionsAsync()
+		{
+			await FilteredSessions.LoadAsync( Sessions.Where(session => session.Match(Filters)) );
+		}
+
+		public async Task AddFilterAsync(FilterViewModel Filter)
+		{
+			if (Filter == null) throw new ArgumentNullException(nameof(Filter));
+			Filters.Add(Filter);
+			await RefreshSessionsAsync();
+		}
+		public async Task DeleteFilterAsync(FilterViewModel Filter)
+		{
+			if (Filter == null) throw new ArgumentNullException(nameof(Filter));
+			Filters.Remove(Filter);
+			await RefreshSessionsAsync();
+		}
+		public async Task EditFilterAsync(FilterViewModel Filter,FilterViewModel TargetFilter)
+		{
+			if (Filter == null) throw new ArgumentNullException(nameof(Filter));
+			if (TargetFilter == null) throw new ArgumentNullException(nameof(TargetFilter));
+			Filter.MatchProperty = TargetFilter.MatchProperty;
+			Filter.MatchOperator = TargetFilter.MatchOperator;
+			Filter.Value = TargetFilter.Value;
+			await RefreshSessionsAsync();
 		}
 
 		public async Task AddFilesAsync(IEnumerable<string> FileNames,IProgress<long> Progress)
@@ -102,6 +138,7 @@ namespace ODP.ViewModels
 			RunningTask = "Creating items...";
 			await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(() => new SessionViewModel(Logger)));
 			OnSessionsChanged();
+			await RefreshSessionsAsync();
 			RunningTask = null;
 		}
 
@@ -109,14 +146,14 @@ namespace ODP.ViewModels
 		{
 			int index;
 
-			if (Sessions.SelectedItem == null) index = -1;
-			else index = Sessions.IndexOf(Sessions.SelectedItem);
+			if (FilteredSessions.SelectedItem == null) index = -1;
+			else index = FilteredSessions.IndexOf(FilteredSessions.SelectedItem);
 			
-			for(int t=index+1;t<Sessions.Count;t++)
+			for(int t=index+1;t<FilteredSessions.Count;t++)
 			{
-				if (Sessions[t].Match(Criteria,Value))
+				if (FilteredSessions[t].Match(Criteria,Value))
 				{
-					Sessions.SelectedItem= Sessions[t];
+					FilteredSessions.SelectedItem= FilteredSessions[t];
 					return true;
 				}
 			}
@@ -127,14 +164,14 @@ namespace ODP.ViewModels
 		{
 			int index;
 
-			if (Sessions.SelectedItem == null) index = Sessions.Count;
-			else index = Sessions.IndexOf(Sessions.SelectedItem);
+			if (FilteredSessions.SelectedItem == null) index = FilteredSessions.Count;
+			else index = FilteredSessions.IndexOf(FilteredSessions.SelectedItem);
 
 			for (int t = index - 1; t >= 0; t--)
 			{
-				if (Sessions[t].Match(Criteria, Value))
+				if (FilteredSessions[t].Match(Criteria, Value))
 				{
-					Sessions.SelectedItem = Sessions[t];
+					FilteredSessions.SelectedItem = FilteredSessions[t];
 					return true;
 				}
 			}

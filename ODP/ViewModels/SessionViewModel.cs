@@ -67,26 +67,32 @@ namespace ODP.ViewModels
 		{
 			if (Model==null)
 			{
+				Calls.SelectedItem= null;
 				Calls.Clear();
 				return;
 			}
 
 			await Calls.LoadAsync(await Model.Calls.ToViewModelsAsync(() => new CallViewModel(Logger)));
-
+			Calls.SelectedItem = Calls.FirstOrDefault();
 		}
-		public bool Match(MatchProperty Criteria, string Value)
+		public bool Match(MatchProperty Property, string Value)
 		{
-			switch(Criteria)
+			switch(Property)
 			{
 				case MatchProperty.SessionID: return SessionID?.Contains(Value) ?? false;
 				case MatchProperty.CallID: return Calls.FirstOrDefault(call=>call.SIPCallID?.Contains(Value)??false)!=null;
 				case MatchProperty.SrcURI:return SrcURI?.Contains(Value) ?? false;
 				case MatchProperty.DstURI:return DstURI?.Contains(Value) ?? false;
-				case MatchProperty.Quality:return Quality.ToString().Contains(Value);
+				case MatchProperty.Quality: return Quality.ToString().Contains(Value);
+				case MatchProperty.IPGroup: return Calls.FirstOrDefault(call => call.IPGroup?.Contains(Value) ?? false) != null;
+				case MatchProperty.SIPInterface: return Calls.FirstOrDefault(call => call.SIPInterfaceId?.Contains(Value) ?? false) != null;
 				default: return false;
 			}
 		}
-
+		public bool Match(IEnumerable<FilterViewModel> Filters)
+		{
+			return Filters.All(filter=>filter.Match(this));
+		}
 
 
 	}

@@ -124,6 +124,7 @@ namespace ODP.ViewModels
 		{
 			if (Model==null)
 			{
+				MediaReports.SelectedItem = null;				
 				SBCReports.Clear();
 				MediaReports.Clear();
 				return;
@@ -131,6 +132,7 @@ namespace ODP.ViewModels
 
 			await SBCReports.LoadAsync(await Model.SBCReports.ToViewModelsAsync(() => new SBCReportViewModel(Logger)));
 			await MediaReports.LoadAsync(await Model.MediaReports.ToViewModelsAsync(() => new MediaReportViewModel(Logger)));
+			MediaReports.SelectedItem = MediaReports.FirstOrDefault();
 
 		}
 

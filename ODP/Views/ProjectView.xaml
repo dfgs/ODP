@@ -10,7 +10,7 @@
 		<TabItem Header="Sessions">
 			<DockPanel>
 				<views:FiltersView DockPanel.Dock="Top" MinHeight="16" DataContext="{Binding Filters}"/>
-				<views:SessionsView DataContext="{Binding Sessions}"/>
+				<views:SessionsView DataContext="{Binding FilteredSessions}"/>
 			</DockPanel>
 		</TabItem>
 		<TabItem Header="Charts">

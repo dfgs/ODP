@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace ODP.ViewModels
 {
-	public enum MatchProperty { SessionID , CallID, SrcURI ,DstURI, Quality }
+	public enum MatchProperty { SessionID , CallID, SrcURI ,DstURI, Quality,IPGroup,SIPInterface }
 }
