@@ -18,7 +18,11 @@
     <None Remove="Images\bullet_orange.png" />
     <None Remove="Images\bullet_pink.png" />
     <None Remove="Images\bullet_red.png" />
+    <None Remove="Images\bullet_toggle_minus.png" />
+    <None Remove="Images\bullet_toggle_plus.png" />
     <None Remove="Images\bullet_yellow.png" />
+    <None Remove="Images\Check_All.png" />
+    <None Remove="Images\Check_None.png" />
     <None Remove="Images\cross.png" />
     <None Remove="Images\disk.png" />
     <None Remove="Images\disk_multiple.png" />
@@ -58,7 +62,11 @@
     <Resource Include="Images\bullet_orange.png" />
     <Resource Include="Images\bullet_pink.png" />
     <Resource Include="Images\bullet_red.png" />
+    <Resource Include="Images\bullet_toggle_minus.png" />
+    <Resource Include="Images\bullet_toggle_plus.png" />
     <Resource Include="Images\bullet_yellow.png" />
+    <Resource Include="Images\Check_All.png" />
+    <Resource Include="Images\Check_None.png" />
     <Resource Include="Images\cross.png" />
     <Resource Include="Images\disk.png" />
     <Resource Include="Images\disk_multiple.png" />

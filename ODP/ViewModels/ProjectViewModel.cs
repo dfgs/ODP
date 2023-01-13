@@ -103,24 +103,20 @@ namespace ODP.ViewModels
 
 		public async Task RefreshFiltersAsync()
 		{
-			string?[] ipGroups,sipInterfaces;
 
-			ipGroups = Sessions.SelectMany(session => session.Calls).Select(call => call.IPGroup).Distinct().ToArray();
-			foreach(string? ipGroup in ipGroups)
+			await foreach(string? ipGroup in Sessions.SelectMany(session => session.Calls).Select(call => call.IPGroup).Distinct().AsAsyncEnumerable())
 			{
 				if (ipGroup == null) continue;
 				if (GlobalFilter.IPGroupFilters.Select(filter=>filter.Name).Contains(ipGroup)) continue;
 				GlobalFilter.IPGroupFilters.Add(new IPGroupFilterViewModel(Logger) { Name=ipGroup });
 			}
 
-			sipInterfaces = Sessions.SelectMany(session => session.Calls).Select(call => call.SIPInterfaceId).Distinct().ToArray();
-			foreach (string? sipInterface in sipInterfaces)
+			await foreach (string? sipInterface in Sessions.SelectMany(session => session.Calls).Select(call => call.SIPInterfaceId).Distinct().AsAsyncEnumerable())
 			{
 				if (sipInterface == null) continue;
 				if (GlobalFilter.SIPInterfaceFilters.Select(filter => filter.Name).Contains(sipInterface)) continue;
 				GlobalFilter.SIPInterfaceFilters.Add(new SIPInterfaceFilterViewModel(Logger) { Name = sipInterface });
 			}
-			await Task.Yield();
 
 		}
 

@@ -14,20 +14,60 @@
 				<TextBlock Text="{Binding Name}"/>
 			</CheckBox>
 		</DataTemplate>
+		<ControlTemplate x:Key="buttonTemplate" TargetType="{x:Type Button}">
+			<ContentPresenter Content="{TemplateBinding Content}"/>
+		</ControlTemplate>
     </UserControl.Resources>
+
+
     <DockPanel>
 		<Button DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" Margin="5" Padding="5" Content="Apply" Command="{x:Static root:RoutedCommands.ApplyFilter}"/>
 		<ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
 			<StackPanel>
-				<Expander Header="Quality" IsExpanded="True">
-					<ItemsControl ItemsSource="{Binding QualityFilters}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
+				<Expander  IsExpanded="True" DataContext="{Binding QualityFilters}">
+					<Expander.Header>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Quality" VerticalAlignment="Center"/>
+							<Button ToolTip="Select all" VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding SelectAllCommand}" Template="{StaticResource buttonTemplate}">
+								<Image Source="/Images/Check_All.png" Stretch="None" />
+							</Button>
+							<Button ToolTip="Select None" VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding SelectNoneCommand}" Template="{StaticResource buttonTemplate}">
+								<Image Source="/Images/Check_None.png" Stretch="None" />
+							</Button>
+						</StackPanel>
+					</Expander.Header>
+					<ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
 				</Expander>
-				<Expander Header="IP Groups" IsExpanded="True">
-					<ItemsControl ItemsSource="{Binding IPGroupFilters}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
+				<Expander  IsExpanded="True" DataContext="{Binding IPGroupFilters}">
+					<Expander.Header>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="IP Group" VerticalAlignment="Center"/>
+							<Button ToolTip="Select all" VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding SelectAllCommand}" Template="{StaticResource buttonTemplate}">
+								<Image Source="/Images/Check_All.png" Stretch="None" />
+							</Button>
+							<Button ToolTip="Select None" VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding SelectNoneCommand}" Template="{StaticResource buttonTemplate}">
+								<Image Source="/Images/Check_None.png" Stretch="None" />
+							</Button>
+						</StackPanel>
+					</Expander.Header>
+					<ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
 				</Expander>
-				<Expander Header="SIP Interfaces" IsExpanded="True">
-					<ItemsControl ItemsSource="{Binding SIPInterfaceFilters}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
+
+				<Expander  IsExpanded="True" DataContext="{Binding SIPInterfaceFilters}">
+					<Expander.Header>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="SIP Interface" VerticalAlignment="Center"/>
+							<Button ToolTip="Select all" VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding SelectAllCommand}" Template="{StaticResource buttonTemplate}">
+								<Image Source="/Images/Check_All.png" Stretch="None" />
+							</Button>
+							<Button ToolTip="Select None" VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding SelectNoneCommand}" Template="{StaticResource buttonTemplate}">
+								<Image Source="/Images/Check_None.png" Stretch="None" />
+							</Button>
+						</StackPanel>
+					</Expander.Header>
+					<ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
 				</Expander>
+
 			</StackPanel>
 		</ScrollViewer>
 	</DockPanel>

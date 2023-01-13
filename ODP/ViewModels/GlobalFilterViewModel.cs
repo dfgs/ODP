@@ -14,38 +14,43 @@ namespace ODP.ViewModels
 
 
 
-		public static readonly DependencyProperty QualityFiltersProperty = DependencyProperty.Register("QualityFilters", typeof(ViewModelCollection<QualityFilterViewModel>), typeof(GlobalFilterViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<QualityFilterViewModel> QualityFilters
+		public static readonly DependencyProperty QualityFiltersProperty = DependencyProperty.Register("QualityFilters", typeof(FilterViewModelCollection<QualityFilterViewModel>), typeof(GlobalFilterViewModel), new PropertyMetadata(null));
+		public FilterViewModelCollection<QualityFilterViewModel> QualityFilters
 		{
-			get { return (ViewModelCollection<QualityFilterViewModel>)GetValue(QualityFiltersProperty); }
+			get { return (FilterViewModelCollection<QualityFilterViewModel>)GetValue(QualityFiltersProperty); }
 			set { SetValue(QualityFiltersProperty, value); }
 		}
-		public static readonly DependencyProperty IPGroupFiltersProperty = DependencyProperty.Register("IPGroupFilters", typeof(IPGroupFiltersViewModel), typeof(GlobalFilterViewModel), new PropertyMetadata(null));
-		public IPGroupFiltersViewModel IPGroupFilters
+		public static readonly DependencyProperty IPGroupFiltersProperty = DependencyProperty.Register("IPGroupFilters", typeof(FilterViewModelCollection<IPGroupFilterViewModel>), typeof(GlobalFilterViewModel), new PropertyMetadata(null));
+		public FilterViewModelCollection<IPGroupFilterViewModel> IPGroupFilters
 		{
-			get { return (IPGroupFiltersViewModel)GetValue(IPGroupFiltersProperty); }
+			get { return (FilterViewModelCollection<IPGroupFilterViewModel>)GetValue(IPGroupFiltersProperty); }
 			set { SetValue(IPGroupFiltersProperty, value); }
 		}
-		public static readonly DependencyProperty SIPInterfaceFiltersProperty = DependencyProperty.Register("SIPInterfaceFilters", typeof(SIPInterfaceFiltersViewModel), typeof(GlobalFilterViewModel), new PropertyMetadata(null));
-		public SIPInterfaceFiltersViewModel SIPInterfaceFilters
+		public static readonly DependencyProperty SIPInterfaceFiltersProperty = DependencyProperty.Register("SIPInterfaceFilters", typeof(FilterViewModelCollection<SIPInterfaceFilterViewModel>), typeof(GlobalFilterViewModel), new PropertyMetadata(null));
+		public FilterViewModelCollection<SIPInterfaceFilterViewModel> SIPInterfaceFilters
 		{
-			get { return (SIPInterfaceFiltersViewModel)GetValue(SIPInterfaceFiltersProperty); }
+			get { return (FilterViewModelCollection<SIPInterfaceFilterViewModel>)GetValue(SIPInterfaceFiltersProperty); }
 			set { SetValue(SIPInterfaceFiltersProperty, value); }
 		}
 
 
 
 
+
+
+
+
+
 		public GlobalFilterViewModel(ILogger Logger) : base(Logger)
 		{
-			QualityFilters = new ViewModelCollection<QualityFilterViewModel>(Logger);
+			QualityFilters = new FilterViewModelCollection<QualityFilterViewModel>(Logger);
 			QualityFilters.Add(new QualityFilterViewModel(Logger) { Quality = Quality.Bad, Name = "Bad quality" });
 			QualityFilters.Add(new QualityFilterViewModel(Logger) { Quality = Quality.Average, Name = "Average quality" });
 			QualityFilters.Add(new QualityFilterViewModel(Logger) { Quality = Quality.Good, Name = "Good quality" });
 			QualityFilters.Add(new QualityFilterViewModel(Logger) { Quality = Quality.NA, Name = "Not applicable" });
 
-			IPGroupFilters = new IPGroupFiltersViewModel(Logger);
-			SIPInterfaceFilters = new SIPInterfaceFiltersViewModel(Logger);
+			IPGroupFilters = new FilterViewModelCollection<IPGroupFilterViewModel>(Logger);
+			SIPInterfaceFilters = new FilterViewModelCollection<SIPInterfaceFilterViewModel>(Logger);
 		}
 
 		public bool Match(SessionViewModel Session)
