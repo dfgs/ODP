@@ -34,7 +34,12 @@ namespace ODP.ViewModels
 		}
 
 
-
+		public static readonly DependencyProperty DelayFiltersProperty = DependencyProperty.Register("DelayFilters", typeof(FilterViewModelCollection<DelayFilterViewModel>), typeof(GlobalFilterViewModel), new PropertyMetadata(null));
+		public FilterViewModelCollection<DelayFilterViewModel> DelayFilters
+		{
+			get { return (FilterViewModelCollection<DelayFilterViewModel>)GetValue(DelayFiltersProperty); }
+			set { SetValue(DelayFiltersProperty, value); }
+		}
 
 
 
@@ -48,6 +53,12 @@ namespace ODP.ViewModels
 			QualityFilters.Add(new QualityFilterViewModel(Logger) { Quality = Quality.Average, Name = "Average quality" });
 			QualityFilters.Add(new QualityFilterViewModel(Logger) { Quality = Quality.Good, Name = "Good quality" });
 			QualityFilters.Add(new QualityFilterViewModel(Logger) { Quality = Quality.NA, Name = "Not applicable" });
+
+			DelayFilters = new FilterViewModelCollection<DelayFilterViewModel>(Logger);
+			DelayFilters.Add(new DelayFilterViewModel(Logger) { MinValue = int.MinValue, MaxValue = int.MaxValue, Name= "Any delay" });
+			DelayFilters.Add(new DelayFilterViewModel(Logger) { MinValue = 150, MaxValue = int.MaxValue, Name="Above 150 ms",IsSelected=false });
+			DelayFilters.Add(new DelayFilterViewModel(Logger) { MinValue = 250, MaxValue = int.MaxValue, Name = "Above 250 ms", IsSelected = false });
+			DelayFilters.Add(new DelayFilterViewModel(Logger) { MinValue = 350, MaxValue = int.MaxValue, Name = "Above 350 ms", IsSelected = false });
 
 			IPGroupFilters = new FilterViewModelCollection<IPGroupFilterViewModel>(Logger);
 			SIPInterfaceFilters = new FilterViewModelCollection<SIPInterfaceFilterViewModel>(Logger);
