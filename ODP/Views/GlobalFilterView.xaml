@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="ODP.Views.GlobalFilterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views="clr-namespace:ODP.Views"
+             xmlns:root="clr-namespace:ODP"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="400">
+
+	<UserControl.Resources>
+		<DataTemplate x:Key="filterTemplate">
+			<CheckBox IsChecked="{Binding IsSelected}">
+				<TextBlock Text="{Binding Name}"/>
+			</CheckBox>
+		</DataTemplate>
+    </UserControl.Resources>
+    <DockPanel>
+		<Button DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" Margin="5" Padding="5" Content="Apply" Command="{x:Static root:RoutedCommands.ApplyFilter}"/>
+		<ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+			<StackPanel>
+				<Expander Header="Quality" IsExpanded="True">
+					<ItemsControl ItemsSource="{Binding QualityFilters}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
+				</Expander>
+				<Expander Header="IP Groups" IsExpanded="True">
+					<ItemsControl ItemsSource="{Binding IPGroupFilters}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
+				</Expander>
+				<Expander Header="SIP Interfaces" IsExpanded="True">
+					<ItemsControl ItemsSource="{Binding SIPInterfaceFilters}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
+				</Expander>
+			</StackPanel>
+		</ScrollViewer>
+	</DockPanel>
+</UserControl>

@@ -20,5 +20,6 @@ namespace ODP
 		public static RoutedCommand FindPrevious = new RoutedCommand();
 		public static RoutedCommand FindNext = new RoutedCommand();
 		public static RoutedCommand Help = new RoutedCommand();
+		public static RoutedCommand ApplyFilter = new RoutedCommand();
 	}
 }

@@ -8,13 +8,19 @@
              d:DesignHeight="450" d:DesignWidth="800">
 	<TabControl>
 		<TabItem Header="Sessions">
-			<DockPanel>
-				<views:FiltersView DockPanel.Dock="Top" MinHeight="16" DataContext="{Binding Filters}"/>
-				<views:SessionsView DataContext="{Binding FilteredSessions}"/>
-			</DockPanel>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="200"/>
+					<ColumnDefinition Width="5"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<views:GlobalFilterView Grid.Column="0" DataContext="{Binding GlobalFilter}"/>
+				<GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+				<views:SessionsView Grid.Column="2" DataContext="{Binding FilteredSessions}"/>
+			</Grid>
 		</TabItem>
 		<TabItem Header="Charts">
-			<views:ChartsView />
+			<views:ChartsView  />
 		</TabItem>
 	</TabControl>
 	

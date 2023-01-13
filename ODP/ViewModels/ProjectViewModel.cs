@@ -55,18 +55,30 @@ namespace ODP.ViewModels
 
 
 		public static readonly DependencyProperty FiltersProperty = DependencyProperty.Register("Filters", typeof(ViewModelCollection<FilterViewModel>), typeof(ProjectViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<FilterViewModel> Filters
+		public ViewModelCollection<FilterViewModel> session
 		{
 			get { return (ViewModelCollection<FilterViewModel>)GetValue(FiltersProperty); }
 			set { SetValue(FiltersProperty, value); }
 		}
 
 
+
+		public static readonly DependencyProperty GlobalFilterProperty = DependencyProperty.Register("GlobalFilter", typeof(GlobalFilterViewModel), typeof(ProjectViewModel), new PropertyMetadata(null));
+		public GlobalFilterViewModel GlobalFilter
+		{
+			get { return (GlobalFilterViewModel)GetValue(GlobalFilterProperty); }
+			set { SetValue(GlobalFilterProperty, value); }
+		}
+
+
+
+
 		public ProjectViewModel(ILogger Logger) : base(Logger)
 		{
 			Sessions = new ViewModelCollection<SessionViewModel>(Logger);
 			FilteredSessions = new ViewModelCollection<SessionViewModel>(Logger);
-			Filters = new ViewModelCollection<FilterViewModel>(Logger);
+			session = new ViewModelCollection<FilterViewModel>(Logger);
+			GlobalFilter = new GlobalFilterViewModel(Logger);
 			OnSessionsChanged();
 		}
 
@@ -85,24 +97,49 @@ namespace ODP.ViewModels
 			}
 			await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(()=>new SessionViewModel(Logger)));
 			OnSessionsChanged();
+			await RefreshFiltersAsync();
 			await RefreshSessionsAsync();
 		}
 
+		public async Task RefreshFiltersAsync()
+		{
+			string?[] ipGroups,sipInterfaces;
+
+			ipGroups = Sessions.SelectMany(session => session.Calls).Select(call => call.IPGroup).Distinct().ToArray();
+			foreach(string? ipGroup in ipGroups)
+			{
+				if (ipGroup == null) continue;
+				if (GlobalFilter.IPGroupFilters.Select(filter=>filter.Name).Contains(ipGroup)) continue;
+				GlobalFilter.IPGroupFilters.Add(new IPGroupFilterViewModel(Logger) { Name=ipGroup });
+			}
+
+			sipInterfaces = Sessions.SelectMany(session => session.Calls).Select(call => call.SIPInterfaceId).Distinct().ToArray();
+			foreach (string? sipInterface in sipInterfaces)
+			{
+				if (sipInterface == null) continue;
+				if (GlobalFilter.SIPInterfaceFilters.Select(filter => filter.Name).Contains(sipInterface)) continue;
+				GlobalFilter.SIPInterfaceFilters.Add(new SIPInterfaceFilterViewModel(Logger) { Name = sipInterface });
+			}
+			await Task.Yield();
+
+		}
+
+
 		public async Task RefreshSessionsAsync()
 		{
-			await FilteredSessions.LoadAsync( Sessions.Where(session => session.Match(Filters)) );
+			await FilteredSessions.LoadAsync( Sessions.Where(session => GlobalFilter.Match(session)) );
 		}
 
 		public async Task AddFilterAsync(FilterViewModel Filter)
 		{
 			if (Filter == null) throw new ArgumentNullException(nameof(Filter));
-			Filters.Add(Filter);
+			session.Add(Filter);
 			await RefreshSessionsAsync();
 		}
 		public async Task DeleteFilterAsync(FilterViewModel Filter)
 		{
 			if (Filter == null) throw new ArgumentNullException(nameof(Filter));
-			Filters.Remove(Filter);
+			session.Remove(Filter);
 			await RefreshSessionsAsync();
 		}
 		public async Task EditFilterAsync(FilterViewModel Filter,FilterViewModel TargetFilter)
@@ -138,6 +175,7 @@ namespace ODP.ViewModels
 			RunningTask = "Creating items...";
 			await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(() => new SessionViewModel(Logger)));
 			OnSessionsChanged();
+			await RefreshFiltersAsync();
 			await RefreshSessionsAsync();
 			RunningTask = null;
 		}
