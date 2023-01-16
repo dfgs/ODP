@@ -49,7 +49,7 @@ namespace ODP.CoreLib
 			if (ReportParser == null) throw new ArgumentNullException(nameof(ReportParser));
 			if (Progress == null) throw new ArgumentNullException(nameof(Progress));
 
-			using (FileStream stream = new FileStream(FileName, FileMode.Open))
+			using (FileStream stream = new FileStream(FileName, FileMode.Open,FileAccess.Read,FileShare.ReadWrite))
 			{
 				StreamReader reader= new StreamReader(stream);
 				while (!reader.EndOfStream)

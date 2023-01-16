@@ -93,6 +93,7 @@ namespace ODP.Views
 				WpfPlot.Plot.Legend(location: Alignment.UpperRight);
 				// adjust axis limits so there is no padding below the bar graph
 				WpfPlot.Plot.SetAxisLimits(yMin: 0);
+				WpfPlot.Plot.XAxis.TickLabelStyle(null,null,null,null,45);
 			}
 
 			WpfPlot.Refresh();
@@ -103,22 +104,20 @@ namespace ODP.Views
 			string[] sipInterfaces = calls.SIPInterfaces().ToArray();
 
 			double[] values = sipInterfaces.GroupJoin(calls, sipInterface => sipInterface, item => item.SIPInterfaceId, (sipInterface, item) => (double)item.MaxPacketLoss()).ToArray();
-				
+			double[] positions = Enumerable.Range(1, sipInterfaces.Length).Select(i=>(double)i).ToArray();
 
 
 			WpfPlot.Plot.Clear();
-			WpfPlot.Plot.Title("Max packet loss by interface");
+			WpfPlot.Plot.Title("Max packet loss by interface (%)");
 			WpfPlot.Plot.Palette = ScottPlot.Palette.Nord;
 
 			if (sipInterfaces.Length > 0)
 			{
-				// add the grouped bar plots and show a legend
-				var gauge = WpfPlot.Plot.AddRadialGauge(values);
-				gauge.CircularBackground = false;
-				gauge.MaximumAngle = 180;
-				gauge.StartingAngle = 180;
-
-				gauge.Labels = sipInterfaces;
+				var bar = WpfPlot.Plot.AddBar(values,positions);
+				bar.ShowValuesAboveBars = true;
+				bar.ValueFormatter= value => ((int)value).ToString();
+				WpfPlot.Plot.XTicks(positions, sipInterfaces);
+				WpfPlot.Plot.XAxis.TickLabelStyle(null, null, null, null, 45);
 				WpfPlot.Plot.Legend(location: Alignment.UpperRight);
 			}
 
@@ -131,22 +130,21 @@ namespace ODP.Views
 			string[] sipInterfaces = calls.SIPInterfaces().ToArray();
 
 			double[] values = sipInterfaces.GroupJoin(calls, sipInterface => sipInterface, item => item.SIPInterfaceId, (sipInterface, item) => (double)item.MaxDelay()).ToArray();
+			double[] positions = Enumerable.Range(1, sipInterfaces.Length).Select(i => (double)i).ToArray();
 
 
 
 			WpfPlot.Plot.Clear();
-			WpfPlot.Plot.Title("Max delay by interface");
+			WpfPlot.Plot.Title("Max delay by interface (ms)");
 			WpfPlot.Plot.Palette = ScottPlot.Palette.Nord;
 
 			if (sipInterfaces.Length > 0)
 			{
-				// add the grouped bar plots and show a legend
-				var gauge = WpfPlot.Plot.AddRadialGauge(values);
-				gauge.CircularBackground = false;
-				gauge.MaximumAngle = 180;
-				gauge.StartingAngle = 180;
-
-				gauge.Labels = sipInterfaces;
+				var bar = WpfPlot.Plot.AddBar(values, positions);
+				bar.ShowValuesAboveBars = true;
+				bar.ValueFormatter = value => ((int)value).ToString();
+				WpfPlot.Plot.XTicks(positions, sipInterfaces);
+				WpfPlot.Plot.XAxis.TickLabelStyle(null, null, null, null, 45);
 				WpfPlot.Plot.Legend(location: Alignment.UpperRight);
 			}
 
@@ -159,21 +157,20 @@ namespace ODP.Views
 			string[] sipInterfaces = calls.SIPInterfaces().ToArray();
 
 			double[] values = sipInterfaces.GroupJoin(calls, sipInterface => sipInterface, item => item.SIPInterfaceId, (sipInterface, item) => (double)item.MaxJitter()).ToArray();
+			double[] positions = Enumerable.Range(1, sipInterfaces.Length).Select(i => (double)i).ToArray();
 
 
 			WpfPlot.Plot.Clear();
-			WpfPlot.Plot.Title("Max jitter by interface");
+			WpfPlot.Plot.Title("Max jitter by interface (ms)");
 			WpfPlot.Plot.Palette = ScottPlot.Palette.Nord;
 
 			if (sipInterfaces.Length > 0)
 			{
-				// add the grouped bar plots and show a legend
-				var gauge = WpfPlot.Plot.AddRadialGauge(values);
-				gauge.CircularBackground = false;
-				gauge.MaximumAngle = 180;
-				gauge.StartingAngle = 180;
-
-				gauge.Labels = sipInterfaces;
+				var bar = WpfPlot.Plot.AddBar(values, positions);
+				bar.ShowValuesAboveBars = true;
+				bar.ValueFormatter = value => ((int)value).ToString();
+				WpfPlot.Plot.XTicks(positions, sipInterfaces);
+				WpfPlot.Plot.XAxis.TickLabelStyle(null, null, null, null, 45);
 				WpfPlot.Plot.Legend(location: Alignment.UpperRight);
 			}
 
@@ -186,21 +183,20 @@ namespace ODP.Views
 			string[] sipInterfaces = calls.SIPInterfaces().ToArray();
 
 			double[] values = sipInterfaces.GroupJoin(calls, sipInterface => sipInterface, item => item.SIPInterfaceId, (sipInterface, item) => item.AvgPacketLoss()).ToArray();
+			double[] positions = Enumerable.Range(1, sipInterfaces.Length).Select(i => (double)i).ToArray();
 
 			WpfPlot.Plot.Clear();
-			WpfPlot.Plot.Title("Avg packet loss by interface");
+			WpfPlot.Plot.Title("Avg packet loss by interface (%)");
 			WpfPlot.Plot.Palette = ScottPlot.Palette.Nord;
 
 
 			if (sipInterfaces.Length > 0)
 			{
-				// add the grouped bar plots and show a legend
-				var gauge = WpfPlot.Plot.AddRadialGauge(values);
-				gauge.CircularBackground = false;
-				gauge.MaximumAngle = 180;
-				gauge.StartingAngle = 180;
-
-				gauge.Labels = sipInterfaces;
+				var bar = WpfPlot.Plot.AddBar(values, positions);
+				bar.ShowValuesAboveBars = true;
+				bar.ValueFormatter = value => ((int)value).ToString();
+				WpfPlot.Plot.XTicks(positions, sipInterfaces);
+				WpfPlot.Plot.XAxis.TickLabelStyle(null, null, null, null, 45);
 				WpfPlot.Plot.Legend(location: Alignment.UpperRight);
 			}
 
@@ -213,22 +209,21 @@ namespace ODP.Views
 			string[] sipInterfaces = calls.SIPInterfaces().ToArray();
 
 			double[] values = sipInterfaces.GroupJoin(calls, sipInterface => sipInterface, item => item.SIPInterfaceId, (sipInterface, item) => item.AvgDelay()).ToArray();
+			double[] positions = Enumerable.Range(1, sipInterfaces.Length).Select(i => (double)i).ToArray();
 
 
 
 			WpfPlot.Plot.Clear();
-			WpfPlot.Plot.Title("Avg delay by interface");
+			WpfPlot.Plot.Title("Avg delay by interface (ms)");
 			WpfPlot.Plot.Palette = ScottPlot.Palette.Nord;
 
 			if (sipInterfaces.Length > 0)
 			{
-				// add the grouped bar plots and show a legend
-				var gauge = WpfPlot.Plot.AddRadialGauge(values);
-				gauge.CircularBackground = false;
-				gauge.MaximumAngle = 180;
-				gauge.StartingAngle = 180;
-
-				gauge.Labels = sipInterfaces;
+				var bar = WpfPlot.Plot.AddBar(values, positions);
+				bar.ShowValuesAboveBars = true;
+				bar.ValueFormatter = value => ((int)value).ToString();
+				WpfPlot.Plot.XTicks(positions, sipInterfaces);
+				WpfPlot.Plot.XAxis.TickLabelStyle(null, null, null, null, 45);
 				WpfPlot.Plot.Legend(location: Alignment.UpperRight);
 			}
 
@@ -241,22 +236,21 @@ namespace ODP.Views
 			string[] sipInterfaces = calls.SIPInterfaces().ToArray();
 
 			double[] values = sipInterfaces.GroupJoin(calls, sipInterface => sipInterface, item => item.SIPInterfaceId, (sipInterface, item) => item.AvgJitter()).ToArray();
+			double[] positions = Enumerable.Range(1, sipInterfaces.Length).Select(i => (double)i).ToArray();
 
 
 
 			WpfPlot.Plot.Clear();
-			WpfPlot.Plot.Title("Avg jitter by interface");
+			WpfPlot.Plot.Title("Avg jitter by interface (ms)");
 			WpfPlot.Plot.Palette = ScottPlot.Palette.Nord;
 
 			if (sipInterfaces.Length > 0)
 			{
-				// add the grouped bar plots and show a legend
-				var gauge = WpfPlot.Plot.AddRadialGauge(values);
-				gauge.CircularBackground = false;
-				gauge.MaximumAngle = 180;
-				gauge.StartingAngle = 180;
-
-				gauge.Labels = sipInterfaces;
+				var bar = WpfPlot.Plot.AddBar(values, positions);
+				bar.ShowValuesAboveBars = true;
+				bar.ValueFormatter = value => ((int)value).ToString();
+				WpfPlot.Plot.XTicks(positions, sipInterfaces);
+				WpfPlot.Plot.XAxis.TickLabelStyle(null, null, null, null, 45);
 				WpfPlot.Plot.Legend(location: Alignment.UpperRight);
 			}
 
