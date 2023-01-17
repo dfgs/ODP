@@ -120,7 +120,7 @@ namespace ODP.ViewModels
 		}
 
 
-		protected override async Task OnLoadedAsync()
+		protected override void OnLoaded()
 		{
 			if (Model==null)
 			{
@@ -130,8 +130,8 @@ namespace ODP.ViewModels
 				return;
 			}
 
-			await SBCReports.LoadAsync(await Model.SBCReports.ToViewModelsAsync(() => new SBCReportViewModel(Logger)));
-			await MediaReports.LoadAsync(await Model.MediaReports.ToViewModelsAsync(() => new MediaReportViewModel(Logger)));
+			SBCReports.Load(Model.SBCReports.ToViewModels(() => new SBCReportViewModel(Logger)));
+			MediaReports.Load(Model.MediaReports.ToViewModels(() => new MediaReportViewModel(Logger)));
 			MediaReports.SelectedItem = MediaReports.FirstOrDefault();
 
 		}

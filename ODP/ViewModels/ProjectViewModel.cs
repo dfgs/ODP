@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Packaging;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,6 +16,8 @@ namespace ODP.ViewModels
 	public class ProjectViewModel:ViewModel<Project>
 	{
 		public event EventHandler? SessionsChanged;
+
+		private List<string> loadedFiles;
 
 		public static readonly DependencyProperty NameProperty = DependencyProperty.Register("Name", typeof(string), typeof(ProjectViewModel), new PropertyMetadata("New project"));
 		public string Name
@@ -75,6 +78,8 @@ namespace ODP.ViewModels
 
 		public ProjectViewModel(ILogger Logger) : base(Logger)
 		{
+
+			loadedFiles = new List<string>();
 			Sessions = new ViewModelCollection<SessionViewModel>(Logger);
 			FilteredSessions = new ViewModelCollection<SessionViewModel>(Logger);
 			session = new ViewModelCollection<FilterViewModel>(Logger);
@@ -88,30 +93,30 @@ namespace ODP.ViewModels
 		}
 
 
-		protected override async Task OnLoadedAsync()
+		protected override void OnLoaded()
 		{
 			if (Model == null)
 			{
 				Sessions.Clear();
 				return;
 			}
-			await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(()=>new SessionViewModel(Logger)));
+			Sessions.Load( Model.Sessions.ToViewModels(()=>new SessionViewModel(Logger)));
 			OnSessionsChanged();
-			await RefreshFiltersAsync();
-			await RefreshSessionsAsync();
+			RefreshFilters();
+			RefreshSessions();
 		}
 
-		public async Task RefreshFiltersAsync()
+		public void RefreshFilters()
 		{
 
-			await foreach(string? ipGroup in Sessions.SelectMany(session => session.Calls).Select(call => call.IPGroup).Distinct().AsAsyncEnumerable())
+			foreach(string? ipGroup in Sessions.SelectMany(session => session.Calls).Select(call => call.IPGroup).Distinct())
 			{
 				if (ipGroup == null) continue;
 				if (GlobalFilter.IPGroupFilters.Select(filter=>filter.Name).Contains(ipGroup)) continue;
 				GlobalFilter.IPGroupFilters.Add(new IPGroupFilterViewModel(Logger) { Name=ipGroup });
 			}
 
-			await foreach (string? sipInterface in Sessions.SelectMany(session => session.Calls).Select(call => call.SIPInterfaceId).Distinct().AsAsyncEnumerable())
+			foreach (string? sipInterface in Sessions.SelectMany(session => session.Calls).Select(call => call.SIPInterfaceId).Distinct())
 			{
 				if (sipInterface == null) continue;
 				if (GlobalFilter.SIPInterfaceFilters.Select(filter => filter.Name).Contains(sipInterface)) continue;
@@ -121,32 +126,12 @@ namespace ODP.ViewModels
 		}
 
 
-		public async Task RefreshSessionsAsync()
+		public void RefreshSessions()
 		{
-			await FilteredSessions.LoadAsync( Sessions.Where(session => GlobalFilter.Match(session)) );
+			FilteredSessions.Load( Sessions.Where(session => GlobalFilter.Match(session)) );
 		}
 
-		public async Task AddFilterAsync(FilterViewModel Filter)
-		{
-			if (Filter == null) throw new ArgumentNullException(nameof(Filter));
-			session.Add(Filter);
-			await RefreshSessionsAsync();
-		}
-		public async Task DeleteFilterAsync(FilterViewModel Filter)
-		{
-			if (Filter == null) throw new ArgumentNullException(nameof(Filter));
-			session.Remove(Filter);
-			await RefreshSessionsAsync();
-		}
-		public async Task EditFilterAsync(FilterViewModel Filter,FilterViewModel TargetFilter)
-		{
-			if (Filter == null) throw new ArgumentNullException(nameof(Filter));
-			if (TargetFilter == null) throw new ArgumentNullException(nameof(TargetFilter));
-			Filter.MatchProperty = TargetFilter.MatchProperty;
-			Filter.MatchOperator = TargetFilter.MatchOperator;
-			Filter.Value = TargetFilter.Value;
-			await RefreshSessionsAsync();
-		}
+		
 
 		public async Task AddFilesAsync(IEnumerable<string> FileNames,IProgress<long> Progress)
 		{
@@ -165,14 +150,17 @@ namespace ODP.ViewModels
 			await foreach(string fileName in FileNames.AsAsyncEnumerable())
 			{
 				RunningTask = $"Loading file ({index}/{count})...";
+				if (loadedFiles.Contains(fileName)) continue;
+				loadedFiles.Add(fileName);
 				await TryAsync(() => Model.AddFileAsync(fileName,syslogParser,reportParser,Progress)).OrThrow($"Failed to read syslog file {fileName}");
 				index++;
 			}
-			RunningTask = "Creating items...";
-			await Sessions.LoadAsync(await Model.Sessions.ToViewModelsAsync(() => new SessionViewModel(Logger)));
+			
+			Sessions.Load(Model.Sessions.ToViewModels(() => new SessionViewModel(Logger)));
+
 			OnSessionsChanged();
-			await RefreshFiltersAsync();
-			await RefreshSessionsAsync();
+			RefreshFilters();
+			RefreshSessions();
 			RunningTask = null;
 		}
 
@@ -216,11 +204,26 @@ namespace ODP.ViewModels
 		{
 			if (Path == null) throw new ArgumentNullException(nameof(Path));
 			if (Model==null) throw new InvalidOperationException("Model is not loaded");
+
+			RunningTask = $"Saving project...";
+
 			this.Path= Path;
 			this.Name=System.IO.Path.GetFileName(Path);
 			await TryAsync(() => Model.SaveAsync(Path)).OrThrow("Failed to save project file");
-			
+			RunningTask = null;
+
 		}
+
+		public async Task LoadAsync(string Path)
+		{
+			Project project;
+
+			RunningTask = $"Loading project...";
+			project = await TryAsync(() => Project.LoadAsync(Path)).OrThrow("Failed to open project");
+			Load(project);
+			RunningTask = null;
+		}
+
 
 	}
 }

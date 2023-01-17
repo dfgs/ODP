@@ -18,7 +18,7 @@
 		</ControlTemplate>
 	</UserControl.Resources>
 	<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-		<Button Margin="3" Content="All"  VerticalAlignment="Center"  Command="{Binding SelectAllCommand}" Template="{StaticResource buttonTemplate}"/>
+		<Button Margin="0,3,3,3" Content="All"  VerticalAlignment="Center"  Command="{Binding SelectAllCommand}" Template="{StaticResource buttonTemplate}"/>
 		<Button Margin="3"  Content="None" VerticalAlignment="Center" Command="{Binding SelectNoneCommand}" Template="{StaticResource buttonTemplate}"/>
 	</StackPanel>
 </UserControl>

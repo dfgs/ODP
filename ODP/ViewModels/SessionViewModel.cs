@@ -63,7 +63,7 @@ namespace ODP.ViewModels
 			Calls = new ViewModelCollection<CallViewModel>(Logger);
 		}
 
-		protected override async Task OnLoadedAsync()
+		protected override void OnLoaded()
 		{
 			if (Model==null)
 			{
@@ -72,7 +72,7 @@ namespace ODP.ViewModels
 				return;
 			}
 
-			await Calls.LoadAsync(await Model.Calls.ToViewModelsAsync(() => new CallViewModel(Logger)));
+			Calls.Load(Model.Calls.ToViewModels(() => new CallViewModel(Logger)));
 			Calls.SelectedItem = Calls.FirstOrDefault();
 		}
 		public bool Match(MatchProperty Property, string Value)

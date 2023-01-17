@@ -47,7 +47,7 @@ namespace ODP
 			appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
 			System.IO.Directory.CreateDirectory(System.IO.Path.Combine(appData, "ODP"));
-			logger = new FileLogger(new DefaultLogFormatter(), System.IO.Path.Combine(appData, "ODP","log.txt"));
+			logger = NullLogger.Instance;// new FileLogger(new DefaultLogFormatter(), System.IO.Path.Combine(appData, "ODP","log.txt"));
 			applicationViewModel = new ApplicationViewModel(logger);
 
 			InitializeComponent();
@@ -73,25 +73,37 @@ namespace ODP
 			}
 			finally { TaskIsRunning = false; }
 		}
-		
+
+		private void RunCommand(Action Action)
+		{
+			try
+			{
+				Action();
+				//await Task.Delay(10000);
+			}
+			catch (Exception ex)
+			{
+				ShowError(ex);
+			}
+		}
 
 		private void NewCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.Handled = true; e.CanExecute =  (!TaskIsRunning);
 		}
 
-		private async void NewCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		private void NewCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			await RunCommandAsync(applicationViewModel.AddNewProjectAsync());
+			RunCommand(applicationViewModel.AddNewProject);
 		}
 		private void CloseCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.Handled = true; e.CanExecute = (applicationViewModel.Projects.SelectedItem != null) && (!TaskIsRunning);
 		}
 
-		private async void CloseCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		private void CloseCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			await RunCommandAsync(applicationViewModel.CloseCurrentProjectAsync());
+			RunCommand(applicationViewModel.CloseCurrentProject);
 		}
 		private void AddFileCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
@@ -222,85 +234,18 @@ namespace ODP
 		}
 
 
-		private void AddFilterCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-		{
-			e.Handled = true; e.CanExecute = (applicationViewModel.Projects.SelectedItem != null) && (!TaskIsRunning);
-		}
-
-		private async void AddFilterCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-		{
-			FilterWindow dialog;
-			FilterViewModel? filter;
-
-			if (applicationViewModel.Projects.SelectedItem == null) return;
-
-			filter = new FilterViewModel() { MatchProperty = Consts.MatchProperties.First(), MatchOperator = Consts.MatchOperators.First() };
-
-			dialog = new FilterWindow();
-			dialog.Owner = this;
-			dialog.Filter = filter;
-
-			if (dialog.ShowDialog()??false)
-			{
-				await RunCommandAsync(applicationViewModel.Projects.SelectedItem.AddFilterAsync(filter));
-			}
-		}
-
-		private void EditFilterCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-		{
-			e.Handled = true; e.CanExecute = (applicationViewModel.Projects?.SelectedItem?.session?.SelectedItem != null) && (!TaskIsRunning);
-		}
-
-		private async void EditFilterCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-		{
-			FilterWindow dialog;
-			FilterViewModel? selectedFilter,filter;
-
-			if (applicationViewModel.Projects.SelectedItem == null) return;
-
-			selectedFilter = applicationViewModel.Projects.SelectedItem.session.SelectedItem;
-			if (selectedFilter == null) return;
-
-			filter = new FilterViewModel() { MatchProperty =selectedFilter.MatchProperty,MatchOperator=selectedFilter.MatchOperator,Value=selectedFilter.Value };
-
-			dialog = new FilterWindow();
-			dialog.Owner = this;
-			dialog.Filter = filter;
-
-			if (dialog.ShowDialog() ?? false)
-			{
-				await RunCommandAsync(applicationViewModel.Projects.SelectedItem.EditFilterAsync(selectedFilter,filter));
-			}
-		}
-		private void DeleteFilterCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-		{
-			e.Handled = true; e.CanExecute = (applicationViewModel.Projects?.SelectedItem?.session?.SelectedItem != null) && (!TaskIsRunning);
-		}
-
-		private async void DeleteFilterCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-		{
-			FilterViewModel? selectedFilter;
-
-			if (applicationViewModel.Projects.SelectedItem==null) return;
-			
-			selectedFilter = applicationViewModel.Projects.SelectedItem.session.SelectedItem;
-			if (selectedFilter == null) return;
-
-			await RunCommandAsync(applicationViewModel.Projects.SelectedItem.DeleteFilterAsync(selectedFilter));
-
-		}
 
 		private void ApplyFilterCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.Handled = true; e.CanExecute = (applicationViewModel.Projects.SelectedItem != null) && (!TaskIsRunning);
 		}
 
-		private async void ApplyFilterCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		private void ApplyFilterCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 
 			if (applicationViewModel.Projects.SelectedItem == null) return;
 
-			await RunCommandAsync(applicationViewModel.Projects.SelectedItem.RefreshSessionsAsync());
+			RunCommand(applicationViewModel.Projects.SelectedItem.RefreshSessions);
 		}
 
 

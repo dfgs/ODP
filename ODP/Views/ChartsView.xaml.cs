@@ -263,7 +263,8 @@ namespace ODP.Views
 		{
 			ProjectViewModel? project;
 			project = DataContext as ProjectViewModel;
-			  
+
+			//return;
 			if (project == null) return;
 
 			RefreshWpfPlotMediaReportCountByQuality(WpfPlotMediaReportCountByQuality, project.Sessions);
