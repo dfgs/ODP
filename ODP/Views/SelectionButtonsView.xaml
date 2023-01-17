@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="ODP.Views.SelectionButtonsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views="clr-namespace:ODP.Views"
+             mc:Ignorable="d" 
+             d:DesignWidth="200">
+	<UserControl.Resources>
+		<Style TargetType="{x:Type TextBlock}" x:Key="linkStyle">
+			<Setter Property="Foreground" Value="Blue"/>
+			<Setter Property="TextDecorations" Value="Underline"/>
+			<Setter Property="Cursor" Value="Hand"/>
+		</Style>
+
+		<ControlTemplate x:Key="buttonTemplate" TargetType="{x:Type Button}">
+			<TextBlock Text="{TemplateBinding Content}" Style="{StaticResource linkStyle}" />
+		</ControlTemplate>
+	</UserControl.Resources>
+	<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+		<Button Margin="3" Content="All"  VerticalAlignment="Center"  Command="{Binding SelectAllCommand}" Template="{StaticResource buttonTemplate}"/>
+		<Button Margin="3"  Content="None" VerticalAlignment="Center" Command="{Binding SelectNoneCommand}" Template="{StaticResource buttonTemplate}"/>
+	</StackPanel>
+</UserControl>

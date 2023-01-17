@@ -4,82 +4,106 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:ODP.Views"
+			 xmlns:p="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              xmlns:root="clr-namespace:ODP"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400">
 
 	<UserControl.Resources>
+		<SolidColorBrush x:Key="WhiteBrush" Color="White" p:Freeze="True"/>
+
+		<ControlTemplate x:Key="ToggleButtonCheckBoxTemplate" TargetType="{x:Type CheckBox}">
+			<ControlTemplate.Resources>
+				<SolidColorBrush x:Key="ToggleButton.CheckedBackgroundBrush" p:Freeze="true">SteelBlue</SolidColorBrush>
+				<SolidColorBrush x:Key="ToggleButton.UnCheckedBackgroundBrush" p:Freeze="true">DarkGray</SolidColorBrush>
+			</ControlTemplate.Resources>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+				<Grid x:Name="Conteiner"  Height="18" Width="33.3" Margin="0" VerticalAlignment="Top" HorizontalAlignment="Left">
+					<Border x:Name="Back" ClipToBounds="True" Height="17.5"  Width="32" HorizontalAlignment="Left"  VerticalAlignment="Top" CornerRadius="9">
+						<Ellipse x:Name="Dot"  Fill="{StaticResource WhiteBrush}" Height="16" Width="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+					</Border>
+				</Grid>
+				<ContentPresenter x:Name="content" Grid.Column="1" Margin="{TemplateBinding Padding}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+			</Grid>
+			<ControlTemplate.Triggers>
+				<Trigger SourceName="Dot" Property="IsMouseOver" Value="True">
+					<Setter TargetName="Dot" Property="Effect">
+						<Setter.Value>
+							<DropShadowEffect ShadowDepth="1" BlurRadius="2"/>
+						</Setter.Value>
+					</Setter>
+				</Trigger>
+				<Trigger Property="IsChecked" Value="True">
+					<Setter TargetName="Dot" Property="Margin" Value="0, 0, -14, 0"/>
+					<Setter TargetName="Back" Property="Background" Value="{StaticResource ToggleButton.CheckedBackgroundBrush}"/>
+				</Trigger>
+				<Trigger Property="IsChecked" Value="False">
+					<Setter TargetName="Dot" Property="Margin" Value="-14, 0, 0, 0"/>
+					<Setter TargetName="Back" Property="Background" Value="{StaticResource ToggleButton.UnCheckedBackgroundBrush}"/>
+				</Trigger>
+			</ControlTemplate.Triggers>
+		</ControlTemplate>
+
+		<Style x:Key="ToggleButtonCheckBox" TargetType="{x:Type CheckBox}">
+			<Setter Property="Cursor" Value="Hand"/>
+			<Setter Property="Padding" Value="5,0,0,0"/>
+			<Setter Property="Template" Value="{StaticResource ToggleButtonCheckBoxTemplate}"/>
+		</Style>
+
 		<DataTemplate x:Key="filterTemplate">
-			<CheckBox IsChecked="{Binding IsSelected}">
-				<TextBlock Text="{Binding Name}"/>
+			<CheckBox Margin="0,3,0,3" IsChecked="{Binding IsSelected}" Template="{StaticResource ToggleButtonCheckBoxTemplate}">
+				<TextBlock Text="{Binding Name}" Margin="5,0,0,0"/>
 			</CheckBox>
 		</DataTemplate>
-		<DataTemplate x:Key="filterTemplateRadio">
-			<RadioButton IsChecked="{Binding IsSelected}">
-				<TextBlock Text="{Binding Name}"/>
-			</RadioButton>
-		</DataTemplate>
-		<ControlTemplate x:Key="buttonTemplate" TargetType="{x:Type Button}">
-			<ContentPresenter Content="{TemplateBinding Content}"/>
-		</ControlTemplate>
+
 		<Style x:Key="expanderStyle" TargetType="{x:Type Expander}">
-			<Setter Property="IsExpanded" Value="False"/>
+			<Setter Property="IsExpanded" Value="false"/>
 		</Style>
-    </UserControl.Resources>
+
+	</UserControl.Resources>
 
 
     <DockPanel>
 		<Button DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" Margin="5" Padding="5" Content="Apply" Command="{x:Static root:RoutedCommands.ApplyFilter}"/>
 		<ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
-			<StackPanel>
-				<Expander  DataContext="{Binding QualityFilters}" Style="{StaticResource expanderStyle}">
+			<StackPanel Cursor="">
+				<Expander  DataContext="{Binding QualityFilters}" Style="{StaticResource expanderStyle}" >
 					<Expander.Header>
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="Quality" FontSize="16" VerticalAlignment="Center"/>
-							<Button ToolTip="Select all" VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding SelectAllCommand}" Template="{StaticResource buttonTemplate}">
-								<Image Source="/Images/Check_All.png" Stretch="None" />
-							</Button>
-							<Button ToolTip="Select None" VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding SelectNoneCommand}" Template="{StaticResource buttonTemplate}">
-								<Image Source="/Images/Check_None.png" Stretch="None" />
-							</Button>
-						</StackPanel>
+						<TextBlock Text="Quality" FontSize="16" VerticalAlignment="Center"/>
 					</Expander.Header>
-					<ItemsControl Margin="16,0,0,0" ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
+					<StackPanel Margin="16,0,0,0" >
+						<views:SelectionButtonsView/>
+						<ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
+					</StackPanel>
 				</Expander>
 				<Expander  DataContext="{Binding IPGroupFilters}" Style="{StaticResource expanderStyle}">
 					<Expander.Header>
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="IP Group" FontSize="16"  VerticalAlignment="Center"/>
-							<Button ToolTip="Select all" VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding SelectAllCommand}" Template="{StaticResource buttonTemplate}">
-								<Image Source="/Images/Check_All.png" Stretch="None" />
-							</Button>
-							<Button ToolTip="Select None" VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding SelectNoneCommand}" Template="{StaticResource buttonTemplate}">
-								<Image Source="/Images/Check_None.png" Stretch="None" />
-							</Button>
-						</StackPanel>
+						<TextBlock Text="IP Group" FontSize="16" VerticalAlignment="Center"/>
 					</Expander.Header>
-					<ItemsControl Margin="16,0,0,0" ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
+					<StackPanel Margin="16,0,0,0" >
+						<views:SelectionButtonsView/>
+						<ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
+					</StackPanel>
 				</Expander>
 
 				<Expander  DataContext="{Binding SIPInterfaceFilters}" Style="{StaticResource expanderStyle}">
 					<Expander.Header>
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="SIP Interface" FontSize="16"  VerticalAlignment="Center"/>
-							<Button ToolTip="Select all" VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding SelectAllCommand}" Template="{StaticResource buttonTemplate}">
-								<Image Source="/Images/Check_All.png" Stretch="None" />
-							</Button>
-							<Button ToolTip="Select None" VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding SelectNoneCommand}" Template="{StaticResource buttonTemplate}">
-								<Image Source="/Images/Check_None.png" Stretch="None" />
-							</Button>
-						</StackPanel>
+						<TextBlock Text="SIP Interfaces" FontSize="16" VerticalAlignment="Center"/>
 					</Expander.Header>
-					<ItemsControl Margin="16,0,0,0" ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
+					<StackPanel Margin="16,0,0,0" >
+						<views:SelectionButtonsView/>
+						<ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
+					</StackPanel>
 				</Expander>
 
 				<Expander Style="{StaticResource expanderStyle}">
 					<Expander.Header>
 						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="Metrics" FontSize="16"  VerticalAlignment="Center"/>
+							<TextBlock Text="Metrics" FontSize="16" VerticalAlignment="Center"/>
 						</StackPanel>
 					</Expander.Header>
 					<StackPanel Margin="16,0,0,0">
