@@ -84,9 +84,9 @@ namespace ODP.ViewModels
 		{
 			get
 			{
-				if (!ShouldHaveAudio) return Quality.NA;
 				if (HasMediaReport) return MediaReports.Select(item => item.Quality).Min();
-				else return Quality.Bad;
+				if (ShouldHaveAudio) return Quality.Bad;
+				else return Quality.NA;
 			}
 		}
 

@@ -30,12 +30,17 @@ namespace ODP.Views
 		private static System.Drawing.Color[] SliceColors = { System.Drawing.Color.Red, System.Drawing.Color.Orange, System.Drawing.Color.Green, System.Drawing.Color.Gray };
 		//private static double chartScale = 0.7;
 
+
+
+
+
 		public ChartsView()
 		{
 			InitializeComponent();
-			
+
 		}
 		
+
 
 		private void RefreshWpfPlotMediaReportCountByQuality(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
 		{
@@ -44,7 +49,6 @@ namespace ODP.Views
 
 
 			WpfPlot.Plot.Clear();
-			WpfPlot.Plot.Title("Number of media reports by quality");
 
 			var pie = WpfPlot.Plot.AddPie(values);
 			pie.DonutSize = .6;
@@ -78,7 +82,7 @@ namespace ODP.Views
 
 
 			WpfPlot.Plot.Clear();
-			WpfPlot.Plot.Title("Number of calls by interface");
+			
 
 			if (sipInterfaces.Length > 0)
 			{
@@ -108,7 +112,7 @@ namespace ODP.Views
 
 
 			WpfPlot.Plot.Clear();
-			WpfPlot.Plot.Title("Max packet loss by interface (%)");
+			
 			WpfPlot.Plot.Palette = ScottPlot.Palette.Nord;
 
 			if (sipInterfaces.Length > 0)
@@ -135,7 +139,7 @@ namespace ODP.Views
 
 
 			WpfPlot.Plot.Clear();
-			WpfPlot.Plot.Title("Max delay by interface (ms)");
+			
 			WpfPlot.Plot.Palette = ScottPlot.Palette.Nord;
 
 			if (sipInterfaces.Length > 0)
@@ -161,7 +165,7 @@ namespace ODP.Views
 
 
 			WpfPlot.Plot.Clear();
-			WpfPlot.Plot.Title("Max jitter by interface (ms)");
+			
 			WpfPlot.Plot.Palette = ScottPlot.Palette.Nord;
 
 			if (sipInterfaces.Length > 0)
@@ -186,7 +190,6 @@ namespace ODP.Views
 			double[] positions = Enumerable.Range(1, sipInterfaces.Length).Select(i => (double)i).ToArray();
 
 			WpfPlot.Plot.Clear();
-			WpfPlot.Plot.Title("Avg packet loss by interface (%)");
 			WpfPlot.Plot.Palette = ScottPlot.Palette.Nord;
 
 
@@ -214,7 +217,7 @@ namespace ODP.Views
 
 
 			WpfPlot.Plot.Clear();
-			WpfPlot.Plot.Title("Avg delay by interface (ms)");
+			
 			WpfPlot.Plot.Palette = ScottPlot.Palette.Nord;
 
 			if (sipInterfaces.Length > 0)
@@ -241,7 +244,7 @@ namespace ODP.Views
 
 
 			WpfPlot.Plot.Clear();
-			WpfPlot.Plot.Title("Avg jitter by interface (ms)");
+			
 			WpfPlot.Plot.Palette = ScottPlot.Palette.Nord;
 
 			if (sipInterfaces.Length > 0)
@@ -267,14 +270,16 @@ namespace ODP.Views
 			//return;
 			if (project == null) return;
 
-			RefreshWpfPlotMediaReportCountByQuality(WpfPlotMediaReportCountByQuality, project.Sessions);
-			RefreshWpfPlotCallsCountByInterface(WpfPlotCallsCountByInterface, project.Sessions);
-			RefreshWpfPlotMaxPacketLossByInterface(WpfPlotMaxPacketLossByInterface, project.Sessions);
-			RefreshWpfPlotMaxDelayByInterface(WpfPlotMaxDelayByInterface, project.Sessions);
-			RefreshWpfPlotMaxJitterByInterface(WpfPlotMaxJitterByInterface, project.Sessions);
-			RefreshWpfPlotAvgPacketLossByInterface(WpfPlotAvgPacketLossByInterface, project.Sessions);
-			RefreshWpfPlotAvgDelayByInterface(WpfPlotAvgDelayByInterface, project.Sessions);
-			RefreshWpfPlotAvgJitterByInterface(WpfPlotAvgJitterByInterface, project.Sessions);
+			
+
+			RefreshWpfPlotMediaReportCountByQuality(WpfPlotMediaReportCountByQuality.WpfPlot, project.Sessions);
+			RefreshWpfPlotCallsCountByInterface(WpfPlotCallsCountByInterface.WpfPlot, project.Sessions);
+			RefreshWpfPlotMaxPacketLossByInterface(WpfPlotMaxPacketLossByInterface.WpfPlot, project.Sessions);
+			RefreshWpfPlotMaxDelayByInterface(WpfPlotMaxDelayByInterface.WpfPlot, project.Sessions);
+			RefreshWpfPlotMaxJitterByInterface(WpfPlotMaxJitterByInterface.WpfPlot, project.Sessions);
+			RefreshWpfPlotAvgPacketLossByInterface(WpfPlotAvgPacketLossByInterface.WpfPlot, project.Sessions);
+			RefreshWpfPlotAvgDelayByInterface(WpfPlotAvgDelayByInterface.WpfPlot, project.Sessions);
+			RefreshWpfPlotAvgJitterByInterface(WpfPlotAvgJitterByInterface.WpfPlot, project.Sessions);
 		}
 
 
@@ -299,8 +304,73 @@ namespace ODP.Views
 			RefreshCharts();
 		}
 
-		
+		private void MaximizeCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = true;e.Handled= true;
+		}
 
+		private void MaximizeCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			ChartView? clickedView;
+			clickedView = e.Parameter as ChartView;
+			ProjectViewModel? project;
+			project = DataContext as ProjectViewModel;
+
+			if (project == null) return;
+
+			if (clickedView == null) return;
+
+			if (clickedView == WpfPlotMaximized)
+			{
+				WpfPlotMaximized.IsMaximized = false;
+				return;
+			}
+
+			WpfPlotMaximized.Title = clickedView.Title;
+			WpfPlotMaximized.IsMaximized = true;
+
+			if (clickedView == WpfPlotMediaReportCountByQuality)
+			{
+				RefreshWpfPlotMediaReportCountByQuality(WpfPlotMaximized.WpfPlot, project.Sessions);
+				return;
+			}
+			if (clickedView == WpfPlotCallsCountByInterface)
+			{
+				RefreshWpfPlotCallsCountByInterface(WpfPlotMaximized.WpfPlot, project.Sessions);
+				return;
+			}
+			if (clickedView == WpfPlotMaxPacketLossByInterface)
+			{
+				RefreshWpfPlotMaxPacketLossByInterface(WpfPlotMaximized.WpfPlot, project.Sessions);
+				return;
+			}
+			if (clickedView == WpfPlotMaxJitterByInterface)
+			{
+				RefreshWpfPlotMaxJitterByInterface(WpfPlotMaximized.WpfPlot, project.Sessions);
+				return;
+			}
+			if (clickedView == WpfPlotMaxDelayByInterface)
+			{
+				RefreshWpfPlotMaxDelayByInterface(WpfPlotMaximized.WpfPlot, project.Sessions);
+				return;
+			}
+			if (clickedView == WpfPlotAvgPacketLossByInterface)
+			{
+				RefreshWpfPlotAvgPacketLossByInterface(WpfPlotMaximized.WpfPlot, project.Sessions);
+				return;
+			}
+			if (clickedView == WpfPlotAvgJitterByInterface)
+			{
+				RefreshWpfPlotAvgJitterByInterface(WpfPlotMaximized.WpfPlot, project.Sessions);
+				return;
+			}
+			if (clickedView == WpfPlotAvgDelayByInterface)
+			{
+				RefreshWpfPlotAvgDelayByInterface(WpfPlotMaximized.WpfPlot, project.Sessions);
+				return;
+			}
+
+		}
 
 
 	}

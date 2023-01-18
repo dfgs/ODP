@@ -16,8 +16,26 @@
 				<Setter Property="Effect" Value="{StaticResource shadowEffect}"/>
 
 			</Style>
+			<Style x:Key="chartViewStyle" TargetType="{x:Type views:ChartView}">
+				<Setter Property="Margin" Value="5"/>
+				<Setter Property="Effect" Value="{StaticResource shadowEffect}"/>
+				<Style.Triggers>
+					<Trigger Property="IsMaximized" Value="false">
+						<Setter Property="Visibility" Value="Hidden"/>
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+			<Style x:Key="chartViewStyle2" TargetType="{x:Type views:ChartView}" BasedOn="{StaticResource chartViewStyle}">
+				<Setter Property="IsMaximized" Value="false"/>
+			</Style>
 		</ResourceDictionary>
 	</UserControl.Resources>
+
+	<UserControl.CommandBindings>
+		<CommandBinding Command="{x:Static root:RoutedCommands.Maximize}" CanExecute="MaximizeCommandBinding_CanExecute" Executed="MaximizeCommandBinding_Executed"/>
+	</UserControl.CommandBindings>
+
+
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="1*"/>
@@ -32,14 +50,16 @@
 			<RowDefinition Height="1*"/>
 			<RowDefinition Height="1*"/>
 		</Grid.RowDefinitions>
-		<WpfPlot Name="WpfPlotMediaReportCountByQuality" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource chartStyle}" />
-		<WpfPlot Name="WpfPlotCallsCountByInterface"  Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource chartStyle}" />
-		<WpfPlot Name="WpfPlotMaxPacketLossByInterface"  Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"  Style="{StaticResource chartStyle}" />
-		<WpfPlot Name="WpfPlotMaxDelayByInterface"  Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2"  Style="{StaticResource chartStyle}" />
-		<WpfPlot Name="WpfPlotMaxJitterByInterface"  Grid.Column="4" Grid.Row="1" Grid.ColumnSpan="2"  Style="{StaticResource chartStyle}" />
-		<WpfPlot Name="WpfPlotAvgPacketLossByInterface"  Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"  Style="{StaticResource chartStyle}"/>
-		<WpfPlot Name="WpfPlotAvgDelayByInterface"  Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2"  Style="{StaticResource chartStyle}" />
-		<WpfPlot Name="WpfPlotAvgJitterByInterface"  Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="2"  Style="{StaticResource chartStyle}" />
+		<views:ChartView x:Name="WpfPlotMediaReportCountByQuality" Title="Number of media reports by quality" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource chartViewStyle}"/>
+		<views:ChartView x:Name="WpfPlotCallsCountByInterface" Title="Number of calls by interface"  Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource chartViewStyle}" />
+		<views:ChartView x:Name="WpfPlotMaxPacketLossByInterface" Title="Max packet loss by interface (%)"  Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"  Style="{StaticResource chartViewStyle}" />
+		<views:ChartView x:Name="WpfPlotMaxDelayByInterface"  Title="Max delay by interface (ms)" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2"  Style="{StaticResource chartViewStyle}" />
+		<views:ChartView x:Name="WpfPlotMaxJitterByInterface" Title="Max jitter by interface (ms)" Grid.Column="4" Grid.Row="1" Grid.ColumnSpan="2"  Style="{StaticResource chartViewStyle}" />
+		<views:ChartView x:Name="WpfPlotAvgPacketLossByInterface" Title="Avg packet loss by interface (%)" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"  Style="{StaticResource chartViewStyle}"/>
+		<views:ChartView x:Name="WpfPlotAvgDelayByInterface" Title="Avg delay by interface (ms)"  Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2"  Style="{StaticResource chartViewStyle}" />
+		<views:ChartView x:Name="WpfPlotAvgJitterByInterface" Title="Avg jitter by interface (ms)" Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="2"  Style="{StaticResource chartViewStyle}" />
+
+		<views:ChartView x:Name="WpfPlotMaximized" Title="TBD" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6" Grid.RowSpan="3"  Style="{StaticResource chartViewStyle2}" />
 	</Grid>
 
 </UserControl>

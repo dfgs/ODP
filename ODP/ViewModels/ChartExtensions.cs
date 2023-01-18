@@ -20,7 +20,7 @@ namespace ODP.ViewModels
 		}
 		public static IEnumerable<CallViewModel> WithAudio(this IEnumerable<CallViewModel> Calls)
 		{
-			return Calls.Where(call => call.ShouldHaveAudio && call.HasMediaReport);
+			return Calls.Where(call => call.HasMediaReport);
 		}
 		public static IEnumerable<MediaReportViewModel> WithValidDelay(this IEnumerable<MediaReportViewModel> Reports)
 		{
