@@ -107,7 +107,7 @@ namespace ODP.Views
 			CallViewModel[] calls = Sessions.Calls().ToArray();
 			string[] sipInterfaces = calls.SIPInterfaces().ToArray();
 
-			double[] values = sipInterfaces.GroupJoin(calls, sipInterface => sipInterface, item => item.SIPInterfaceId, (sipInterface, item) => (double)item.MaxPacketLoss()).ToArray();
+			double[] values = sipInterfaces.GroupJoin(calls, sipInterface => sipInterface, item => item.SIPInterfaceId, (sipInterface, item) => item.MaxPacketLoss()).ToArray();
 			double[] positions = Enumerable.Range(1, sipInterfaces.Length).Select(i=>(double)i).ToArray();
 
 
@@ -119,7 +119,7 @@ namespace ODP.Views
 			{
 				var bar = WpfPlot.Plot.AddBar(values,positions);
 				bar.ShowValuesAboveBars = true;
-				bar.ValueFormatter= value => ((int)value).ToString();
+				bar.ValueFormatter= value => String.Format("{0:0.00}", value) ;
 				WpfPlot.Plot.XTicks(positions, sipInterfaces);
 				WpfPlot.Plot.XAxis.TickLabelStyle(null, null, null, null, 45);
 				WpfPlot.Plot.Legend(location: Alignment.UpperRight);
@@ -197,7 +197,7 @@ namespace ODP.Views
 			{
 				var bar = WpfPlot.Plot.AddBar(values, positions);
 				bar.ShowValuesAboveBars = true;
-				bar.ValueFormatter = value => ((int)value).ToString();
+				bar.ValueFormatter = value => String.Format("{0:0.00}", value);
 				WpfPlot.Plot.XTicks(positions, sipInterfaces);
 				WpfPlot.Plot.XAxis.TickLabelStyle(null, null, null, null, 45);
 				WpfPlot.Plot.Legend(location: Alignment.UpperRight);

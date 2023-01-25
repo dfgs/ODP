@@ -155,7 +155,7 @@ namespace ODP.ViewModels
 		}
 
 		[Browsable(true)]
-		public int? PacketLossPercent
+		public double? PacketLossPercent
 		{
 			get
 			{
@@ -163,7 +163,7 @@ namespace ODP.ViewModels
 				if (LocalPackLoss==null) return null;
 				if (InPackets==null) return null;
 				if (InPackets == 0) return 0;
-				return LocalPackLoss*100 / InPackets ;
+				return LocalPackLoss*100.0d / InPackets ;
 			}
 		}
 

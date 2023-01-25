@@ -64,7 +64,7 @@ namespace ODP.ViewModels
 		}
 
 
-		public static int MaxPacketLoss(this IEnumerable<CallViewModel> Calls)
+		public static double MaxPacketLoss(this IEnumerable<CallViewModel> Calls)
 		{
 			return Calls.WithAudio().SelectMany(call => call.MediaReports.WithValidPacketLoss()).Select(mediaReport => mediaReport.PacketLossPercent ?? 0).MaxOrDefault(0);
 		}
