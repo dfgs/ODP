@@ -163,7 +163,7 @@ namespace ODP.ViewModels
 				if (LocalPackLoss==null) return null;
 				if (InPackets==null) return null;
 				if (InPackets == 0) return 0;
-				return LocalPackLoss*100.0d / InPackets ;
+				return LocalPackLoss*100.0d / (InPackets+LocalPackLoss) ;
 			}
 		}
 
