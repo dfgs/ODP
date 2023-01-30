@@ -38,6 +38,18 @@ namespace ODP.ViewModels
 		{
 			get => Calls.SelectMany(item => item.SBCReports.Select(item => item.ReleaseTime)).Max();
 		}
+
+		[Browsable(true)]
+		public TimeSpan? Duration
+		{
+			get
+			{
+				if (StartTime == null) return null;
+				if (StopTime==null) return null;
+				return StopTime - StartTime;
+			}
+		}
+
 		[Browsable(true)]
 		public string? SrcURI
 		{

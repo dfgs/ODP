@@ -46,13 +46,14 @@
 						<GridViewColumn Width="200" Header="Setup time" DisplayMemberBinding="{Binding SetupTime}"/>
 						<GridViewColumn Width="200" Header="Connect time" DisplayMemberBinding="{Binding ConnectTime}"/>
 						<GridViewColumn Width="200" Header="Release time" DisplayMemberBinding="{Binding ReleaseTime}"/>
-						<GridViewColumn Width="200" Header="Termination reason" DisplayMemberBinding="{Binding TrmReason}"/>
-						<GridViewColumn Width="200" Header="Source URI" DisplayMemberBinding="{Binding SrcURI}"/>
-						<GridViewColumn Width="200" Header="Destination URI" DisplayMemberBinding="{Binding DstURI}"/>
-						<GridViewColumn Width="200" Header="Source IP" DisplayMemberBinding="{Binding SourceIp}"/>
-						<GridViewColumn Width="200" Header="Destination IP" DisplayMemberBinding="{Binding DestIp}"/>
+						<GridViewColumn Width="100" Header="Duration" DisplayMemberBinding="{Binding Duration, StringFormat={}{0:hh':'mm':'ss}}"/>
 						<GridViewColumn Width="200" Header="IP group" DisplayMemberBinding="{Binding IPGroup}"/>
 						<GridViewColumn Width="200" Header="SIP interface" DisplayMemberBinding="{Binding SIPInterfaceId}"/>
+						<GridViewColumn Width="200" Header="Source URI" DisplayMemberBinding="{Binding SrcURI}"/>
+						<GridViewColumn Width="200" Header="Destination URI" DisplayMemberBinding="{Binding DstURI}"/>
+						<GridViewColumn Width="200" Header="Termination reason" DisplayMemberBinding="{Binding TrmReason}"/>
+						<GridViewColumn Width="200" Header="Source IP" DisplayMemberBinding="{Binding SourceIp}"/>
+						<GridViewColumn Width="200" Header="Destination IP" DisplayMemberBinding="{Binding DestIp}"/>
 					</GridView.Columns>
 				</GridView>
 			</ListView.View>

@@ -48,6 +48,7 @@
 						<GridViewColumn Width="200" Header="Session ID" DisplayMemberBinding="{Binding SessionID}"/>
 						<GridViewColumn Width="200" Header="Start time" DisplayMemberBinding="{Binding StartTime}"/>
 						<GridViewColumn Width="200" Header="Stop time" DisplayMemberBinding="{Binding StopTime}"/>
+						<GridViewColumn Width="100" Header="Duration" DisplayMemberBinding="{Binding Duration, StringFormat={}{0:hh':'mm':'ss}}"/>
 						<GridViewColumn Width="200" Header="Source URI" DisplayMemberBinding="{Binding SrcURI}"/>
 						<GridViewColumn Width="200" Header="Destination URI" DisplayMemberBinding="{Binding DstURI}"/>
 					</GridView.Columns>

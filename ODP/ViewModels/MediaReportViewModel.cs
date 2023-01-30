@@ -13,6 +13,12 @@ namespace ODP.ViewModels
 {
 	public class MediaReportViewModel : ReportViewModel<MediaReport>, IQualityProvider
 	{
+		private static SolidColorBrush NABrush = new SolidColorBrush(Colors.Gray);
+		private static SolidColorBrush BadBrush = new SolidColorBrush(Colors.Red);
+		private static SolidColorBrush AverageBrush = new SolidColorBrush(Colors.Orange);
+		private static SolidColorBrush GoodBrush = new SolidColorBrush(Colors.Green);
+
+
 		[Browsable(true)]
 		public string? MediaReportType
 		{
@@ -191,16 +197,17 @@ namespace ODP.ViewModels
 			}
 		}
 
+
 		public Brush Background
 		{
 			get
 			{
 				switch (Quality)
 				{
-					case ViewModels.Quality.NA: return new SolidColorBrush(Colors.Gray);
-					case ViewModels.Quality.Bad: return new SolidColorBrush(Colors.Red);
-					case ViewModels.Quality.Average: return new SolidColorBrush(Colors.Orange);
-					default: return new SolidColorBrush(Colors.Green);
+					case ViewModels.Quality.NA: return NABrush;
+					case ViewModels.Quality.Bad: return BadBrush;
+					case ViewModels.Quality.Average: return AverageBrush;
+					default: return GoodBrush;
 				}
 			}
 		}

@@ -48,7 +48,16 @@ namespace ODP.ViewModels
 		{
 			get => Model?.SBCReports.FirstOrDefault(item => item.ReleaseTime != null)?.ReleaseTime;
 		}
-
+		[Browsable(true)]
+		public TimeSpan? Duration
+		{
+			get
+			{
+				if (SetupTime == null) return null;
+				if (ReleaseTime == null) return null;
+				return ReleaseTime - SetupTime;
+			}
+		}
 		[Browsable(true)]
 		public string? TrmReason
 		{
