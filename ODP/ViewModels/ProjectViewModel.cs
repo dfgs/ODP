@@ -122,7 +122,13 @@ namespace ODP.ViewModels
 				if (GlobalFilter.SIPInterfaceFilters.Select(filter => filter.Name).Contains(sipInterface)) continue;
 				GlobalFilter.SIPInterfaceFilters.Add(new SIPInterfaceFilterViewModel(Logger) { Name = sipInterface });
 			}
-
+			
+			foreach (string? termReason in Sessions.SelectMany(session => session.Calls).Select(call => call.TrmReason).Distinct())
+			{
+				if (termReason == null) continue;
+				if (GlobalFilter.TermReasonFilters.Select(filter => filter.Name).Contains(termReason)) continue;
+				GlobalFilter.TermReasonFilters.Add(new TermReasonFilterViewModel(Logger) { Name = termReason });
+			}
 		}
 
 

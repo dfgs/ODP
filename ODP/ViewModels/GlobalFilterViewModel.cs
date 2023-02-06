@@ -32,6 +32,12 @@ namespace ODP.ViewModels
 			get { return (FilterViewModelCollection<SIPInterfaceFilterViewModel>)GetValue(SIPInterfaceFiltersProperty); }
 			set { SetValue(SIPInterfaceFiltersProperty, value); }
 		}
+		public static readonly DependencyProperty TermReasonFiltersProperty = DependencyProperty.Register("TermReasonFilters", typeof(FilterViewModelCollection<TermReasonFilterViewModel>), typeof(GlobalFilterViewModel), new PropertyMetadata(null));
+		public FilterViewModelCollection<TermReasonFilterViewModel> TermReasonFilters
+		{
+			get { return (FilterViewModelCollection<TermReasonFilterViewModel>)GetValue(TermReasonFiltersProperty); }
+			set { SetValue(TermReasonFiltersProperty, value); }
+		}
 
 
 		public static readonly DependencyProperty DelayFiltersProperty = DependencyProperty.Register("DelayFilters", typeof(FilterViewModelCollection<DelayFilterViewModel>), typeof(GlobalFilterViewModel), new PropertyMetadata(null));
@@ -90,6 +96,7 @@ namespace ODP.ViewModels
 
 			IPGroupFilters = new FilterViewModelCollection<IPGroupFilterViewModel>(Logger);
 			SIPInterfaceFilters = new FilterViewModelCollection<SIPInterfaceFilterViewModel>(Logger);
+			TermReasonFilters = new FilterViewModelCollection<TermReasonFilterViewModel>(Logger);
 		}
 
 		public bool Match(SessionViewModel Session)
@@ -102,6 +109,7 @@ namespace ODP.ViewModels
 			if (!QualityFilters.Where(filter => filter.IsSelected).Select(filter => filter.Quality).Contains(Session.Quality)) return false;
 			if (!IPGroupFilters.Where(filter => filter.IsSelected).Join(Session.Calls, filter => filter.Name, call => call.IPGroup, (ipGroup, call) => call).Any()) return false;
 			if (!SIPInterfaceFilters.Where(filter => filter.IsSelected).Join(Session.Calls, filter => filter.Name, call => call.SIPInterfaceId, (SIPInterface, call) => call).Any()) return false;
+			if (!TermReasonFilters.Where(filter => filter.IsSelected).Join(Session.Calls, filter => filter.Name, call => call.TrmReason, (TermReason, call) => call).Any()) return false;
 
 			delayFilter = DelayFilters.SelectedItem;
 			if (delayFilter!= null)

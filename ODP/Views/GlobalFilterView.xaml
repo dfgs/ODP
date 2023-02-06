@@ -100,6 +100,17 @@
 					</StackPanel>
 				</Expander>
 
+				<Expander  DataContext="{Binding TermReasonFilters}" Style="{StaticResource expanderStyle}">
+					<Expander.Header>
+						<TextBlock Text="Term reasons" FontSize="16" VerticalAlignment="Center"/>
+					</Expander.Header>
+					<StackPanel Margin="16,0,0,0" >
+						<views:SelectionButtonsView/>
+						<ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=filterTemplate}"/>
+					</StackPanel>
+				</Expander>
+
+
 				<Expander Style="{StaticResource expanderStyle}">
 					<Expander.Header>
 						<StackPanel Orientation="Horizontal">
