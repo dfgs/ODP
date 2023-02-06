@@ -74,21 +74,21 @@ namespace ODP.ViewModels
 			QualityFilters.Add(new QualityFilterViewModel(Logger) { Quality = Quality.NA, Name = "Not applicable" });
 
 			DelayFilters = new FilterViewModelCollection<DelayFilterViewModel>(Logger);
-			DelayFilters.Add(new DelayFilterViewModel(Logger) { MinValue = int.MinValue, MaxValue = int.MaxValue, Name = "Any delay" });
+			DelayFilters.Add(new DelayFilterViewModel(Logger) { MinValue = int.MinValue, MaxValue = int.MaxValue, Name = "Any delay", AnyValue = true });
 			DelayFilters.Add(new DelayFilterViewModel(Logger) { MinValue = 150, MaxValue = int.MaxValue, Name = "Above 150 ms", IsSelected = false });
 			DelayFilters.Add(new DelayFilterViewModel(Logger) { MinValue = 250, MaxValue = int.MaxValue, Name = "Above 250 ms", IsSelected = false });
 			DelayFilters.Add(new DelayFilterViewModel(Logger) { MinValue = 350, MaxValue = int.MaxValue, Name = "Above 350 ms", IsSelected = false });
 			DelayFilters.SelectedItem = DelayFilters.LastOrDefault();
 
 			JitterFilters = new FilterViewModelCollection<JitterFilterViewModel>(Logger);
-			JitterFilters.Add(new JitterFilterViewModel(Logger) { MinValue = int.MinValue, MaxValue = int.MaxValue, Name = "Any jitter" });
+			JitterFilters.Add(new JitterFilterViewModel(Logger) { MinValue = int.MinValue, MaxValue = int.MaxValue, Name = "Any jitter", AnyValue = true });
 			JitterFilters.Add(new JitterFilterViewModel(Logger) { MinValue = 20, MaxValue = int.MaxValue, Name = "Above 20 ms", IsSelected = false });
 			JitterFilters.Add(new JitterFilterViewModel(Logger) { MinValue = 30, MaxValue = int.MaxValue, Name = "Above 30 ms", IsSelected = false });
 			JitterFilters.Add(new JitterFilterViewModel(Logger) { MinValue = 50, MaxValue = int.MaxValue, Name = "Above 50 ms", IsSelected = false });
 			JitterFilters.SelectedItem = JitterFilters.LastOrDefault();
 
 			PacketLossFilters = new FilterViewModelCollection<PacketLossFilterViewModel>(Logger);
-			PacketLossFilters.Add(new PacketLossFilterViewModel(Logger) { MinValue = int.MinValue, MaxValue = int.MaxValue, Name = "Any packet loss" });
+			PacketLossFilters.Add(new PacketLossFilterViewModel(Logger) { MinValue = int.MinValue, MaxValue = int.MaxValue, Name = "Any packet loss", AnyValue = true });
 			PacketLossFilters.Add(new PacketLossFilterViewModel(Logger) { MinValue = 1, MaxValue = int.MaxValue, Name = "Above 1%", IsSelected = false });
 			PacketLossFilters.Add(new PacketLossFilterViewModel(Logger) { MinValue = 5, MaxValue = int.MaxValue, Name = "Above 5%", IsSelected = false });
 			PacketLossFilters.Add(new PacketLossFilterViewModel(Logger) { MinValue = 10, MaxValue = int.MaxValue, Name = "Above 10%", IsSelected = false });
@@ -112,19 +112,19 @@ namespace ODP.ViewModels
 			if (!TermReasonFilters.Where(filter => filter.IsSelected).Join(Session.Calls, filter => filter.Name, call => call.TrmReason, (TermReason, call) => call).Any()) return false;
 
 			delayFilter = DelayFilters.SelectedItem;
-			if (delayFilter!= null)
+			if ((delayFilter!= null) && (!delayFilter.AnyValue))
 			{
 				if (Session.Calls.SelectMany(call => call.MediaReports).All(mediaReport => (mediaReport.RTPdelay <= delayFilter.MinValue) || (mediaReport.RTPdelay > delayFilter.MaxValue))) return false;
 			}
 
 			jitterFilter = JitterFilters.SelectedItem;
-			if (jitterFilter != null)
+			if ((jitterFilter != null) && (!jitterFilter.AnyValue)) 
 			{
 				if (Session.Calls.SelectMany(call => call.MediaReports).All(mediaReport => (mediaReport.RTPjitter <= jitterFilter.MinValue) || (mediaReport.RTPjitter > jitterFilter.MaxValue))) return false;
 			}
 
 			packetLossFilter = PacketLossFilters.SelectedItem;
-			if (packetLossFilter != null)
+			if ((packetLossFilter != null) && (!packetLossFilter.AnyValue))
 			{
 				if (Session.Calls.SelectMany(call => call.MediaReports).All(mediaReport => (mediaReport.PacketLossPercent <= packetLossFilter.MinValue) || (mediaReport.PacketLossPercent > packetLossFilter.MaxValue))) return false;
 			}

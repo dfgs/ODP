@@ -25,6 +25,12 @@ namespace ODP.ViewModels
 			set { SetValue(MaxValueProperty, value); }
 		}
 
+		public static readonly DependencyProperty AnyValueProperty = DependencyProperty.Register("AnyValue", typeof(bool), typeof(DelayFilterViewModel), new PropertyMetadata(false));
+		public bool AnyValue
+		{
+			get { return (bool)GetValue(AnyValueProperty); }
+			set { SetValue(AnyValueProperty, value); }
+		}
 
 		public DelayFilterViewModel(ILogger Logger) : base(Logger)
 		{

@@ -25,7 +25,12 @@ namespace ODP.ViewModels
 			set { SetValue(MaxValueProperty, value); }
 		}
 
-
+		public static readonly DependencyProperty AnyValueProperty = DependencyProperty.Register("AnyValue", typeof(bool), typeof(PacketLossFilterViewModel), new PropertyMetadata(false));
+		public bool AnyValue
+		{
+			get { return (bool)GetValue(AnyValueProperty); }
+			set { SetValue(AnyValueProperty, value); }
+		}
 		public PacketLossFilterViewModel(ILogger Logger) : base(Logger)
 		{
 		}
