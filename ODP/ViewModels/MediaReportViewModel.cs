@@ -65,22 +65,22 @@ namespace ODP.ViewModels
 			get => Model?.RemoteRtpPort ;
 		}
 		[Browsable(true)]
-		public int? InPackets
+		public long? InPackets
 		{
 			get => Model?.InPackets ;
 		}
 		[Browsable(true)]
-		public int? OutPackets
+		public long? OutPackets
 		{
 			get => Model?.OutPackets ;
 		}
 		[Browsable(true)]
-		public int? LocalPackLoss
+		public long? LocalPackLoss
 		{
 			get => Model?.LocalPackLoss ;
 		}
 		[Browsable(true)]
-		public int? RemotePackLoss
+		public long? RemotePackLoss
 		{
 			get => Model?.RemotePackLoss ;
 		}

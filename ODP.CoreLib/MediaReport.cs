@@ -18,10 +18,10 @@ namespace ODP.CoreLib
 		public string? LocalRtpPort { get; set; }
 		public string? RemoteRtpIp { get; set; }
 		public string? RemoteRtpPort { get; set; }
-		public int? InPackets { get; set; }
-		public int? OutPackets { get; set; }
-		public int? LocalPackLoss { get; set; }
-		public int? RemotePackLoss { get; set; }
+		public long? InPackets { get; set; }
+		public long? OutPackets { get; set; }
+		public long? LocalPackLoss { get; set; }
+		public long? RemotePackLoss { get; set; }
 		public int? RTPdelay { get; set; }
 		public int? RTPjitter { get; set; }
 		public string? TxRTPssrc { get; set; }

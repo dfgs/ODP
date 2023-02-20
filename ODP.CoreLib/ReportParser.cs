@@ -105,10 +105,10 @@ namespace ODP.CoreLib
 				mediaReport.LocalRtpPort = parts[8].Trim();
 				mediaReport.RemoteRtpIp = parts[9].Trim();
 				mediaReport.RemoteRtpPort = parts[10].Trim();
-				mediaReport.InPackets = int.Parse(parts[11].Trim());
-				mediaReport.OutPackets = int.Parse(parts[12].Trim());
-				mediaReport.LocalPackLoss = int.Parse(parts[13].Trim());
-				mediaReport.RemotePackLoss = int.Parse(parts[14].Trim());
+				mediaReport.InPackets = long.Parse(parts[11].Trim());
+				mediaReport.OutPackets = long.Parse(parts[12].Trim());
+				mediaReport.LocalPackLoss = long.Parse(parts[13].Trim());
+				mediaReport.RemotePackLoss = long.Parse(parts[14].Trim());
 				mediaReport.RTPdelay = int.Parse(parts[15].Trim());
 
 				// uint int conversion bug
