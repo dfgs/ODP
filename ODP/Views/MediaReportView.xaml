@@ -9,7 +9,7 @@
  	<StackPanel>
 		<UniformGrid Columns="3">
 			<TextBlock Text="{Binding RTPdelay,StringFormat=Delay: {0} ms,FallbackValue=Delay: NA}"/>
-			<TextBlock Text="{Binding RTPjitter,StringFormat=Jitter: {0} ms,FallbackValue=Jitter: NA}"/>
+			<TextBlock Text="{Binding RTPjitterms,StringFormat=Jitter: {0} ms,FallbackValue=Jitter: NA}"/>
 			<TextBlock Text="{Binding PacketLossPercent,StringFormat=Packet loss: {0}%,FallbackValue=Packet loss: NA}"/>
 		</UniformGrid>
 		<views:RTPView />

@@ -95,6 +95,12 @@ namespace ODP.ViewModels
 			get => Model?.RTPjitter ;
 		}
 		[Browsable(true)]
+		public double? RTPjitterms
+		{
+			get => Model?.RTPjitter/8000;
+		}
+
+		[Browsable(true)]
 		public string? TxRTPssrc
 		{
 			get => Model?.TxRTPssrc ;
@@ -191,8 +197,8 @@ namespace ODP.ViewModels
 		{
 			get
 			{
-				if ((LocalPackLoss > 1) || (RTPjitter >= 30) || (RTPdelay >= 250)) return ODP.ViewModels.Quality.Bad;
-				if ((RTPjitter >= 20) || (RTPdelay >= 150)) return ODP.ViewModels.Quality.Average;
+				if ((LocalPackLoss > 1) || (RTPjitterms >= 30) || (RTPdelay >= 250)) return ODP.ViewModels.Quality.Bad;
+				if ((RTPjitterms >= 20) || (RTPdelay >= 150)) return ODP.ViewModels.Quality.Average;
 				return ODP.ViewModels.Quality.Good;
 			}
 		}

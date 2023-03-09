@@ -72,9 +72,9 @@ namespace ODP.ViewModels
 		{
 			return Calls.WithAudio().SelectMany(call => call.MediaReports.WithValidDelay()).Select(mediaReport => mediaReport.RTPdelay ?? 0).MaxOrDefault(0);
 		}
-		public static int MaxJitter(this IEnumerable<CallViewModel> Calls)
+		public static double MaxJitter(this IEnumerable<CallViewModel> Calls)
 		{
-			return Calls.WithAudio().SelectMany(call => call.MediaReports.WithValidjitter()).Select(mediaReport => mediaReport.RTPjitter ?? 0).MaxOrDefault(0);
+			return Calls.WithAudio().SelectMany(call => call.MediaReports.WithValidjitter()).Select(mediaReport => mediaReport.RTPjitterms ?? 0).MaxOrDefault(0);
 		}
 
 		public static double AvgPacketLoss(this IEnumerable<CallViewModel> Calls)
@@ -88,7 +88,7 @@ namespace ODP.ViewModels
 		}
 		public static double AvgJitter(this IEnumerable<CallViewModel> Calls)
 		{
-			return Calls.WithAudio().SelectMany(call => call.MediaReports.WithValidjitter()).Select(mediaReport => mediaReport.RTPjitter ?? 0d).AverageOrDefault(0d);
+			return Calls.WithAudio().SelectMany(call => call.MediaReports.WithValidjitter()).Select(mediaReport => mediaReport.RTPjitterms ?? 0d).AverageOrDefault(0d);
 		}
 
 
