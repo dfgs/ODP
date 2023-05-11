@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace ODP.CoreLib
 {
-	public class MediaReport:Report
+	public class CDRMediaReport:CDRReport
 	{
 		public string? MediaReportType { get; set; }
 		public string? Cid { get; set; }

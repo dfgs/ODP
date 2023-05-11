@@ -1,7 +1,7 @@
 namespace ODP.CoreLib.UnitTest
 {
 	[TestClass]
-	public class SyslogParserUnitTest
+	public class CDRSyslogParserUnitTest
 	{
 
 
@@ -14,10 +14,10 @@ namespace ODP.CoreLib.UnitTest
 		[DataRow("10:53:22.554  10.0.10.11  local1.info[S = 151] |MEDIA_UPDATE   |8719331645122022191524@10.0.2.11                                |c62532:22:743           |8    |AUDIO     |g711Ulaw64k    |20   |10.0.2.11           |6004           |10.0.2.12           |6004         |209       |188       |0            |22            |0        |4        |3073419205    |3900521493    |127         |127          |127       |127        |46             |                    |0              |                    |0              |NO_TRANSCODING   |2", "MEDIA_UPDATE   |8719331645122022191524@10.0.2.11                                |c62532:22:743           |8    |AUDIO     |g711Ulaw64k    |20   |10.0.2.11           |6004           |10.0.2.12           |6004         |209       |188       |0            |22            |0        |4        |3073419205    |3900521493    |127         |127          |127       |127        |46             |                    |0              |                    |0              |NO_TRANSCODING   |2")]
 		public void ShouldParseValidReport(string Syslog,string ExpectedReportLine)
 		{
-			SyslogParser syslogParser;
+			CDRSyslogParser syslogParser;
 			string? reportLine;
 
-			syslogParser = new SyslogParser();
+			syslogParser = new CDRSyslogParser();
 
 			reportLine = syslogParser.Parse(Syslog);
 			Assert.IsNotNull(reportLine);
@@ -32,10 +32,10 @@ namespace ODP.CoreLib.UnitTest
 		[DataRow("14:35:40.053  10.0.10.11  local1.info    [S=1] |SBCReportType  |EPTyp     |SIPCallId                                                       |SessionId               |Orig |SourceIp            |SourcePort   |DestIp              |DestPort   |TransportType   |SrcURI                                   |SrcURIBeforeMap                          |DstURI                                   |DstURIBeforeMap                          |Duration|TrmSd|TrmReason                               |TrmReasonCategory|SetupTime                          |ConnectTime                        |ReleaseTime                        |RedirectReason |RedirectURINum                           |RedirectURINumBeforeMap                  |TxSigIPDiffServ|IPGroup (name)                  |SrdId (name)                    |SIPInterfaceId (name)           |ProxySetId (name)               |IpProfileId (name)              |MediaRealmId (name)             |DirectMedia|SIPTrmReason|SIPTermDesc               |Caller                                             |Callee                               |Trigger |LegId|VoiceAIConnectorName")]
 		public void ShouldNotParseInvalidReport(string Syslog)
 		{
-			SyslogParser syslogParser;
+			CDRSyslogParser syslogParser;
 			string? cdrLine;
 
-			syslogParser = new SyslogParser();
+			syslogParser = new CDRSyslogParser();
 
 			cdrLine = syslogParser.Parse(Syslog);
 			Assert.IsNull(cdrLine);

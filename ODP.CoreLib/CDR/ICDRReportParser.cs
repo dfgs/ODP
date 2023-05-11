@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace ODP.CoreLib
 {
-	public abstract class Report
+	public interface ICDRReportParser
 	{
-		public string? SIPCallId { get; set; }
-		public string? SessionId { get; set; }
-
+		CDRReport? Parse(string Line);
 	}
 }

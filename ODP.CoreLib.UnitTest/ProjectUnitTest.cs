@@ -20,10 +20,10 @@ namespace ODP.CoreLib.UnitTest
 			project = new Project();
 
 #pragma warning disable CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
-			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync(null, Mock.Of<SyslogParser>(), new ReportParser(new DateTimeParser()), new Progress<long>()));
-			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", null, new ReportParser(new DateTimeParser()), new Progress<long>()));
-			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", Mock.Of<SyslogParser>(), null, new Progress<long>()));
-			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", Mock.Of<SyslogParser>(), new ReportParser(new DateTimeParser()), null));
+			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync(null, Mock.Of<CDRSyslogParser>(), new CDRReportParser(new DateTimeParser()), new Progress<long>()));
+			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", null, new CDRReportParser(new DateTimeParser()), new Progress<long>()));
+			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", Mock.Of<CDRSyslogParser>(), null, new Progress<long>()));
+			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", Mock.Of<CDRSyslogParser>(), new CDRReportParser(new DateTimeParser()), null));
 #pragma warning restore CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
 
 		}
@@ -43,11 +43,11 @@ namespace ODP.CoreLib.UnitTest
 		[TestMethod]
 		public void AddReportShouldAddSBCReport()
 		{
-			Report report;
+			CDRReport report;
 			Project project;
 
 
-			report = new SBCReport() { SessionId = "Session1", SIPCallId = "CallID1" };
+			report = new CDRSBCReport() { SessionId = "Session1", SIPCallId = "CallID1" };
 
 			project = new Project();
 
@@ -64,11 +64,11 @@ namespace ODP.CoreLib.UnitTest
 		[TestMethod]
 		public void AddReportShouldAddMediaReport()
 		{
-			Report report;
+			CDRReport report;
 			Project project;
 
 
-			report = new MediaReport() { SessionId = "Session1", SIPCallId = "CallID1" };
+			report = new CDRMediaReport() { SessionId = "Session1", SIPCallId = "CallID1" };
 
 			project = new Project();
 
@@ -84,12 +84,12 @@ namespace ODP.CoreLib.UnitTest
 		[TestMethod]
 		public void AddSeveralReportShouldAddDifferentsSessionsAndCalls()
 		{
-			Report report;
+			CDRReport report;
 			Project project;
 
 			project = new Project();
 
-			report = new SBCReport() { SessionId = "Session1", SIPCallId = "CallID1" };
+			report = new CDRSBCReport() { SessionId = "Session1", SIPCallId = "CallID1" };
 			project.AddReport(report);
 			Assert.AreEqual(1, project.Sessions.Count);
 			Assert.AreEqual("Session1", project.Sessions[0].SessionId);
@@ -99,7 +99,7 @@ namespace ODP.CoreLib.UnitTest
 			Assert.AreEqual(0, project.Sessions[0].Calls[0].MediaReports.Count);
 
 
-			report = new SBCReport() { SessionId = "Session2", SIPCallId = "CallID2" };
+			report = new CDRSBCReport() { SessionId = "Session2", SIPCallId = "CallID2" };
 			project.AddReport(report);
 			Assert.AreEqual(2, project.Sessions.Count);
 			Assert.AreEqual("Session2", project.Sessions[1].SessionId);
@@ -108,7 +108,7 @@ namespace ODP.CoreLib.UnitTest
 			Assert.AreEqual(1, project.Sessions[1].Calls[0].SBCReports.Count);
 			Assert.AreEqual(0, project.Sessions[1].Calls[0].MediaReports.Count);
 
-			report = new SBCReport() { SessionId = "Session2", SIPCallId = "CallID2" };
+			report = new CDRSBCReport() { SessionId = "Session2", SIPCallId = "CallID2" };
 			project.AddReport(report);
 			Assert.AreEqual(2, project.Sessions.Count);
 			Assert.AreEqual("Session2", project.Sessions[1].SessionId);

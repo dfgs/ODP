@@ -8,17 +8,17 @@ using System.Xml.Linq;
 
 namespace ODP.CoreLib
 {
-	public class ReportParser : IReportParser
+	public class CDRReportParser : ICDRReportParser
 	{
 		private IDateTimeParser dateTimeParser;
 
-		public ReportParser(IDateTimeParser DateTimeParser)
+		public CDRReportParser(IDateTimeParser DateTimeParser)
 		{
 			if (DateTimeParser == null) throw new ArgumentNullException(nameof(DateTimeParser));
 			this.dateTimeParser = DateTimeParser;
 		}
 
-		public Report? Parse(string Line)
+		public CDRReport? Parse(string Line)
 		{
 			string[] parts;
 
@@ -30,13 +30,13 @@ namespace ODP.CoreLib
 
 			if (Line.StartsWith("CALL_"))
 			{
-				SBCReport sbcReport;
+				CDRSBCReport sbcReport;
 				
 				parts = Line.Split('|');
 				if (parts.Length != 39) 
 					throw new InvalidDataException("Invalid SBC report format, please check SBC configuration");
 
-				sbcReport = new SBCReport();
+				sbcReport = new CDRSBCReport();
 				sbcReport.SBCReportType = parts[0].Trim();
 				sbcReport.EPTyp = parts[1].Trim();
 				sbcReport.SIPCallId = parts[2].Trim();
@@ -86,14 +86,14 @@ namespace ODP.CoreLib
 
 			if (Line.StartsWith("MEDIA_"))
 			{
-				MediaReport mediaReport;
+				CDRMediaReport mediaReport;
 				string part;
 
 				parts = Line.Split('|');
 				if (parts.Length != 30) 
 					throw new InvalidDataException("Invalid media report format, please check SBC configuration");
 
-				mediaReport = new MediaReport();
+				mediaReport = new CDRMediaReport();
 				mediaReport.MediaReportType = parts[0].Trim();
 				mediaReport.SIPCallId = parts[1].Trim();
 				mediaReport.SessionId = parts[2].Trim();

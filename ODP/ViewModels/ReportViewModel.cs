@@ -11,7 +11,7 @@ using ViewModelLib;
 namespace ODP.ViewModels
 {
 	public abstract class ReportViewModel<ModelT> : ViewModel<ModelT>
-		where ModelT:Report
+		where ModelT:CDRReport
 	{
 
 

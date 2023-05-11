@@ -10,7 +10,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class SBCReportViewModel : ReportViewModel<SBCReport>
+	public class SBCReportViewModel : ReportViewModel<CDRSBCReport>
 	{
 
 		public string? SBCReportType

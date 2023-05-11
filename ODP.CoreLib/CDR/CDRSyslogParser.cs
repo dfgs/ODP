@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ODP.CoreLib
 {
-	public class SyslogParser : ISyslogParser
+	public class CDRSyslogParser : ICDRSyslogParser
 	{
 		private static Regex CDRRegex = new Regex(@"[^]]+] +\|(?<CDR>(CALL|MEDIA|Call|Media).*)");
 

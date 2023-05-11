@@ -11,7 +11,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class MediaReportViewModel : ReportViewModel<MediaReport>, IQualityProvider
+	public class MediaReportViewModel : ReportViewModel<CDRMediaReport>, IQualityProvider
 	{
 		private static SolidColorBrush NABrush = new SolidColorBrush(Colors.Gray);
 		private static SolidColorBrush BadBrush = new SolidColorBrush(Colors.Red);

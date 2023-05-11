@@ -141,16 +141,16 @@ namespace ODP.ViewModels
 
 		public async Task AddFilesAsync(IEnumerable<string> FileNames,IProgress<long> Progress)
 		{
-			ISyslogParser syslogParser;
-			IReportParser reportParser;
+			ICDRSyslogParser syslogParser;
+			ICDRReportParser reportParser;
 			int index,count;
 
 			if (Model == null) throw new InvalidOperationException("Model is not loaded");
 
 			
 
-			syslogParser = new SyslogParser();
-			reportParser = new ReportParser(new DateTimeParser());
+			syslogParser = new CDRSyslogParser();
+			reportParser = new CDRReportParser(new DateTimeParser());
 
 			index = 1;count = FileNames.Count();
 			await foreach(string fileName in FileNames.AsAsyncEnumerable())

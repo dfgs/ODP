@@ -28,11 +28,11 @@ namespace ODP.CoreLib.UnitTest
 		[TestMethod]
 		public void AddReportShouldAddSBCReport()
 		{
-			Report report;
+			CDRReport report;
 			Session session;
 
 
-			report = new SBCReport() { SessionId = "Session1", SIPCallId = "CallID1" };
+			report = new CDRSBCReport() { SessionId = "Session1", SIPCallId = "CallID1" };
 
 			session = new Session() { SessionId = "Session1" };
 
@@ -46,11 +46,11 @@ namespace ODP.CoreLib.UnitTest
 		[TestMethod]
 		public void AddReportShouldAddMediaReport()
 		{
-			Report report;
+			CDRReport report;
 			Session session;
 
 
-			report = new MediaReport() { SessionId = "Session1", SIPCallId = "CallID1" };
+			report = new CDRMediaReport() { SessionId = "Session1", SIPCallId = "CallID1" };
 
 			session = new Session() { SessionId = "Session1" };
 
@@ -63,13 +63,13 @@ namespace ODP.CoreLib.UnitTest
 		[TestMethod]
 		public void AddSeveralReportShouldAddDifferentsCalls()
 		{
-			Report report;
+			CDRReport report;
 			Session session;
 
 			session = new Session() { SessionId = "Session1" };
 
 
-			report = new SBCReport() { SessionId = "Session1", SIPCallId = "CallID1" };
+			report = new CDRSBCReport() { SessionId = "Session1", SIPCallId = "CallID1" };
 
 			session.AddReport(report);
 			Assert.AreEqual(1, session.Calls.Count);
@@ -77,7 +77,7 @@ namespace ODP.CoreLib.UnitTest
 			Assert.AreEqual(1, session.Calls[0].SBCReports.Count);
 			Assert.AreEqual(0, session.Calls[0].MediaReports.Count);
 
-			report = new SBCReport() { SessionId = "Session1", SIPCallId = "CallID1" };
+			report = new CDRSBCReport() { SessionId = "Session1", SIPCallId = "CallID1" };
 
 			session.AddReport(report);
 			Assert.AreEqual(1, session.Calls.Count);
@@ -85,7 +85,7 @@ namespace ODP.CoreLib.UnitTest
 			Assert.AreEqual(2, session.Calls[0].SBCReports.Count);
 			Assert.AreEqual(0, session.Calls[0].MediaReports.Count);
 			
-			report = new SBCReport() { SessionId = "Session1", SIPCallId = "CallID2" };
+			report = new CDRSBCReport() { SessionId = "Session1", SIPCallId = "CallID2" };
 
 			session.AddReport(report);
 			Assert.AreEqual(2, session.Calls.Count);

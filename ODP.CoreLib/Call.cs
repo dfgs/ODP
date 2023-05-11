@@ -10,33 +10,33 @@ namespace ODP.CoreLib
 	{
 		public string? SIPCallId { get; set; }
 
-		public List<SBCReport> SBCReports
+		public List<CDRSBCReport> SBCReports
 		{
 			get;
 			set;
 		}
-		public List<MediaReport> MediaReports
+		public List<CDRMediaReport> MediaReports
 		{
 			get;
 			set;
 		}
 		public Call()
 		{
-			SBCReports= new List<SBCReport>();
-			MediaReports= new List<MediaReport>();
+			SBCReports= new List<CDRSBCReport>();
+			MediaReports= new List<CDRMediaReport>();
 		}
 
-		public void AddReport(Report Report)
+		public void AddReport(CDRReport Report)
 		{
 
 			if (Report == null) throw new ArgumentNullException(nameof(Report));
 
 			switch (Report)
 			{
-				case SBCReport sbcReport:
+				case CDRSBCReport sbcReport:
 					SBCReports.Add(sbcReport);
 					break;
-				case MediaReport mediaReport:
+				case CDRMediaReport mediaReport:
 					MediaReports.Add(mediaReport);
 					break;
 			}

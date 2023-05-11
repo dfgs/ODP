@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ODP.CoreLib
 {
-	public interface IReportParser
+	public interface ICDRSyslogParser
 	{
-		Report? Parse(string Line);
+		string? Parse(string? Syslog);
 	}
 }

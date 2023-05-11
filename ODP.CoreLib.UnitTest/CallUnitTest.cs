@@ -28,10 +28,10 @@ namespace ODP.CoreLib.UnitTest
 		[TestMethod]
 		public void AddReportShouldAddSBCReport()
 		{
-			Report report;
+			CDRReport report;
 			Call call;
 
-			report = new SBCReport() { SessionId="Session1",SIPCallId="CallID1" };
+			report = new CDRSBCReport() { SessionId="Session1",SIPCallId="CallID1" };
 
 			call = new Call() { SIPCallId = "CallID1" };
 
@@ -43,10 +43,10 @@ namespace ODP.CoreLib.UnitTest
 		[TestMethod]
 		public void AddReportShouldAddMediaReport()
 		{
-			Report report;
+			CDRReport report;
 			Call call;
 
-			report = new MediaReport() { SessionId = "Session1", SIPCallId = "CallID1" };
+			report = new CDRMediaReport() { SessionId = "Session1", SIPCallId = "CallID1" };
 
 			call = new Call() { SIPCallId = "CallID1" };
 

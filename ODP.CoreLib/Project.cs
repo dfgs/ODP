@@ -19,7 +19,7 @@ namespace ODP.CoreLib
 			Sessions= new List<Session>();
 		}
 
-		public void AddReport(Report Report)
+		public void AddReport(CDRReport Report)
 		{
 			Session? session;
 			
@@ -37,11 +37,11 @@ namespace ODP.CoreLib
 		}
 
 
-		public async Task AddFileAsync(string FileName,ISyslogParser SyslogParser,IReportParser ReportParser, IProgress<long> Progress)
+		public async Task AddFileAsync(string FileName,ICDRSyslogParser SyslogParser,ICDRReportParser ReportParser, IProgress<long> Progress)
 		{
 			string? syslogLine;
 			string? reportLine;
-			Report? report;
+			CDRReport? report;
 			long percent,oldPercent=-1;
 
 			if (FileName== null) throw new ArgumentNullException(nameof(FileName));

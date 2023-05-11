@@ -21,7 +21,7 @@ namespace ODP.CoreLib
 			Calls = new List<Call>();
 		}
 
-		public void AddReport(Report Report)
+		public void AddReport(CDRReport Report)
 		{
 			Call? call;
 

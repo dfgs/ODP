@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace ODP.CoreLib
 {
-	public class SBCReport:Report
+	public class CDRSBCReport:CDRReport
 	{
 		public string? SBCReportType { get; set; }
 		public string? EPTyp { get; set; }
