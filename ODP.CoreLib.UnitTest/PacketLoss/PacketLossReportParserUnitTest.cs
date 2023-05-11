@@ -16,14 +16,16 @@ namespace ODP.CoreLib.UnitTest
 
 		[DataTestMethod]
 		[DataRow("17:15:52.048")]
+		[DataRow("2023-03-06 08:40:00")]
 		public void ShouldParseDateTime(string Line)
 		{
-			// HH:mm:ss.fff  zzz ddd MMM dd yyyy
-			DateTime.ParseExact(Line, "HH:mm:ss.fff", CultureInfo.InvariantCulture);
+			// HH:mm:ss.fff
+			DateTime.ParseExact(Line,new string[] { "yyyy-MM-dd HH:mm:ss", "HH:mm:ss.fff" }, CultureInfo.InvariantCulture);
 		}
 
 		[DataTestMethod]
 		[DataRow("17:15:52.048  172.200.0.10  local0.warn    [S=1030955] [BID=c64c90:24]  Packets-Loss report [PL range]=#media-legs: [No PL]=1, [up to 0.5%]=2, [0.5% - 1%]=3, [1% - 2%]=4, [2% - 5%]=5, [5% - 100%]=6 [Time:20-02@17:15:50.930]\r\n")]
+		[DataRow("2023-03-06 17:15:52 local0.warning 100.112.70.10  [S=40600129] [BID=cd91eb:43]  Packets-Loss report [PL range]=#media-legs: [No PL]=1, [up to 0.5%]=2, [0.5% - 1%]=3, [1% - 2%]=4, [2% - 5%]=5, [5% - 100%]=6 [Time:06-03@08:40:45.035]")]
 		public void ShouldParseValidReportLine(string Line)
 		{
 			PacketLossReportParser reportParser;

@@ -10,7 +10,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class SBCReportViewModel : ReportViewModel<CDRSBCReport>
+	public class CDRSBCReportViewModel : CDRReportViewModel<CDRSBCReport>
 	{
 
 		public string? SBCReportType
@@ -162,7 +162,7 @@ namespace ODP.ViewModels
 			get => Model?.VoiceAIConnectorName;
 		}
 
-		public SBCReportViewModel(ILogger Logger) : base(Logger)
+		public CDRSBCReportViewModel(ILogger Logger) : base(Logger)
 		{
 		}
 	}

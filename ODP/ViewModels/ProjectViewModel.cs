@@ -40,6 +40,13 @@ namespace ODP.ViewModels
 			get { return (string)GetValue(PathProperty); }
 			set { SetValue(PathProperty, value); }
 		}
+		
+		public static readonly DependencyProperty PacketLossReportsProperty = DependencyProperty.Register("PacketLossReports", typeof(ViewModelCollection<PacketLossReportViewModel>), typeof(ProjectViewModel), new PropertyMetadata(null));
+		public ViewModelCollection<PacketLossReportViewModel> PacketLossReports
+		{
+			get { return (ViewModelCollection<PacketLossReportViewModel>)GetValue(PacketLossReportsProperty); }
+			set { SetValue(PacketLossReportsProperty, value); }
+		}
 
 
 		public static readonly DependencyProperty SessionsProperty = DependencyProperty.Register("Sessions", typeof(ViewModelCollection<SessionViewModel>), typeof(ProjectViewModel), new PropertyMetadata(null));
@@ -80,6 +87,7 @@ namespace ODP.ViewModels
 		{
 
 			loadedFiles = new List<string>();
+			PacketLossReports = new ViewModelCollection<PacketLossReportViewModel>(Logger);
 			Sessions = new ViewModelCollection<SessionViewModel>(Logger);
 			FilteredSessions = new ViewModelCollection<SessionViewModel>(Logger);
 			session = new ViewModelCollection<FilterViewModel>(Logger);
@@ -98,8 +106,10 @@ namespace ODP.ViewModels
 			if (Model == null)
 			{
 				Sessions.Clear();
+				PacketLossReports.Clear();
 				return;
 			}
+			PacketLossReports.Load(Model.PacketLossReports.ToViewModels(() => new PacketLossReportViewModel(Logger)));
 			Sessions.Load( Model.Sessions.ToViewModels(()=>new SessionViewModel(Logger)));
 			OnSessionsChanged();
 			RefreshFilters();
@@ -141,16 +151,20 @@ namespace ODP.ViewModels
 
 		public async Task AddFilesAsync(IEnumerable<string> FileNames,IProgress<long> Progress)
 		{
-			IPacketLossSyslogParser syslogParser;
-			ICDRReportParser reportParser;
+			ICDRSyslogParser CDRSyslogParser;
+			ICDRReportParser CDRReportParser;
+			IPacketLossSyslogParser PacketLossSyslogParser;
+			IPacketLossReportParser PacketLossReportParser;
 			int index,count;
 
 			if (Model == null) throw new InvalidOperationException("Model is not loaded");
 
-			
 
-			syslogParser = new CDRSyslogParser();
-			reportParser = new CDRReportParser(new DateTimeParser());
+
+			CDRSyslogParser = new CDRSyslogParser();
+			CDRReportParser = new CDRReportParser(new DateTimeParser());
+			PacketLossSyslogParser = new PacketLossSyslogParser();
+			PacketLossReportParser = new PacketLossReportParser(new DateTimeParser());
 
 			index = 1;count = FileNames.Count();
 			await foreach(string fileName in FileNames.AsAsyncEnumerable())
@@ -158,10 +172,14 @@ namespace ODP.ViewModels
 				RunningTask = $"Loading file ({index}/{count})...";
 				if (loadedFiles.Contains(fileName)) continue;
 				loadedFiles.Add(fileName);
-				await TryAsync(() => Model.AddFileAsync(fileName,syslogParser,reportParser,Progress)).OrThrow($"Failed to read syslog file {fileName}");
+				await TryAsync(() => Model.AddFileAsync(fileName,
+					CDRSyslogParser,CDRReportParser,
+					PacketLossSyslogParser,PacketLossReportParser,
+					Progress)).OrThrow($"Failed to read syslog file {fileName}");
 				index++;
 			}
-			
+
+			PacketLossReports.Load(Model.PacketLossReports.ToViewModels(() => new PacketLossReportViewModel(Logger)));
 			Sessions.Load(Model.Sessions.ToViewModels(() => new SessionViewModel(Logger)));
 
 			OnSessionsChanged();

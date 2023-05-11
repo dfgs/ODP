@@ -22,15 +22,15 @@ namespace ODP.ViewModels
 		{
 			return Calls.Where(call => call.HasMediaReport);
 		}
-		public static IEnumerable<MediaReportViewModel> WithValidDelay(this IEnumerable<MediaReportViewModel> Reports)
+		public static IEnumerable<CDRMediaReportViewModel> WithValidDelay(this IEnumerable<CDRMediaReportViewModel> Reports)
 		{
 			return Reports.Where(report => report.HasValidDelay);
 		}
-		public static IEnumerable<MediaReportViewModel> WithValidjitter(this IEnumerable<MediaReportViewModel> Reports)
+		public static IEnumerable<CDRMediaReportViewModel> WithValidjitter(this IEnumerable<CDRMediaReportViewModel> Reports)
 		{
 			return Reports.Where(report => report.HasValidJitter);
 		}
-		public static IEnumerable<MediaReportViewModel> WithValidPacketLoss(this IEnumerable<MediaReportViewModel> Reports)
+		public static IEnumerable<CDRMediaReportViewModel> WithValidPacketLoss(this IEnumerable<CDRMediaReportViewModel> Reports)
 		{
 			return Reports.Where(report => report.HasValidPacketLoss);
 		}
@@ -101,7 +101,7 @@ namespace ODP.ViewModels
 		{
 			return Sessions.SelectMany(session => session.Calls); 
 		}
-		public static IEnumerable<MediaReportViewModel> MediaReports(this IEnumerable<CallViewModel> Calls)
+		public static IEnumerable<CDRMediaReportViewModel> MediaReports(this IEnumerable<CallViewModel> Calls)
 		{
 			return Calls.SelectMany(call => call.MediaReports);
 		}

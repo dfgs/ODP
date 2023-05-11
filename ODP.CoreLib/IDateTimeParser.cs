@@ -8,7 +8,7 @@ namespace ODP.CoreLib
 {
 	public interface IDateTimeParser
 	{
-		DateTime? ParseLongDate(string? Input);
-		DateTime? ParseShortDate(string? Input);
+		DateTime? ParseCDRDate(string? Input);
+		DateTime? ParseSyslogDate(string? Input);
 	}
 }

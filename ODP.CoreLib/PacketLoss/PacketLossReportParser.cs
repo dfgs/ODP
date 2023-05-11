@@ -9,7 +9,8 @@ namespace ODP.CoreLib
 {
 	public class PacketLossReportParser : IPacketLossReportParser
 	{
-		private static Regex PacketLossRegex = new Regex(@"(?<TimeStamp>\d\d:\d\d:\d\d\.\d\d\d).*Packets-Loss report.+\[No PL]=(?<Level0>\d+)[^]]+\]=(?<Level1>\d+)[^]]+\]=(?<Level2>\d+)[^]]+\]=(?<Level3>\d+)[^]]+\]=(?<Level4>\d+)[^]]+\]=(?<Level5>\d+)");
+		// 2023-03-06 
+		private static Regex PacketLossRegex = new Regex(@"(?<TimeStamp>(\d\d\d\d-\d\d-\d\d )?\d\d:\d\d:\d\d(\.\d\d\d)?).*Packets-Loss report.+\[No PL]=(?<Level0>\d+)[^]]+\]=(?<Level1>\d+)[^]]+\]=(?<Level2>\d+)[^]]+\]=(?<Level3>\d+)[^]]+\]=(?<Level4>\d+)[^]]+\]=(?<Level5>\d+)");
 		private IDateTimeParser dateTimeParser;
 
 
@@ -33,7 +34,7 @@ namespace ODP.CoreLib
 			if (!match.Success) throw new InvalidDataException("Invalid PacketLoss report format, please check SBC configuration");
 			
 			report = new PacketLossReport();
-			timeStamp= dateTimeParser.ParseShortDate(match.Groups["TimeStamp"].Value);
+			timeStamp= dateTimeParser.ParseSyslogDate(match.Groups["TimeStamp"].Value);
 			if (!timeStamp.HasValue) throw new InvalidDataException("Invalid PacketLoss timestamp format, please check SBC configuration");
 			report.ReportTime = timeStamp.Value;
 			report.CallsCountLevel0 = uint.Parse(match.Groups["Level0"].Value);

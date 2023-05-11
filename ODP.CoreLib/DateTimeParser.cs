@@ -9,16 +9,17 @@ namespace ODP.CoreLib
 {
 	public class DateTimeParser : IDateTimeParser
 	{
-		public DateTime? ParseLongDate(string? Input)
+		private static string[] validSyslogFormats = new string[] { "yyyy-MM-dd HH:mm:ss", "HH:mm:ss.fff" };
+		public DateTime? ParseCDRDate(string? Input)
 		{
 			if (string.IsNullOrEmpty(Input)) return null;
 			return DateTime.ParseExact(Input, "HH:mm:ss.fff  'UTC' ddd MMM dd yyyy", CultureInfo.InvariantCulture);
 		}
 
-		public DateTime? ParseShortDate(string? Input)
+		public DateTime? ParseSyslogDate(string? Input)
 		{
 			if (string.IsNullOrEmpty(Input)) return null;
-			return DateTime.ParseExact(Input, "HH:mm:ss.fff", CultureInfo.InvariantCulture);
+			return DateTime.ParseExact(Input, validSyslogFormats, CultureInfo.InvariantCulture);
 		}
 	}
 }

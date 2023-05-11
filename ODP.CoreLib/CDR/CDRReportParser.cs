@@ -55,9 +55,9 @@ namespace ODP.CoreLib
 				sbcReport.TrmSd = parts[15].Trim();
 				sbcReport.TrmReason = parts[16].Trim();
 				sbcReport.TrmReasonCategory = parts[17].Trim();
-				sbcReport.SetupTime = dateTimeParser.ParseLongDate(parts[18].Trim());
-				sbcReport.ConnectTime = dateTimeParser.ParseLongDate(parts[19].Trim());
-				sbcReport.ReleaseTime = dateTimeParser.ParseLongDate(parts[20].Trim());
+				sbcReport.SetupTime = dateTimeParser.ParseCDRDate(parts[18].Trim());
+				sbcReport.ConnectTime = dateTimeParser.ParseCDRDate(parts[19].Trim());
+				sbcReport.ReleaseTime = dateTimeParser.ParseCDRDate(parts[20].Trim());
 				sbcReport.RedirectReason = parts[21].Trim();
 				sbcReport.RedirectURINum = parts[22].Trim();
 				sbcReport.RedirectURINumBeforeMap = parts[23].Trim();

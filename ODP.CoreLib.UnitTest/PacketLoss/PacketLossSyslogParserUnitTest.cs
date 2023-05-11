@@ -7,6 +7,7 @@ namespace ODP.CoreLib.UnitTest
 
 		[DataTestMethod]
 		[DataRow("17:15:52.048  172.200.0.10  local0.warn    [S=1030955] [BID=c64c90:24]  Packets-Loss report [PL range]=#media-legs: [No PL]=17, [up to 0.5%]=0, [0.5% - 1%]=1, [1% - 2%]=0, [2% - 5%]=0, [5% - 100%]=0 [Time:20-02@17:15:50.930]", "17:15:52.048  172.200.0.10  local0.warn    [S=1030955] [BID=c64c90:24]  Packets-Loss report [PL range]=#media-legs: [No PL]=17, [up to 0.5%]=0, [0.5% - 1%]=1, [1% - 2%]=0, [2% - 5%]=0, [5% - 100%]=0 [Time:20-02@17:15:50.930]")]
+		[DataRow("2023-03-06 08:40:00 local0.warning 100.112.70.10  [S=40600129][BID=cd91eb:43] Packets-Loss report[PL range] =#media-legs: [No PL]=64, [up to 0.5%]=1, [0.5% - 1%]=0, [1% - 2%]=0, [2% - 5%]=0, [5% - 100%]=1 [Time:06-03@08:40:45.035]", "2023-03-06 08:40:00 local0.warning 100.112.70.10  [S=40600129][BID=cd91eb:43] Packets-Loss report[PL range] =#media-legs: [No PL]=64, [up to 0.5%]=1, [0.5% - 1%]=0, [1% - 2%]=0, [2% - 5%]=0, [5% - 100%]=1 [Time:06-03@08:40:45.035]")]
 		public void ShouldParseValidReport(string Syslog,string ExpectedReportLine)
 		{
 			PacketLossSyslogParser syslogParser;

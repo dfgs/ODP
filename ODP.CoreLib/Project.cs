@@ -13,13 +13,20 @@ namespace ODP.CoreLib
 			set;
 		}
 
+		public List<PacketLossReport> PacketLossReports
+		{
+			get;
+			set;
+		}
+
 
 		public Project()
 		{
 			Sessions= new List<Session>();
+			PacketLossReports= new List<PacketLossReport>();
 		}
 
-		public void AddReport(CDRReport Report)
+		public void AddCDRReport(CDRReport Report)
 		{
 			Session? session;
 			
@@ -36,17 +43,28 @@ namespace ODP.CoreLib
 
 		}
 
+		public void AddPacketLossReport(PacketLossReport Report)
+		{
+			if (Report == null) throw new ArgumentNullException(nameof(Report));
+			PacketLossReports.Add(Report);
+		}
 
-		public async Task AddFileAsync(string FileName,IPacketLossSyslogParser SyslogParser,ICDRReportParser ReportParser, IProgress<long> Progress)
+		public async Task AddFileAsync(string FileName,
+			ICDRSyslogParser CDRSyslogParser,ICDRReportParser CDRReportParser,
+			IPacketLossSyslogParser PacketLossSyslogParser, IPacketLossReportParser PacketLossReportParser,
+			IProgress<long> Progress)
 		{
 			string? syslogLine;
 			string? reportLine;
-			CDRReport? report;
+			CDRReport? CDRReport;
+			PacketLossReport packetLossReport;
 			long percent,oldPercent=-1;
 
 			if (FileName== null) throw new ArgumentNullException(nameof(FileName));
-			if (SyslogParser == null) throw new ArgumentNullException(nameof(SyslogParser));
-			if (ReportParser == null) throw new ArgumentNullException(nameof(ReportParser));
+			if (CDRSyslogParser == null) throw new ArgumentNullException(nameof(CDRSyslogParser));
+			if (CDRReportParser == null) throw new ArgumentNullException(nameof(CDRReportParser));
+			if (PacketLossSyslogParser == null) throw new ArgumentNullException(nameof(PacketLossSyslogParser));
+			if (PacketLossReportParser == null) throw new ArgumentNullException(nameof(PacketLossReportParser));
 			if (Progress == null) throw new ArgumentNullException(nameof(Progress));
 
 			using (FileStream stream = new FileStream(FileName, FileMode.Open,FileAccess.Read,FileShare.ReadWrite))
@@ -62,26 +80,61 @@ namespace ODP.CoreLib
 						oldPercent = percent;
 						Progress.Report(percent);
 					}
-					//await Task.Delay(10);
+
+					// Trying to load CDR report
 					try
 					{
-						reportLine = SyslogParser.Parse(syslogLine);
+						reportLine = CDRSyslogParser.Parse(syslogLine);
+						
 					}
 					catch(Exception ex)
 					{
 						throw new Exception($"Failed to parse syslog line: {syslogLine}",ex);
 					}
-					if (reportLine == null) continue;
+
+					if (reportLine != null)
+					{
+						try
+						{
+							CDRReport = CDRReportParser.Parse(reportLine);
+							if (CDRReport!=null) AddCDRReport(CDRReport);
+							continue;
+						}
+						catch (Exception ex)
+						{
+							throw new Exception($"Failed to parse report line: {reportLine}", ex);
+						}
+					}
+
+					// Trying to load PacketLoss report
 					try
 					{
-						report = ReportParser.Parse(reportLine);
+						reportLine = PacketLossSyslogParser.Parse(syslogLine);
+
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
-						throw new Exception($"Failed to parse report line: {reportLine}", ex);
+						throw new Exception($"Failed to parse syslog line: {syslogLine}", ex);
 					}
-					if (report == null) continue;
-					AddReport(report);
+
+					if (reportLine != null)
+					{
+						try
+						{
+							packetLossReport = PacketLossReportParser.Parse(reportLine);
+							AddPacketLossReport(packetLossReport);
+							continue;
+						}
+						catch (Exception ex)
+						{
+							throw new Exception($"Failed to parse report line: {reportLine}", ex);
+						}
+					}
+
+					// no report detected
+
+
+
 				}
 
 			}

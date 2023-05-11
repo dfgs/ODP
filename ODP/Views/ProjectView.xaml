@@ -8,19 +8,10 @@
              d:DesignHeight="450" d:DesignWidth="800">
 	<TabControl>
 		<TabItem Header="Sessions">
-			<Grid>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="200"/>
-					<ColumnDefinition Width="5"/>
-					<ColumnDefinition Width="*"/>
-				</Grid.ColumnDefinitions>
-				<views:GlobalFilterView Grid.Column="0" DataContext="{Binding GlobalFilter}"/>
-				<GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-				<views:SessionsView Grid.Column="2" DataContext="{Binding FilteredSessions}"/>
-			</Grid>
+			<views:SessionsWithGlobalfiltersView/>
 		</TabItem>
-		<TabItem Header="Charts">
-			<views:ChartsView  />
+		<TabItem Header="Packet loss reports">
+			<views:PacketLossReportsView  DataContext="{Binding PacketLossReports}"/>
 		</TabItem>
 	</TabControl>
 	

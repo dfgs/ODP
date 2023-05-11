@@ -44,7 +44,7 @@ namespace ODP.Views
 
 		private void RefreshWpfPlotMediaReportCountByQuality(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
 		{
-			MediaReportViewModel[] mediaReports = Sessions.Calls().WithAudio().MediaReports().ToArray();
+			CDRMediaReportViewModel[] mediaReports = Sessions.Calls().WithAudio().MediaReports().ToArray();
 			double[] values = mediaReports.GroupByQuality(Qualities).Select(mediaReports => (double)mediaReports.Count()).ToArray();
 
 

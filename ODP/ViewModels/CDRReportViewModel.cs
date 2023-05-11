@@ -10,7 +10,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public abstract class ReportViewModel<ModelT> : ViewModel<ModelT>
+	public abstract class CDRReportViewModel<ModelT> : ViewModel<ModelT>
 		where ModelT:CDRReport
 	{
 
@@ -26,7 +26,7 @@ namespace ODP.ViewModels
 		}
 
 
-		public ReportViewModel(ILogger Logger) : base(Logger)
+		public CDRReportViewModel(ILogger Logger) : base(Logger)
 		{
 		}
 	}

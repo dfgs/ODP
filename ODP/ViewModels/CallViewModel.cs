@@ -108,23 +108,23 @@ namespace ODP.ViewModels
 			get { return MediaReports.Any(); }
 		}
 
-		public static readonly DependencyProperty SBCReportsProperty = DependencyProperty.Register("SBCReports", typeof(ViewModelCollection<SBCReportViewModel>), typeof(CallViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<SBCReportViewModel> SBCReports
+		public static readonly DependencyProperty SBCReportsProperty = DependencyProperty.Register("SBCReports", typeof(ViewModelCollection<CDRSBCReportViewModel>), typeof(CallViewModel), new PropertyMetadata(null));
+		public ViewModelCollection<CDRSBCReportViewModel> SBCReports
 		{
-			get { return (ViewModelCollection<SBCReportViewModel>)GetValue(SBCReportsProperty); }
+			get { return (ViewModelCollection<CDRSBCReportViewModel>)GetValue(SBCReportsProperty); }
 			set { SetValue(SBCReportsProperty, value); }
 		}
-		public static readonly DependencyProperty MediaReportsProperty = DependencyProperty.Register("MediaReports", typeof(ViewModelCollection<MediaReportViewModel>), typeof(CallViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<MediaReportViewModel> MediaReports
+		public static readonly DependencyProperty MediaReportsProperty = DependencyProperty.Register("MediaReports", typeof(ViewModelCollection<CDRMediaReportViewModel>), typeof(CallViewModel), new PropertyMetadata(null));
+		public ViewModelCollection<CDRMediaReportViewModel> MediaReports
 		{
-			get { return (ViewModelCollection<MediaReportViewModel>)GetValue(MediaReportsProperty); }
+			get { return (ViewModelCollection<CDRMediaReportViewModel>)GetValue(MediaReportsProperty); }
 			set { SetValue(MediaReportsProperty, value); }
 		}
 
 		public CallViewModel(ILogger Logger) : base(Logger)
 		{
-			SBCReports = new ViewModelCollection<SBCReportViewModel>(Logger);
-			MediaReports = new ViewModelCollection<MediaReportViewModel>(Logger);
+			SBCReports = new ViewModelCollection<CDRSBCReportViewModel>(Logger);
+			MediaReports = new ViewModelCollection<CDRMediaReportViewModel>(Logger);
 			
 		}
 
@@ -139,8 +139,8 @@ namespace ODP.ViewModels
 				return;
 			}
 
-			SBCReports.Load(Model.SBCReports.ToViewModels(() => new SBCReportViewModel(Logger)));
-			MediaReports.Load(Model.MediaReports.ToViewModels(() => new MediaReportViewModel(Logger)));
+			SBCReports.Load(Model.SBCReports.ToViewModels(() => new CDRSBCReportViewModel(Logger)));
+			MediaReports.Load(Model.MediaReports.ToViewModels(() => new CDRMediaReportViewModel(Logger)));
 			MediaReports.SelectedItem = MediaReports.FirstOrDefault();
 
 		}
