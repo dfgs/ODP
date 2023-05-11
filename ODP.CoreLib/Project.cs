@@ -37,7 +37,7 @@ namespace ODP.CoreLib
 		}
 
 
-		public async Task AddFileAsync(string FileName,ICDRSyslogParser SyslogParser,ICDRReportParser ReportParser, IProgress<long> Progress)
+		public async Task AddFileAsync(string FileName,IPacketLossSyslogParser SyslogParser,ICDRReportParser ReportParser, IProgress<long> Progress)
 		{
 			string? syslogLine;
 			string? reportLine;

@@ -141,7 +141,7 @@ namespace ODP.ViewModels
 
 		public async Task AddFilesAsync(IEnumerable<string> FileNames,IProgress<long> Progress)
 		{
-			ICDRSyslogParser syslogParser;
+			IPacketLossSyslogParser syslogParser;
 			ICDRReportParser reportParser;
 			int index,count;
 

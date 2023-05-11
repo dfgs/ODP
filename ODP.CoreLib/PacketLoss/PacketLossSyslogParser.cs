@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ODP.CoreLib
 {
-	public class CDRSyslogParser : IPacketLossSyslogParser
+	public class PacketLossSyslogParser : IPacketLossSyslogParser
 	{
-		private static Regex CDRRegex = new Regex(@"[^]]+] +\|(?<CDR>(CALL|MEDIA|Call|Media).*)");
+		private static Regex PacketLossRegex = new Regex(@"Packets-Loss report");
 
 		public string? Parse(string? Syslog)
 		{
@@ -18,10 +18,10 @@ namespace ODP.CoreLib
 
 			if (Syslog == null) return null;
 
-			match = CDRRegex.Match(Syslog);
+			match = PacketLossRegex.Match(Syslog);
 			if (!match.Success) return null;
 
-			return match.Groups["CDR"].Value;
+			return Syslog;
 		}
 	}
 }
