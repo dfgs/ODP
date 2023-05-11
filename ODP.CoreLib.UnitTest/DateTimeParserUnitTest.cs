@@ -7,17 +7,28 @@ namespace ODP.CoreLib.UnitTest
 	{
 		[DataTestMethod]
 		[DataRow("18:57:52.320  UTC Mon Dec 05 2022")]
-		public void ShouldParseDateTime(string Line)
+		public void ShouldParseLongDateTime(string Line)
 		{
 			DateTimeParser parser;
 			DateTime? result;
 
 			parser = new DateTimeParser();
-			result = parser.Parse(Line);
+			result = parser.ParseLongDate(Line);
 			Assert.IsNotNull(result);
 			Assert.AreEqual(2022, result.Value.Year);
 		}
+		[DataTestMethod]
+		[DataRow("18:57:52.320")]
+		public void ShouldParseShortDateTime(string Line)
+		{
+			DateTimeParser parser;
+			DateTime? result;
 
+			parser = new DateTimeParser();
+			result = parser.ParseShortDate(Line);
+			Assert.IsNotNull(result);
+			Assert.AreEqual(18, result.Value.Hour);
+		}
 		[TestMethod]
 		public void ShouldParseNullValue()
 		{
@@ -25,9 +36,9 @@ namespace ODP.CoreLib.UnitTest
 			DateTime? result;
 
 			parser = new DateTimeParser();
-			result = parser.Parse(null);
+			result = parser.ParseLongDate(null);
 			Assert.IsNull(result);
-			result = parser.Parse("");
+			result = parser.ParseLongDate("");
 			Assert.IsNull(result);
 		}
 

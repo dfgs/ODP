@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ODP.CoreLib
 {
-	public interface IDateTimeParser
+	public interface IPacketLossReportParser
 	{
-		DateTime? ParseLongDate(string? Input);
-		DateTime? ParseShortDate(string? Input);
+		PacketLossReport Parse(string Line);
 	}
 }
