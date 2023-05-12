@@ -41,18 +41,18 @@ namespace ODP.ViewModels
 			set { SetValue(PathProperty, value); }
 		}
 		
-		public static readonly DependencyProperty PacketLossReportsProperty = DependencyProperty.Register("PacketLossReports", typeof(ViewModelCollection<PacketLossReportViewModel>), typeof(ProjectViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<PacketLossReportViewModel> PacketLossReports
+		public static readonly DependencyProperty PacketLossReportsProperty = DependencyProperty.Register("PacketLossReports", typeof(PacketLossReportViewModelCollection), typeof(ProjectViewModel), new PropertyMetadata(null));
+		public PacketLossReportViewModelCollection PacketLossReports
 		{
-			get { return (ViewModelCollection<PacketLossReportViewModel>)GetValue(PacketLossReportsProperty); }
+			get { return (PacketLossReportViewModelCollection)GetValue(PacketLossReportsProperty); }
 			set { SetValue(PacketLossReportsProperty, value); }
 		}
 
 
-		public static readonly DependencyProperty SessionsProperty = DependencyProperty.Register("Sessions", typeof(ViewModelCollection<SessionViewModel>), typeof(ProjectViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<SessionViewModel> Sessions
+		public static readonly DependencyProperty SessionsProperty = DependencyProperty.Register("Sessions", typeof(SessionViewModelCollection), typeof(ProjectViewModel), new PropertyMetadata(null));
+		public SessionViewModelCollection Sessions
 		{
-			get { return (ViewModelCollection<SessionViewModel>)GetValue(SessionsProperty); }
+			get { return (SessionViewModelCollection)GetValue(SessionsProperty); }
 			set { SetValue(SessionsProperty, value); }
 		}
 
@@ -64,12 +64,12 @@ namespace ODP.ViewModels
 		}
 
 
-		public static readonly DependencyProperty FiltersProperty = DependencyProperty.Register("Filters", typeof(ViewModelCollection<FilterViewModel>), typeof(ProjectViewModel), new PropertyMetadata(null));
+		/*public static readonly DependencyProperty FiltersProperty = DependencyProperty.Register("Filters", typeof(ViewModelCollection<FilterViewModel>), typeof(ProjectViewModel), new PropertyMetadata(null));
 		public ViewModelCollection<FilterViewModel> session
 		{
 			get { return (ViewModelCollection<FilterViewModel>)GetValue(FiltersProperty); }
 			set { SetValue(FiltersProperty, value); }
-		}
+		}*/
 
 
 
@@ -87,10 +87,10 @@ namespace ODP.ViewModels
 		{
 
 			loadedFiles = new List<string>();
-			PacketLossReports = new ViewModelCollection<PacketLossReportViewModel>(Logger);
-			Sessions = new ViewModelCollection<SessionViewModel>(Logger);
+			PacketLossReports = new PacketLossReportViewModelCollection(Logger);
+			Sessions = new SessionViewModelCollection(Logger);
 			FilteredSessions = new ViewModelCollection<SessionViewModel>(Logger);
-			session = new ViewModelCollection<FilterViewModel>(Logger);
+			//session = new ViewModelCollection<FilterViewModel>(Logger);
 			GlobalFilter = new GlobalFilterViewModel(Logger);
 			OnSessionsChanged();
 		}

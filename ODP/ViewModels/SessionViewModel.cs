@@ -13,10 +13,10 @@ namespace ODP.ViewModels
 {
 	public class SessionViewModel : ViewModel<Session>, IQualityProvider
 	{
-		public static readonly DependencyProperty CallsProperty = DependencyProperty.Register("Calls", typeof(ViewModelCollection<CallViewModel>), typeof(SessionViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<CallViewModel> Calls
+		public static readonly DependencyProperty CallsProperty = DependencyProperty.Register("Calls", typeof(CallViewModelCollection), typeof(SessionViewModel), new PropertyMetadata(null));
+		public CallViewModelCollection Calls
 		{
-			get { return (ViewModelCollection<CallViewModel>)GetValue(CallsProperty); }
+			get { return (CallViewModelCollection)GetValue(CallsProperty); }
 			set { SetValue(CallsProperty, value); }
 		}
 
@@ -72,7 +72,7 @@ namespace ODP.ViewModels
 
 		public SessionViewModel(ILogger Logger) : base(Logger)
 		{
-			Calls = new ViewModelCollection<CallViewModel>(Logger);
+			Calls = new CallViewModelCollection(Logger);
 		}
 
 		protected override void OnLoaded()
