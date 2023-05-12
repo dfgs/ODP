@@ -11,7 +11,7 @@
 			<views:SessionsWithGlobalfiltersView/>
 		</TabItem>
 		<TabItem Header="Packet loss reports">
-			<views:PacketLossReportsView  DataContext="{Binding PacketLossReports}"/>
+			<views:PacketLossReportsView  />
 		</TabItem>
 	</TabControl>
 	

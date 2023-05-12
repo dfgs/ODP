@@ -21,7 +21,7 @@
 				</Grid>
 			</TabItem>
 			<TabItem Header="Charts">
-				<views:ChartsView  />
+				<views:CDRChartsView  />
 			</TabItem>
 		</TabControl>
 		

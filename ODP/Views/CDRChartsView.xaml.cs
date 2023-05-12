@@ -23,7 +23,7 @@ namespace ODP.Views
 	/// <summary>
 	/// Logique d'interaction pour ChartsView.xaml
 	/// </summary>
-	public partial class ChartsView : UserControl
+	public partial class CDRChartsView : UserControl
 	{
 		private static Quality[] Qualities = Enum.GetValues<Quality>();
 		private static string[] QualityLabels = new string[] { "Bad quality", "Average quality", "Good quality", "NA" };
@@ -34,7 +34,7 @@ namespace ODP.Views
 
 
 
-		public ChartsView()
+		public CDRChartsView()
 		{
 			InitializeComponent();
 

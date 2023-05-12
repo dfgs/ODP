@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="ODP.Views.PacketLossReportsChartsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:root="clr-namespace:ODP"
+             xmlns:views="clr-namespace:ODP.Views"
+             mc:Ignorable="d" DataContextChanged="UserControl_DataContextChanged"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<DropShadowEffect x:Key="shadowEffect" Opacity="0.25"/>
+			<Style x:Key="chartStyle" TargetType="{x:Type WpfPlot}">
+				<Setter Property="Margin" Value="5"/>
+				<Setter Property="Effect" Value="{StaticResource shadowEffect}"/>
+
+			</Style>
+			<Style x:Key="chartViewStyle" TargetType="{x:Type views:ChartView}">
+				<Setter Property="Margin" Value="5"/>
+				<Setter Property="Effect" Value="{StaticResource shadowEffect}"/>
+				<Style.Triggers>
+					<Trigger Property="IsMaximized" Value="false">
+						<Setter Property="Visibility" Value="Hidden"/>
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+			<Style x:Key="chartViewStyle2" TargetType="{x:Type views:ChartView}" BasedOn="{StaticResource chartViewStyle}">
+				<Setter Property="IsMaximized" Value="false"/>
+			</Style>
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+	
+	<views:ChartView x:Name="WpfPlotPacketLossReportCount" Title="Calls with packet loss over time" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource chartViewStyle}"/>
+
+</UserControl>

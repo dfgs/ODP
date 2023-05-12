@@ -26,29 +26,36 @@
 		</Style>
 
 	</UserControl.Resources>
+	<TabControl>
+		<TabItem Header="List" DataContext="{Binding PacketLossReports}">
 
-	<ListView  x:Name="listView" ItemsSource="{Binding}" SelectedItem="{Binding SelectedItem}" MouseDoubleClick="ListView_MouseDoubleClick" >
+			<ListView  x:Name="listView" ItemsSource="{Binding}" SelectedItem="{Binding SelectedItem}" MouseDoubleClick="ListView_MouseDoubleClick" >
+				<ListView.View>
+					<GridView>
+						<GridView.Columns>
+							<GridViewColumn  Width="30">
+								<GridViewColumn.CellTemplate>
+									<DataTemplate>
+										<Image Stretch="None" Style="{StaticResource bulletImageStyle}"/>
+									</DataTemplate>
+								</GridViewColumn.CellTemplate>
+							</GridViewColumn>
 
-		<ListView.View>
-			<GridView>
-				<GridView.Columns>
-					<GridViewColumn  Width="30">
-						<GridViewColumn.CellTemplate>
-							<DataTemplate>
-								<Image Stretch="None" Style="{StaticResource bulletImageStyle}"/>
-							</DataTemplate>
-						</GridViewColumn.CellTemplate>
-					</GridViewColumn>
+							<GridViewColumn Width="200" Header="Report time" DisplayMemberBinding="{Binding ReportTime}"/>
+							<GridViewColumn Width="100" Header="No packet loss" DisplayMemberBinding="{Binding CallsCountLevel0}"/>
+							<GridViewColumn Width="100" Header="Up to 0.5%" DisplayMemberBinding="{Binding CallsCountLevel1}"/>
+							<GridViewColumn Width="100" Header="0.5% - 1%" DisplayMemberBinding="{Binding CallsCountLevel2}"/>
+							<GridViewColumn Width="100" Header="1% - 2%" DisplayMemberBinding="{Binding CallsCountLevel3}"/>
+							<GridViewColumn Width="100" Header="2% - 5%" DisplayMemberBinding="{Binding CallsCountLevel4}"/>
+							<GridViewColumn Width="100" Header="5% - 100%" DisplayMemberBinding="{Binding CallsCountLevel5}"/>
+						</GridView.Columns>
+					</GridView>
+				</ListView.View>
+			</ListView>
 
-					<GridViewColumn Width="200" Header="Report time" DisplayMemberBinding="{Binding ReportTime}"/>
-					<GridViewColumn Width="100" Header="No packet loss" DisplayMemberBinding="{Binding CallsCountLevel0}"/>
-					<GridViewColumn Width="100" Header="Up to 0.5%" DisplayMemberBinding="{Binding CallsCountLevel1}"/>
-					<GridViewColumn Width="100" Header="0.5% - 1%" DisplayMemberBinding="{Binding CallsCountLevel2}"/>
-					<GridViewColumn Width="100" Header="1% - 2%" DisplayMemberBinding="{Binding CallsCountLevel3}"/>
-					<GridViewColumn Width="100" Header="2% - 5%" DisplayMemberBinding="{Binding CallsCountLevel4}"/>
-					<GridViewColumn Width="100" Header="5% - 100%" DisplayMemberBinding="{Binding CallsCountLevel5}"/>
-				</GridView.Columns>
-			</GridView>
-		</ListView.View>
-	</ListView>
+		</TabItem>
+		<TabItem Header="Charts">
+			<views:PacketLossReportsChartsView/>
+		</TabItem>
+	</TabControl>
 </UserControl>
