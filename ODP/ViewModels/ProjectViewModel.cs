@@ -178,7 +178,7 @@ namespace ODP.ViewModels
 					Progress)).OrThrow($"Failed to read syslog file {fileName}");
 				index++;
 			}
-
+			
 			PacketLossReports.Load(Model.PacketLossReports.ToViewModels(() => new PacketLossReportViewModel(Logger)));
 			Sessions.Load(Model.Sessions.ToViewModels(() => new SessionViewModel(Logger)));
 
@@ -186,6 +186,7 @@ namespace ODP.ViewModels
 			RefreshFilters();
 			RefreshSessions();
 			RunningTask = null;
+			
 		}
 
 		public bool FindNext(MatchProperty Criteria,string Value)

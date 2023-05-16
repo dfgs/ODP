@@ -17,12 +17,12 @@ namespace ODP.ViewModels
 		public override int GetNewItemIndex(PacketLossReportViewModel Item)
 		{
 			if (Item.ReportTime == null) return Count;
-			for(int t=0;t<Count;t++)
+			for(int t=Count-1;t>=0;t--)
 			{
-				if (Item.ReportTime!.Value < (this[t].ReportTime ?? DateTime.MinValue)) return t;
+				if (Item.ReportTime!.Value>=(this[t].ReportTime ?? DateTime.MaxValue)) return t+1;
 			}
-			return Count;
-		}
+			return 0;
+		}//*/
 
 
 	}

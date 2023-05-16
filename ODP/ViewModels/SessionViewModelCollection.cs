@@ -16,11 +16,16 @@ namespace ODP.ViewModels
 		public override int GetNewItemIndex(SessionViewModel Item)
 		{
 			if (Item.StartTime == null) return Count;
-			for (int t=0;t<Count;t++)
+			for (int t=Count-1;t>=0;t--)
+			{
+				if (Item.StartTime!.Value >= (this[t].StartTime ?? DateTime.MaxValue)) return t+1;
+			}
+			return 0;//*/
+			/*for (int t=0;t<Count;t++)
 			{
 				if (Item.StartTime!.Value < (this[t].StartTime ?? DateTime.MinValue)) return t;
 			}
-			return Count;
-		}
+			return Count;//*/
+		}//*/
 	}
 }
