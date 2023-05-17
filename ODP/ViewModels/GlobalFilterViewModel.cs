@@ -120,7 +120,7 @@ namespace ODP.ViewModels
 			jitterFilter = JitterFilters.SelectedItem;
 			if ((jitterFilter != null) && (!jitterFilter.AnyValue)) 
 			{
-				if (Session.Calls.SelectMany(call => call.MediaReports).All(mediaReport => (mediaReport.RTPjitter <= jitterFilter.MinValue) || (mediaReport.RTPjitter > jitterFilter.MaxValue))) return false;
+				if (Session.Calls.SelectMany(call => call.MediaReports).All(mediaReport => (mediaReport.RTPjitterms <= jitterFilter.MinValue) || (mediaReport.RTPjitterms > jitterFilter.MaxValue))) return false;
 			}
 
 			packetLossFilter = PacketLossFilters.SelectedItem;

@@ -5,12 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:views="clr-namespace:ODP.Views"
              mc:Ignorable="d" 
-             Width="300" >
+             Width="450" >
  	<StackPanel>
-		<UniformGrid Columns="3">
+		<UniformGrid Columns="4">
 			<TextBlock Text="{Binding RTPdelay,StringFormat=Delay: {0} ms,FallbackValue=Delay: NA}"/>
-			<TextBlock Text="{Binding RTPjitterms,StringFormat=Jitter: {0} ms,FallbackValue=Jitter: NA}"/>
-			<TextBlock Text="{Binding PacketLossPercent,StringFormat=Packet loss: {0}%,FallbackValue=Packet loss: NA}"/>
+			<TextBlock Text="{Binding RTPjitterDisplay,StringFormat=Jitter: {0} ms,FallbackValue=Jitter: NA}"/>
+			<TextBlock Text="{Binding PacketLossPercentDisplay,StringFormat=Packet loss: {0}%,FallbackValue=Packet loss: NA}"/>
+			<TextBlock Text="{Binding PacketReorderCount,StringFormat=Packet reorder: {0},FallbackValue=Packet reorder: NA}"/>
 		</UniformGrid>
 		<views:RTPView />
 	</StackPanel>

@@ -50,7 +50,7 @@ namespace ODP.ViewModels
 			get => Model?.LocalRtpIp ;
 		}
 		[Browsable(true)]
-		public string? LocalRtpPort
+		public ushort? LocalRtpPort
 		{
 			get => Model?.LocalRtpPort ;
 		}
@@ -60,7 +60,7 @@ namespace ODP.ViewModels
 			get => Model?.RemoteRtpIp ;
 		}
 		[Browsable(true)]
-		public string? RemoteRtpPort
+		public ushort? RemoteRtpPort
 		{
 			get => Model?.RemoteRtpPort ;
 		}
@@ -98,6 +98,11 @@ namespace ODP.ViewModels
 		public double? RTPjitterms
 		{
 			get => Model?.RTPjitter/8000;
+		}
+		[Browsable(true)]
+		public string? RTPjitterDisplay
+		{
+			get => RTPjitterms?.ToString("N2") ?? "0";
 		}
 
 		[Browsable(true)]
@@ -178,7 +183,20 @@ namespace ODP.ViewModels
 				return LocalPackLoss*100.0d / (InPackets+LocalPackLoss) ;
 			}
 		}
-
+		[Browsable(false)]
+		public string? PacketLossPercentDisplay
+		{
+			get
+			{
+				return PacketLossPercent?.ToString("N2") ?? "0";
+			}
+		}
+		[Browsable(true)]
+		public ulong PacketReorderCount
+		{
+			get;
+			set;
+		}
 
 		public bool HasValidDelay
 		{

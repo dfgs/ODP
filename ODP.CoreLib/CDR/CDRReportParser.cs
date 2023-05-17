@@ -102,9 +102,9 @@ namespace ODP.CoreLib
 				mediaReport.Coder = parts[5].Trim();
 				mediaReport.Intrv = parts[6].Trim();
 				mediaReport.LocalRtpIp = parts[7].Trim();
-				mediaReport.LocalRtpPort = parts[8].Trim();
+				mediaReport.LocalRtpPort = ushort.Parse( parts[8].Trim());
 				mediaReport.RemoteRtpIp = parts[9].Trim();
-				mediaReport.RemoteRtpPort = parts[10].Trim();
+				mediaReport.RemoteRtpPort = ushort.Parse(parts[10].Trim());
 				mediaReport.InPackets = long.Parse(parts[11].Trim());
 				mediaReport.OutPackets = long.Parse(parts[12].Trim());
 				mediaReport.LocalPackLoss = long.Parse(parts[13].Trim());

@@ -15,9 +15,9 @@ namespace ODP.CoreLib
 		public string? Coder { get; set; }
 		public string? Intrv { get; set; }
 		public string? LocalRtpIp { get; set; }
-		public string? LocalRtpPort { get; set; }
+		public ushort? LocalRtpPort { get; set; }
 		public string? RemoteRtpIp { get; set; }
-		public string? RemoteRtpPort { get; set; }
+		public ushort? RemoteRtpPort { get; set; }
 		public long? InPackets { get; set; }
 		public long? OutPackets { get; set; }
 		public long? LocalPackLoss { get; set; }

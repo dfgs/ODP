@@ -81,6 +81,32 @@ namespace ODP.ViewModels
 			PacketReorderReports = new ViewModelCollection<PacketReorderReportViewModel>(Logger);
 		}
 
+		private void AssociatePacketReorderReport(PacketReorderReport Report)
+		{
+			if (Report == null) throw new ArgumentNullException(nameof(Report));
+
+			foreach(CallViewModel call in Calls)
+			{
+				foreach(CDRMediaReportViewModel mediaReport in call.MediaReports)
+				{
+					if ((mediaReport.RemoteRtpIp==Report.SourceIP) && (mediaReport.RemoteRtpPort == Report.SourcePort))
+					{
+						mediaReport.PacketReorderCount++;
+						return;
+					}
+				}
+			}
+		}
+		private void AssociatePacketReorderReports()
+		{
+			if (Model==null) throw new ArgumentNullException(nameof(Model));
+
+			foreach(PacketReorderReport report in Model.PacketReorderReports)
+			{
+				AssociatePacketReorderReport(report);
+			}
+		}
+
 		protected override void OnLoaded()
 		{
 			if (Model==null)
@@ -96,6 +122,9 @@ namespace ODP.ViewModels
 			Calls.SelectedItem = Calls.FirstOrDefault();
 
 			PacketReorderReports.Load(Model.PacketReorderReports.ToViewModels(()=>new PacketReorderReportViewModel(Logger)));
+
+			AssociatePacketReorderReports();
+
 		}
 		public bool Match(MatchProperty Property, string Value)
 		{
