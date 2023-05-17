@@ -33,7 +33,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="1*"/>
 			<RowDefinition Height="5"/>
-			<RowDefinition Height="200"/>
+			<RowDefinition Height="220"/>
 		</Grid.RowDefinitions>
 		<ListView Grid.Row="0" x:Name="listView" ItemsSource="{Binding}" SelectedItem="{Binding SelectedItem}" SelectionChanged="ListView_SelectionChanged" MouseDoubleClick="ListView_MouseDoubleClick" >
 			<ListView.View>
@@ -57,6 +57,13 @@
 			</ListView.View>
 		</ListView>
 		<GridSplitter Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-		<views:CallsView Grid.Row="2" DataContext="{Binding SelectedItem.Calls}"/>
+		<TabControl Grid.Row="2">
+			<TabItem Header="Calls">
+				<views:CallsView DataContext="{Binding SelectedItem.Calls}"/>
+			</TabItem>
+			<TabItem Header="Packet reorder reports">
+				<views:PacketReorderReportsView DataContext="{Binding SelectedItem.PacketReorderReports}"/>
+			</TabItem>
+		</TabControl>
 	</Grid>
 </UserControl>

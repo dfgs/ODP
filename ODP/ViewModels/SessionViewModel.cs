@@ -19,7 +19,12 @@ namespace ODP.ViewModels
 			get { return (ViewModelCollection<CallViewModel>)GetValue(CallsProperty); }
 			set { SetValue(CallsProperty, value); }
 		}
-
+		public static readonly DependencyProperty PacketReorderReportsProperty = DependencyProperty.Register("PacketReorderReports", typeof(ViewModelCollection<PacketReorderReportViewModel>), typeof(SessionViewModel), new PropertyMetadata(null));
+		public ViewModelCollection<PacketReorderReportViewModel> PacketReorderReports
+		{
+			get { return (ViewModelCollection<PacketReorderReportViewModel>)GetValue(PacketReorderReportsProperty); }
+			set { SetValue(PacketReorderReportsProperty, value); }
+		}
 
 		[Browsable(true)]
 		public string? SessionID
@@ -65,7 +70,7 @@ namespace ODP.ViewModels
 		[Browsable(true)]
 		public Quality Quality
 		{
-			get => Calls.Select(item => item.Quality).Min();
+			get => Calls.Select(item => item.Quality).MinOrDefault(Quality.NA);
 		}
 
 
@@ -73,6 +78,7 @@ namespace ODP.ViewModels
 		public SessionViewModel(ILogger Logger) : base(Logger)
 		{
 			Calls = new ViewModelCollection<CallViewModel>(Logger);
+			PacketReorderReports = new ViewModelCollection<PacketReorderReportViewModel>(Logger);
 		}
 
 		protected override void OnLoaded()
@@ -81,11 +87,15 @@ namespace ODP.ViewModels
 			{
 				Calls.SelectedItem= null;
 				Calls.Clear();
+				PacketReorderReports.SelectedItem = null;
+				PacketReorderReports.Clear();
 				return;
 			}
 
 			Calls.Load(Model.Calls.ToViewModels(() => new CallViewModel(Logger)));
 			Calls.SelectedItem = Calls.FirstOrDefault();
+
+			PacketReorderReports.Load(Model.PacketReorderReports.ToViewModels(()=>new PacketReorderReportViewModel(Logger)));
 		}
 		public bool Match(MatchProperty Property, string Value)
 		{

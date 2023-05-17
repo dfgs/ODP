@@ -37,8 +37,11 @@ namespace ODP.CoreLib.UnitTest
 			Assert.AreEqual(12, report.ReportTime.Hour);
 			Assert.AreEqual(12, report.ReportTime.Minute);
 			Assert.AreEqual(43, report.ReportTime.Second);
+			Assert.AreEqual("cd91eb:43:20928800", report.SessionId);
 			Assert.AreEqual("213.190.78.157", report.SourceIP);
 			Assert.AreEqual((ushort)50016, report.SourcePort);
+			Assert.AreEqual(34649u, report.SequenceNumber);
+			Assert.AreEqual(34650u, report.LastSequenceNumber);
 		}
 
 

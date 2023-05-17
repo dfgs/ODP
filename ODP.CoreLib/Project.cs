@@ -39,7 +39,24 @@ namespace ODP.CoreLib
 				session.SessionId= Report.SessionId;
 				Sessions.Add(session);
 			}
-			session.AddReport(Report);
+			session.AddCDRReport(Report);
+
+		}
+
+		public void AddPacketReorderReport(PacketReorderReport Report)
+		{
+			Session? session;
+
+			if (Report == null) throw new ArgumentNullException(nameof(Report));
+
+			session = Sessions.FirstOrDefault(item => Report.SessionId == item.SessionId );
+			if (session == null)
+			{
+				session = new Session();
+				session.SessionId = Report.SessionId;
+				Sessions.Add(session);
+			}
+			session.AddPacketReorderReport(Report);
 
 		}
 
@@ -52,12 +69,14 @@ namespace ODP.CoreLib
 		public async Task AddFileAsync(string FileName,
 			ICDRSyslogParser CDRSyslogParser,ICDRReportParser CDRReportParser,
 			IPacketLossSyslogParser PacketLossSyslogParser, IPacketLossReportParser PacketLossReportParser,
+			IPacketReorderSyslogParser PacketReorderSyslogParser, IPacketReorderReportParser PacketReorderReportParser,
 			IProgress<long> Progress)
 		{
 			string? syslogLine;
 			string? reportLine;
 			CDRReport? CDRReport;
 			PacketLossReport packetLossReport;
+			PacketReorderReport packetReorderReport;
 			long percent,oldPercent=-1;
 
 			if (FileName== null) throw new ArgumentNullException(nameof(FileName));
@@ -65,6 +84,8 @@ namespace ODP.CoreLib
 			if (CDRReportParser == null) throw new ArgumentNullException(nameof(CDRReportParser));
 			if (PacketLossSyslogParser == null) throw new ArgumentNullException(nameof(PacketLossSyslogParser));
 			if (PacketLossReportParser == null) throw new ArgumentNullException(nameof(PacketLossReportParser));
+			if (PacketReorderSyslogParser == null) throw new ArgumentNullException(nameof(PacketReorderSyslogParser));
+			if (PacketReorderReportParser == null) throw new ArgumentNullException(nameof(PacketReorderReportParser));
 			if (Progress == null) throw new ArgumentNullException(nameof(Progress));
 
 			using (FileStream stream = new FileStream(FileName, FileMode.Open,FileAccess.Read,FileShare.ReadWrite))
@@ -123,6 +144,31 @@ namespace ODP.CoreLib
 						{
 							packetLossReport = PacketLossReportParser.Parse(reportLine);
 							AddPacketLossReport(packetLossReport);
+							continue;
+						}
+						catch (Exception ex)
+						{
+							throw new Exception($"Failed to parse report line: {reportLine}", ex);
+						}
+					}
+
+					// Trying to load PacketReorder report
+					try
+					{
+						reportLine = PacketReorderSyslogParser.Parse(syslogLine);
+
+					}
+					catch (Exception ex)
+					{
+						throw new Exception($"Failed to parse syslog line: {syslogLine}", ex);
+					}
+
+					if (reportLine != null)
+					{
+						try
+						{
+							packetReorderReport = PacketReorderReportParser.Parse(reportLine);
+							AddPacketReorderReport(packetReorderReport);
 							continue;
 						}
 						catch (Exception ex)

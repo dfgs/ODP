@@ -15,13 +15,18 @@ namespace ODP.CoreLib
 			get;
 			set;
 		}
-
+		public List<PacketReorderReport> PacketReorderReports
+		{
+			get;
+			set;
+		}
 		public Session()
 		{
 			Calls = new List<Call>();
+			PacketReorderReports= new List<PacketReorderReport>();
 		}
 
-		public void AddReport(CDRReport Report)
+		public void AddCDRReport(CDRReport Report)
 		{
 			Call? call;
 
@@ -39,7 +44,14 @@ namespace ODP.CoreLib
 			call.AddReport(Report);
 
 		}
+		public void AddPacketReorderReport(PacketReorderReport Report)
+		{
 
+			if (Report == null) throw new ArgumentNullException(nameof(Report));
+
+			PacketReorderReports.Add(Report);
+
+		}
 
 	}
 }

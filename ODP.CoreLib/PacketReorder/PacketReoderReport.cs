@@ -14,9 +14,11 @@ namespace ODP.CoreLib
 	public class PacketReorderReport
 	{
 		public DateTime ReportTime { get; set; }
+		public string SessionId { get; set; } = "";
 		public string SourceIP { get; set; } = "";
 		public ushort SourcePort { get; set; }
 
-		
+		public ulong SequenceNumber { get; set; }
+		public ulong LastSequenceNumber { get; set; }	
 	}
 }

@@ -20,18 +20,20 @@ namespace ODP.CoreLib.UnitTest
 			project = new Project();
 
 #pragma warning disable CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
-			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync(null, Mock.Of<CDRSyslogParser>(), new CDRReportParser(new DateTimeParser()), Mock.Of<PacketLossSyslogParser>(),new PacketLossReportParser(new DateTimeParser()), new Progress<long>()));
-			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", null, new CDRReportParser(new DateTimeParser()), Mock.Of<PacketLossSyslogParser>(), new PacketLossReportParser(new DateTimeParser()), new Progress<long>()));
-			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", Mock.Of<CDRSyslogParser>(), null, Mock.Of<PacketLossSyslogParser>(), new PacketLossReportParser(new DateTimeParser()), new Progress<long>()));
-			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", Mock.Of<CDRSyslogParser>(), new CDRReportParser(new DateTimeParser()), null, new PacketLossReportParser(new DateTimeParser()), new Progress<long>()));
-			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", Mock.Of<CDRSyslogParser>(), new CDRReportParser(new DateTimeParser()), Mock.Of<PacketLossSyslogParser>(), null, new Progress<long>()));
-			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", Mock.Of<CDRSyslogParser>(), new CDRReportParser(new DateTimeParser()), Mock.Of<PacketLossSyslogParser>(), new PacketLossReportParser(new DateTimeParser()), null));
+			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync(null, Mock.Of<CDRSyslogParser>(), new CDRReportParser(new DateTimeParser()), Mock.Of<PacketLossSyslogParser>(),new PacketLossReportParser(new DateTimeParser()), Mock.Of<PacketReorderSyslogParser>(), new PacketReorderReportParser(new DateTimeParser()), new Progress<long>()));
+			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", null, new CDRReportParser(new DateTimeParser()), Mock.Of<PacketLossSyslogParser>(), new PacketLossReportParser(new DateTimeParser()), Mock.Of<PacketReorderSyslogParser>(), new PacketReorderReportParser(new DateTimeParser()) ,new Progress<long>()));
+			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", Mock.Of<CDRSyslogParser>(), null, Mock.Of<PacketLossSyslogParser>(), new PacketLossReportParser(new DateTimeParser()), Mock.Of<PacketReorderSyslogParser>(), new PacketReorderReportParser(new DateTimeParser()),new Progress<long>()));
+			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", Mock.Of<CDRSyslogParser>(), new CDRReportParser(new DateTimeParser()), null, new PacketLossReportParser(new DateTimeParser()), Mock.Of<PacketReorderSyslogParser>(), new PacketReorderReportParser(new DateTimeParser()), new Progress<long>()));
+			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", Mock.Of<CDRSyslogParser>(), new CDRReportParser(new DateTimeParser()), Mock.Of<PacketLossSyslogParser>(), null, Mock.Of<PacketReorderSyslogParser>(), new PacketReorderReportParser(new DateTimeParser()) ,new Progress<long>()));
+			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync(null, Mock.Of<CDRSyslogParser>(), new CDRReportParser(new DateTimeParser()), Mock.Of<PacketLossSyslogParser>(), new PacketLossReportParser(new DateTimeParser()), null, new PacketReorderReportParser(new DateTimeParser()), new Progress<long>()));
+			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync(null, Mock.Of<CDRSyslogParser>(), new CDRReportParser(new DateTimeParser()), Mock.Of<PacketLossSyslogParser>(), new PacketLossReportParser(new DateTimeParser()), Mock.Of<PacketReorderSyslogParser>(), null, new Progress<long>()));
+			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", Mock.Of<CDRSyslogParser>(), new CDRReportParser(new DateTimeParser()), Mock.Of<PacketLossSyslogParser>(), new PacketLossReportParser(new DateTimeParser()), Mock.Of<PacketReorderSyslogParser>(), new PacketReorderReportParser(new DateTimeParser()), null));
 #pragma warning restore CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
 
 		}
 
 		[TestMethod]
-		public void AddReportShouldCheckParameter()
+		public void AddCDRReportShouldCheckParameter()
 		{
 			Project project;
 
@@ -43,7 +45,7 @@ namespace ODP.CoreLib.UnitTest
 		}
 
 		[TestMethod]
-		public void AddReportShouldAddSBCReport()
+		public void AddCDRReportShouldAddSBCReport()
 		{
 			CDRReport report;
 			Project project;
@@ -64,7 +66,7 @@ namespace ODP.CoreLib.UnitTest
 
 
 		[TestMethod]
-		public void AddReportShouldAddMediaReport()
+		public void AddCDRReportShouldAddMediaReport()
 		{
 			CDRReport report;
 			Project project;
@@ -84,7 +86,7 @@ namespace ODP.CoreLib.UnitTest
 		}
 
 		[TestMethod]
-		public void AddSeveralReportShouldAddDifferentsSessionsAndCalls()
+		public void AddSeveralCDRReportShouldAddDifferentsSessionsAndCalls()
 		{
 			CDRReport report;
 			Project project;
@@ -118,6 +120,92 @@ namespace ODP.CoreLib.UnitTest
 			Assert.AreEqual("CallID2", project.Sessions[1].Calls[0].SIPCallId);
 			Assert.AreEqual(2, project.Sessions[1].Calls[0].SBCReports.Count);
 			Assert.AreEqual(0, project.Sessions[1].Calls[0].MediaReports.Count);
+		}
+
+		[TestMethod]
+		public void AddPacketLossReportShouldCheckParameter()
+		{
+			Project project;
+
+			project = new Project();
+
+#pragma warning disable CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
+			Assert.ThrowsException<ArgumentNullException>(() => project.AddPacketLossReport(null));
+#pragma warning restore CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
+		}
+
+		[TestMethod]
+		public void AddPacketLossReportShouldAddPacketLossReport()
+		{
+			PacketLossReport report;
+			Project project;
+
+
+			report = new PacketLossReport() {  ReportTime=DateTime.MinValue, CallsCountLevel0 = 0, CallsCountLevel1 = 1, CallsCountLevel2 = 2, CallsCountLevel3 = 3, CallsCountLevel4 = 4, CallsCountLevel5 = 5 };
+
+			project = new Project();
+
+			project.AddPacketLossReport(report);
+			Assert.AreEqual(1, project.PacketLossReports.Count);
+			Assert.AreEqual(DateTime.MinValue, project.PacketLossReports[0].ReportTime);
+			Assert.AreEqual(0u, project.PacketLossReports[0].CallsCountLevel0);
+			Assert.AreEqual(1u, project.PacketLossReports[0].CallsCountLevel1);
+			Assert.AreEqual(2u, project.PacketLossReports[0].CallsCountLevel2);
+			Assert.AreEqual(3u, project.PacketLossReports[0].CallsCountLevel3);
+			Assert.AreEqual(4u, project.PacketLossReports[0].CallsCountLevel4);
+			Assert.AreEqual(5u, project.PacketLossReports[0].CallsCountLevel5);
+		}
+
+
+		[TestMethod]
+		public void AddPacketReorderReportShouldCheckParameter()
+		{
+			Project project;
+
+			project = new Project();
+
+#pragma warning disable CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
+			Assert.ThrowsException<ArgumentNullException>(() => project.AddPacketReorderReport(null));
+#pragma warning restore CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
+		}
+
+		[TestMethod]
+		public void AddPacketReorderReportShouldAddSession()
+		{
+			PacketReorderReport report;
+			Project project;
+
+
+			report = new PacketReorderReport() { SessionId = "Session1"};
+
+			project = new Project();
+
+			Assert.AreEqual(0, project.Sessions.Count);
+			project.AddPacketReorderReport(report);
+			Assert.AreEqual(1, project.Sessions.Count);
+			Assert.AreEqual("Session1", project.Sessions[0].SessionId);
+			Assert.AreEqual(1, project.Sessions[0].PacketReorderReports.Count);
+		}
+
+		[TestMethod]
+		public void AddPacketReorderReportShouldUseExistingSession()
+		{
+			Session session;
+			PacketReorderReport report;
+			Project project;
+
+			session = new Session() { SessionId = "Session1" };
+
+			report = new PacketReorderReport() { SessionId = "Session1" };
+
+			project = new Project();
+			project.Sessions.Add(session);
+
+			Assert.AreEqual(1, project.Sessions.Count);
+			project.AddPacketReorderReport(report);
+			Assert.AreEqual(1, project.Sessions.Count);
+			Assert.AreEqual("Session1", project.Sessions[0].SessionId);
+			Assert.AreEqual(1, project.Sessions[0].PacketReorderReports.Count);
 		}
 
 

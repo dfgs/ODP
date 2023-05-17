@@ -155,6 +155,8 @@ namespace ODP.ViewModels
 			ICDRReportParser CDRReportParser;
 			IPacketLossSyslogParser PacketLossSyslogParser;
 			IPacketLossReportParser PacketLossReportParser;
+			IPacketReorderSyslogParser PacketReorderSyslogParser;
+			IPacketReorderReportParser PacketReorderReportParser;
 			int index,count;
 
 			if (Model == null) throw new InvalidOperationException("Model is not loaded");
@@ -165,6 +167,8 @@ namespace ODP.ViewModels
 			CDRReportParser = new CDRReportParser(new DateTimeParser());
 			PacketLossSyslogParser = new PacketLossSyslogParser();
 			PacketLossReportParser = new PacketLossReportParser(new DateTimeParser());
+			PacketReorderSyslogParser = new PacketReorderSyslogParser();
+			PacketReorderReportParser = new PacketReorderReportParser(new DateTimeParser());
 
 			index = 1;count = FileNames.Count();
 			await foreach(string fileName in FileNames.AsAsyncEnumerable())
@@ -175,6 +179,7 @@ namespace ODP.ViewModels
 				await TryAsync(() => Model.AddFileAsync(fileName,
 					CDRSyslogParser,CDRReportParser,
 					PacketLossSyslogParser,PacketLossReportParser,
+					PacketReorderSyslogParser,PacketReorderReportParser,
 					Progress)).OrThrow($"Failed to read syslog file {fileName}");
 				index++;
 			}
