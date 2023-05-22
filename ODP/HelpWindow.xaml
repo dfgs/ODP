@@ -47,6 +47,9 @@
 						<ListItem>
 							<Paragraph>List of packet loss reports</Paragraph>
 						</ListItem>
+						<ListItem>
+							<Paragraph>Number of packet reorder in call details</Paragraph>
+						</ListItem>
 					</List>
 				</FlowDocument>
 			</FlowDocumentReader>
