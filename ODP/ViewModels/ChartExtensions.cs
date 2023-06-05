@@ -9,6 +9,40 @@ namespace ODP.ViewModels
 {
 	public static class ChartExtensions
 	{
+
+		public static IEnumerable<AccumulatorEvent> SelectAccumulate<T>(this IEnumerable<T> Items, int Seed, long SampleTicks, Func<T, DateTime?> StartTimeSelector, Func<T, DateTime?> StopTimeSelector)
+		{
+			DateTime? startTime, stopTime;
+			long startTick,stopTick;
+			List<AccumulatorEvent> events;
+			int total;
+
+			events= new List<AccumulatorEvent>();
+			foreach(T item in Items)
+			{
+				startTime= StartTimeSelector(item);
+				stopTime= StopTimeSelector(item);
+				if ((!startTime.HasValue) || (!stopTime.HasValue)) continue;
+
+				startTick = (startTime.Value.Ticks / SampleTicks)* SampleTicks;
+				stopTick= (stopTime.Value.Ticks/ SampleTicks)* SampleTicks;
+
+				events.Add(new AccumulatorEvent(startTick, 1));
+				events.Add(new AccumulatorEvent(stopTick, -1));
+			}
+
+			total = 0;
+			foreach (IGrouping<long, AccumulatorEvent> eventGroup in events.GroupBy(item => item.Ticks).OrderBy(item => item.Key))
+			{
+				total += eventGroup.Sum(item => item.Delta);
+				yield return new AccumulatorEvent(eventGroup.Key, total);
+			}
+
+			yield break;
+		}
+
+	
+
 		public static IEnumerable<IEnumerable<T>> GroupByQuality<T>(this IEnumerable<T> Items,IEnumerable<Quality> Qualities)
 			where T : IQualityProvider
 		{
@@ -34,6 +68,11 @@ namespace ODP.ViewModels
 		{
 			return Reports.Where(report => report.HasValidPacketLoss);
 		}
+		public static IEnumerable<SessionViewModel> WithValidTimeStamps(this IEnumerable<SessionViewModel> Reports)
+		{
+			return Reports.Where(session => session.StartTime.HasValue && session.StopTime.HasValue);
+		}
+
 
 		public static T MaxOrDefault<T>(this IEnumerable<T> Items, T DefaultValue)
 		{

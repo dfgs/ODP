@@ -57,8 +57,8 @@ namespace ODP.Views
 			double[] completePositions= Enumerable.Range(0, (int)numberOfSamples).Select((item)=>minPosition+ item).ToArray();
 
 			var queryCompleteReports =
-				from reportTime in completePositions
-				join report in packetLossReports on reportTime equals (double)(report.ReportTime!.Value.Ticks / sampleTicks) into gj
+				from position in completePositions
+				join report in packetLossReports on position equals (double)(report.ReportTime!.Value.Ticks / sampleTicks) into gj
 				from subReport in gj.DefaultIfEmpty()
 				select subReport;
 			PacketLossReportViewModel[] completeReports = queryCompleteReports.ToArray();
@@ -70,7 +70,7 @@ namespace ODP.Views
 			double[] level4Values = completeReports.Select(item => item?.CallsCountLevel4 ?? 0d).ToArray();
 			double[] level5Values = completeReports.Select(item => item?.CallsCountLevel5 ?? 0d).ToArray();
 
-			double sampleRate = (double)TimeSpan.TicksPerDay / ts.Ticks;
+			double sampleRate = (double)TimeSpan.TicksPerDay / sampleTicks;
 
 
 			//var scatter0 = WpfPlot.Plot.AddSignalConst(goodQualityValues,sampleRate, System.Drawing.Color.Green,"Good quality");
@@ -94,6 +94,48 @@ namespace ODP.Views
 			
 		}
 
+		private void RefreshWpfPlotActiveSessionsCount(WpfPlot WpfPlot, IEnumerable<SessionViewModel> Sessions)
+		{
+
+			TimeSpan ts = TimeSpan.FromMinutes(1); // time between data points
+			long sampleTicks = ts.Ticks;
+
+			AccumulatorEvent[] events = Sessions.WithValidTimeStamps().SelectAccumulate(0, sampleTicks, item => item.StartTime, item => item.StopTime).ToArray();
+
+			double[] positions = events.Select(item => (double)(item.Ticks/sampleTicks )).ToArray();
+
+			WpfPlot.Plot.Clear();
+
+			if (positions.Length == 0) return;
+
+			double maxPosition, minPosition, numberOfSamples;
+
+			DateTime startDate = Sessions.First().StartTime!.Value;
+
+			maxPosition = positions.Max();
+			minPosition = positions.Min();
+			numberOfSamples = (maxPosition - minPosition);
+			double[] completePositions = Enumerable.Range(0, (int)numberOfSamples).Select((item) => minPosition + item).ToArray();
+
+			var queryCompleteReports =
+				from position in completePositions
+				join report in events on position equals report.Ticks/sampleTicks into gj
+				from subReport in gj.DefaultIfEmpty()
+				select subReport.Delta;
+			int[] completeReports = queryCompleteReports.ToArray();
+
+			double sampleRate = (double)TimeSpan.TicksPerDay / ts.Ticks;
+
+			var scatter1 = WpfPlot.Plot.AddSignalConst(events.Select(item=>item.Delta).ToArray() , sampleRate, null, "Sessions count");
+
+			WpfPlot.Plot.XAxis.DateTimeFormat(true);
+			scatter1.OffsetX = startDate.ToOADate();
+			
+			WpfPlot.Plot.Legend(true, Alignment.UpperRight);
+
+			WpfPlot.Refresh();
+
+		}
 
 		private void RefreshCharts()
 		{
@@ -106,6 +148,7 @@ namespace ODP.Views
 
 
 			RefreshWpfPlotPacketLossReportCount(WpfPlotPacketLossReportCount.WpfPlot, project.PacketLossReports);
+			RefreshWpfPlotActiveSessionsCount(WpfPlotActiveSessionsCount.WpfPlot, project.Sessions);
 		}
 
 		private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -127,6 +170,46 @@ namespace ODP.Views
 		{
 			RefreshCharts();
 		}
+
+		private void MaximizeCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.CanExecute = true; e.Handled = true;
+		}
+
+		private void MaximizeCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			ChartView? clickedView;
+			clickedView = e.Parameter as ChartView;
+			ProjectViewModel? project;
+			project = DataContext as ProjectViewModel;
+
+			if (project == null) return;
+
+			if (clickedView == null) return;
+
+			if (clickedView == WpfPlotMaximized)
+			{
+				WpfPlotMaximized.IsMaximized = false;
+				return;
+			}
+
+			WpfPlotMaximized.Title = clickedView.Title;
+			WpfPlotMaximized.IsMaximized = true;
+
+			if (clickedView == WpfPlotPacketLossReportCount)
+			{
+				RefreshWpfPlotPacketLossReportCount(WpfPlotMaximized.WpfPlot, project.PacketLossReports);
+				return;
+			}
+			if (clickedView == WpfPlotActiveSessionsCount)
+			{
+				RefreshWpfPlotActiveSessionsCount(WpfPlotMaximized.WpfPlot, project.Sessions);
+				return;
+			}
+
+		}
+
+
 
 
 
