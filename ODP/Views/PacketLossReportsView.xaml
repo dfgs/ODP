@@ -26,10 +26,8 @@
 		</Style>
 
 	</UserControl.Resources>
-	<TabControl>
-		<TabItem Header="List" DataContext="{Binding PacketLossReports}">
 
-			<ListView  x:Name="listView" ItemsSource="{Binding}" SelectedItem="{Binding SelectedItem}" MouseDoubleClick="ListView_MouseDoubleClick" >
+	<ListView  x:Name="listView" ItemsSource="{Binding}" SelectedItem="{Binding SelectedItem}" MouseDoubleClick="ListView_MouseDoubleClick" >
 				<ListView.View>
 					<GridView>
 						<GridView.Columns>
@@ -52,10 +50,4 @@
 					</GridView>
 				</ListView.View>
 			</ListView>
-
-		</TabItem>
-		<TabItem Header="Charts">
-			<views:PacketLossReportsChartsView/>
-		</TabItem>
-	</TabControl>
 </UserControl>
