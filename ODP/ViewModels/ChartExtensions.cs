@@ -39,7 +39,7 @@ namespace ODP.ViewModels
 			}
 		}
 
-		public static double[] GenerateSampledPosition<T>(this IEnumerable<Sample<T>> Samples,long SampleSize)
+		public static long[] GenerateSampledPosition<T>(this IEnumerable<Sample<T>> Samples,long SampleSize)
 		{
 			long count;
 			long min,max;
@@ -48,7 +48,9 @@ namespace ODP.ViewModels
 			max = Samples.Max(item => item.Ticks);
 
 			count = (max - min) / SampleSize;
-			double[] values= Enumerable.Range(0, (int)count).Select((index) => (double)(min + index*SampleSize)).ToArray();
+			if (count == 0) count = 1;
+
+			long[] values= Enumerable.Range(0, (int)count).Select((index) => (min + index*SampleSize)).ToArray();
 			return values;
 		}
 

@@ -39,7 +39,7 @@ namespace ODP.Views
 
 		private void RefreshWpfPlotPacketLossReportCount(WpfPlot WpfPlot, ViewModelCollection<PacketLossReportViewModel> PacketLossReports)
 		{
-			double[] positions;
+			long[] positions;
 
 			TimeSpan ts = TimeSpan.FromSeconds(15); // time between data points
 			long sampleTicks = ts.Ticks;
@@ -87,7 +87,7 @@ namespace ODP.Views
 		}
 		private void RefreshWpfPlotActiveSessionsCount(WpfPlot WpfPlot, IEnumerable<SessionViewModel> Sessions)
 		{
-			double[] positions;
+			long[] positions;
 
 			TimeSpan ts = TimeSpan.FromSeconds(30); // time between data points
 			long sampleTicks = ts.Ticks;
@@ -121,6 +121,50 @@ namespace ODP.Views
 			WpfPlot.Refresh();
 
 		}
+		private void RefreshWpfPlotActiveCallsCount(WpfPlot WpfPlot, IEnumerable<CallViewModel> Calls)
+		{
+			long[] positions;
+			CallViewModel[] validCalls;
+
+
+			TimeSpan ts = TimeSpan.FromSeconds(30); // time between data points
+			long sampleTicks = ts.Ticks;
+			double sampleRate = (double)TimeSpan.TicksPerDay / ts.Ticks;
+			string[] IPGroups = Calls.Select(item => item.IPGroup??"Unknow").Distinct().ToArray();
+
+			WpfPlot.Plot.Clear();
+
+			foreach (string IPGroup in IPGroups)
+			{
+				validCalls = Calls.Where(item => (item.SetupTime.HasValue) && (item.IPGroup == IPGroup)).ToArray();
+				Sample<int>[] samples = validCalls.Sample(sampleTicks, item => item.SetupTime, item => 1)
+									.Concat(validCalls.Sample(sampleTicks, item => item.ReleaseTime, item => -1)).ToArray();
+
+				if (samples.Length == 0) continue;
+
+				Sample<int>[] values = samples.AggregateAndOrder(items => items.Sum(item => item.Value)).ToArray();
+
+				positions = values.GenerateSampledPosition(sampleTicks);
+
+				var queryJoinedValues =
+					from position in positions
+					join value in values on position equals value.Ticks into gj
+					from joinedValue in gj.DefaultIfEmpty()
+					select joinedValue.Value;
+
+				int[] joinedValues = queryJoinedValues.Accumulate(0).ToArray();
+
+				var scatter1 = WpfPlot.Plot.AddSignalConst(joinedValues, sampleRate, null, IPGroup);
+
+				WpfPlot.Plot.XAxis.DateTimeFormat(true);
+				scatter1.OffsetX = new DateTime(values[0].Ticks).ToOADate();
+			}
+
+			WpfPlot.Plot.Legend(true, Alignment.UpperRight);
+
+			WpfPlot.Refresh();
+
+		}
 
 		private void RefreshCharts()
 		{
@@ -134,6 +178,7 @@ namespace ODP.Views
 
 			RefreshWpfPlotPacketLossReportCount(WpfPlotPacketLossReportCount.WpfPlot, project.PacketLossReports);
 			RefreshWpfPlotActiveSessionsCount(WpfPlotActiveSessionsCount.WpfPlot, project.Sessions);
+			RefreshWpfPlotActiveCallsCount(WpfPlotActiveCallsCount.WpfPlot, project.Sessions.Calls());
 		}
 
 		private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -191,7 +236,11 @@ namespace ODP.Views
 				RefreshWpfPlotActiveSessionsCount(WpfPlotMaximized.WpfPlot, project.Sessions);
 				return;
 			}
-
+			if (clickedView == WpfPlotActiveCallsCount)
+			{
+				RefreshWpfPlotActiveCallsCount(WpfPlotMaximized.WpfPlot, project.Sessions.Calls());
+				return;
+			}
 		}
 
 
