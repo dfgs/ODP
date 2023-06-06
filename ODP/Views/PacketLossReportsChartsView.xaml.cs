@@ -96,40 +96,40 @@ namespace ODP.Views
 
 		private void RefreshWpfPlotActiveSessionsCount(WpfPlot WpfPlot, IEnumerable<SessionViewModel> Sessions)
 		{
+			double[] positions;
 
-			TimeSpan ts = TimeSpan.FromMinutes(1); // time between data points
+			TimeSpan ts = TimeSpan.FromSeconds(30); // time between data points
 			long sampleTicks = ts.Ticks;
+			double sampleRate = (double)TimeSpan.TicksPerDay / ts.Ticks;
 
-			AccumulatorEvent[] events = Sessions.WithValidTimeStamps().SelectAccumulate(0, sampleTicks, item => item.StartTime, item => item.StopTime).ToArray();
+			SessionViewModel[] test = Sessions.Where(item => !item.StartTime.HasValue).ToArray();
+			SessionViewModel[] test2 = Sessions.Where(item => item.StartTime.HasValue).ToArray();
 
-			double[] positions = events.Select(item => (double)(item.Ticks/sampleTicks )).ToArray();
+			Sample<int>[] samples = Sessions.Sample(sampleTicks, item => item.StartTime, item => 1)
+								.Concat(Sessions.Sample(sampleTicks, item => item.StopTime, item => -1)).ToArray();				
+
+			Sample<int>[] values = samples.AggregateAndOrder(items => items.Sum(item => item.Value)).ToArray();
+									
+
 
 			WpfPlot.Plot.Clear();
 
-			if (positions.Length == 0) return;
+			if (values.Length == 0) return;
 
-			double maxPosition, minPosition, numberOfSamples;
+			positions = values.GenerateSampledPosition(sampleTicks);
+						
+			var queryJoinedValues =
+				from position in positions
+				join value in values on position equals value.Ticks into gj
+				from joinedValue in gj.DefaultIfEmpty()
+				select joinedValue.Value;
+			
+			int[] joinedValues = queryJoinedValues.Accumulate(0).ToArray();
 
-			DateTime startDate = Sessions.First().StartTime!.Value;
-
-			maxPosition = positions.Max();
-			minPosition = positions.Min();
-			numberOfSamples = (maxPosition - minPosition);
-			double[] completePositions = Enumerable.Range(0, (int)numberOfSamples).Select((item) => minPosition + item).ToArray();
-
-			var queryCompleteReports =
-				from position in completePositions
-				join report in events on position equals report.Ticks/sampleTicks into gj
-				from subReport in gj.DefaultIfEmpty()
-				select subReport.Delta;
-			int[] completeReports = queryCompleteReports.ToArray();
-
-			double sampleRate = (double)TimeSpan.TicksPerDay / ts.Ticks;
-
-			var scatter1 = WpfPlot.Plot.AddSignalConst(events.Select(item=>item.Delta).ToArray() , sampleRate, null, "Sessions count");
+			var scatter1 = WpfPlot.Plot.AddSignalConst(joinedValues , sampleRate, null, "Sessions count");
 
 			WpfPlot.Plot.XAxis.DateTimeFormat(true);
-			scatter1.OffsetX = startDate.ToOADate();
+			scatter1.OffsetX = new DateTime(values[0].Ticks).ToOADate();
 			
 			WpfPlot.Plot.Legend(true, Alignment.UpperRight);
 

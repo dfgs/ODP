@@ -6,20 +6,25 @@ using System.Threading.Tasks;
 
 namespace ODP
 {
-	public struct AccumulatorEvent
+	public struct Sample<T>
 	{
 		public long Ticks
 		{
 			get;
 		}
-		public int Delta
+		public T Value
 		{
 			get;
 		}
 
-		public AccumulatorEvent(long Ticks, int Delta)
+		public Sample(long Ticks, T Value)
 		{
-			this.Ticks = Ticks;	this.Delta = Delta;	
+			this.Ticks = Ticks;	this.Value = Value;	
+		}
+
+		public override string ToString()
+		{
+			return $"({Ticks},{Value})";
 		}
 
 	}

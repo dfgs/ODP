@@ -10,35 +10,59 @@ namespace ODP.ViewModels
 	public static class ChartExtensions
 	{
 
-		public static IEnumerable<AccumulatorEvent> SelectAccumulate<T>(this IEnumerable<T> Items, int Seed, long SampleTicks, Func<T, DateTime?> StartTimeSelector, Func<T, DateTime?> StopTimeSelector)
+		public static long Sample(this DateTime Date, long SampleSize)
 		{
-			DateTime? startTime, stopTime;
-			long startTick,stopTick;
-			List<AccumulatorEvent> events;
+			return Date.Ticks / SampleSize * SampleSize;
+		}
+		public static IEnumerable<Sample<T>> Sample<TIn, T>(this IEnumerable<TIn> Items, long SampleSize, Func<TIn, DateTime?> DateSelector, Func<TIn, T> ValueGenerator)
+		{
+			DateTime? dateTime;
+			T value;
+			long ticks;
+
+			foreach (TIn item in Items)
+			{
+				dateTime = DateSelector(item);
+				if (!dateTime.HasValue) 
+					continue;
+				ticks = dateTime.Value.Sample(SampleSize);
+				value = ValueGenerator(item);
+				yield return new Sample<T>(ticks, value);
+			}
+		}
+
+		public static IEnumerable<Sample<TOut>> AggregateAndOrder<T, TOut>(this IEnumerable<Sample<T>> Samples, Func<IEnumerable<Sample<T>>, TOut> AggregateFunction)
+		{
+			foreach (IGrouping<long, Sample<T>> sampleGroup in Samples.GroupBy(item => item.Ticks).OrderBy(item => item.Key))
+			{
+				yield return new Sample<TOut>(sampleGroup.Key, AggregateFunction(sampleGroup));
+			}
+		}
+
+		public static double[] GenerateSampledPosition<T>(this IEnumerable<Sample<T>> Samples,long SampleSize)
+		{
+			long count;
+			long min,max;
+
+			min = Samples.Min(item => item.Ticks);
+			max = Samples.Max(item => item.Ticks);
+
+			count = (max - min) / SampleSize;
+			double[] values= Enumerable.Range(0, (int)count).Select((index) => (double)(min + index*SampleSize)).ToArray();
+			return values;
+		}
+
+		public static IEnumerable<int> Accumulate(this IEnumerable<int> Items, int Seed)
+		{
 			int total;
 
-			events= new List<AccumulatorEvent>();
-			foreach(T item in Items)
-			{
-				startTime= StartTimeSelector(item);
-				stopTime= StopTimeSelector(item);
-				if ((!startTime.HasValue) || (!stopTime.HasValue)) continue;
-
-				startTick = (startTime.Value.Ticks / SampleTicks)* SampleTicks;
-				stopTick= (stopTime.Value.Ticks/ SampleTicks)* SampleTicks;
-
-				events.Add(new AccumulatorEvent(startTick, 1));
-				events.Add(new AccumulatorEvent(stopTick, -1));
-			}
-
 			total = 0;
-			foreach (IGrouping<long, AccumulatorEvent> eventGroup in events.GroupBy(item => item.Ticks).OrderBy(item => item.Key))
+			foreach (int item in Items)
 			{
-				total += eventGroup.Sum(item => item.Delta);
-				yield return new AccumulatorEvent(eventGroup.Key, total);
+				total += item;
+				yield return total;
 			}
 
-			yield break;
 		}
 
 	
