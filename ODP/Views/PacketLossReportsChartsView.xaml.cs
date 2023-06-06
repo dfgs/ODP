@@ -1,4 +1,5 @@
-﻿using ODP.ViewModels;
+﻿using ODP.CoreLib;
+using ODP.ViewModels;
 using ScottPlot;
 using System;
 using System.Collections.Generic;
@@ -35,65 +36,55 @@ namespace ODP.Views
             InitializeComponent();
         }
 
+
 		private void RefreshWpfPlotPacketLossReportCount(WpfPlot WpfPlot, ViewModelCollection<PacketLossReportViewModel> PacketLossReports)
 		{
-			PacketLossReportViewModel[] packetLossReports = PacketLossReports.ToArray();
-			
+			double[] positions;
+
 			TimeSpan ts = TimeSpan.FromSeconds(15); // time between data points
 			long sampleTicks = ts.Ticks;
-			double[] positions = packetLossReports.Select(item => (double)(item!.ReportTime!.Value.Ticks / sampleTicks) ).ToArray();
+			double sampleRate = (double)TimeSpan.TicksPerDay / ts.Ticks;
+
+			Sample<PacketLossReportViewModel>[] samples = PacketLossReports.Sample(sampleTicks, item => item.ReportTime, item => item).ToArray();
+
+
 
 			WpfPlot.Plot.Clear();
-
-			if (positions.Length == 0) return;
-
-			double maxPosition, minPosition,numberOfSamples;
-
-			DateTime startDate = packetLossReports.Min(item => item.ReportTime!.Value);
-
-			maxPosition = positions.Max();
-			minPosition = positions.Min();
-			numberOfSamples = (maxPosition - minPosition) ;
-			double[] completePositions= Enumerable.Range(0, (int)numberOfSamples).Select((item)=>minPosition+ item).ToArray();
-
-			var queryCompleteReports =
-				from position in completePositions
-				join report in packetLossReports on position equals (double)(report.ReportTime!.Value.Ticks / sampleTicks) into gj
-				from subReport in gj.DefaultIfEmpty()
-				select subReport;
-			PacketLossReportViewModel[] completeReports = queryCompleteReports.ToArray();
+			if (samples.Length == 0) return;
 
 
-			double[] level1Values = completeReports.Select(item => item?.CallsCountLevel1 ?? 0d).ToArray();
-			double[] level2Values = completeReports.Select(item => item?.CallsCountLevel2 ?? 0d).ToArray();
-			double[] level3Values = completeReports.Select(item => item?.CallsCountLevel3 ?? 0d).ToArray();
-			double[] level4Values = completeReports.Select(item => item?.CallsCountLevel4 ?? 0d).ToArray();
-			double[] level5Values = completeReports.Select(item => item?.CallsCountLevel5 ?? 0d).ToArray();
+			Sample<PacketLossReportViewModel[]>[] values = samples.AggregateAndOrder(items => items.Select(item=>item.Value).ToArray()).ToArray();
 
-			double sampleRate = (double)TimeSpan.TicksPerDay / sampleTicks;
+			positions = values.GenerateSampledPosition(sampleTicks);
 
+
+			var queryJoinedValues =
+				from position in positions
+				join value in values on position equals value.Ticks into gj
+				from joinedValue in  gj.DefaultIfEmpty()
+				select joinedValue.Value;
+			PacketLossReportViewModel[][] joinedValues = queryJoinedValues.ToArray();
 
 			//var scatter0 = WpfPlot.Plot.AddSignalConst(goodQualityValues,sampleRate, System.Drawing.Color.Green,"Good quality");
-			var scatter1 = WpfPlot.Plot.AddSignalConst(level1Values, sampleRate, null, "Up to 0.5%");
-			var scatter2 = WpfPlot.Plot.AddSignalConst(level2Values, sampleRate, null, "0.5% - 1%");
-			var scatter3 = WpfPlot.Plot.AddSignalConst(level3Values, sampleRate, null, "1% - 2%");
-			var scatter4 = WpfPlot.Plot.AddSignalConst(level4Values, sampleRate, null, "2% - 5%");
-			var scatter5 = WpfPlot.Plot.AddSignalConst(level5Values, sampleRate, null, "5% - 100%");
+			var scatter1 = WpfPlot.Plot.AddSignalConst(joinedValues.Select(item => item?.Sum(item => item.CallsCountLevel1 ?? 0) ?? 0).ToArray(), sampleRate, null, "Up to 0.5%");
+			var scatter2 = WpfPlot.Plot.AddSignalConst(joinedValues.Select(item => item?.Sum(item => item.CallsCountLevel2 ?? 0) ?? 0).ToArray(), sampleRate, null, "0.5% - 1%");
+			var scatter3 = WpfPlot.Plot.AddSignalConst(joinedValues.Select(item => item?.Sum(item => item.CallsCountLevel3 ?? 0) ?? 0).ToArray(), sampleRate, null, "1% - 2%");
+			var scatter4 = WpfPlot.Plot.AddSignalConst(joinedValues.Select(item => item?.Sum(item => item.CallsCountLevel4 ?? 0) ?? 0).ToArray(), sampleRate, null, "2% - 5%");
+			var scatter5 = WpfPlot.Plot.AddSignalConst(joinedValues.Select(item => item?.Sum(item => item.CallsCountLevel5 ?? 0) ?? 0).ToArray(), sampleRate, null, "5% - 100%");
 
 			WpfPlot.Plot.XAxis.DateTimeFormat(true);
-			scatter1.OffsetX = startDate.ToOADate();
-			scatter2.OffsetX = startDate.ToOADate();
-			scatter3.OffsetX = startDate.ToOADate();
-			scatter4.OffsetX = startDate.ToOADate();
-			scatter5.OffsetX = startDate.ToOADate();
+			scatter1.OffsetX = new DateTime(values[0].Ticks).ToOADate();
+			scatter2.OffsetX = new DateTime(values[0].Ticks).ToOADate();
+			scatter3.OffsetX = new DateTime(values[0].Ticks).ToOADate();
+			scatter4.OffsetX = new DateTime(values[0].Ticks).ToOADate();
+			scatter5.OffsetX = new DateTime(values[0].Ticks).ToOADate();
 
 
 			WpfPlot.Plot.Legend(true, Alignment.UpperRight);
-			
-			WpfPlot.Refresh();
-			
-		}
 
+			WpfPlot.Refresh();
+
+		}
 		private void RefreshWpfPlotActiveSessionsCount(WpfPlot WpfPlot, IEnumerable<SessionViewModel> Sessions)
 		{
 			double[] positions;
@@ -102,19 +93,13 @@ namespace ODP.Views
 			long sampleTicks = ts.Ticks;
 			double sampleRate = (double)TimeSpan.TicksPerDay / ts.Ticks;
 
-			SessionViewModel[] test = Sessions.Where(item => !item.StartTime.HasValue).ToArray();
-			SessionViewModel[] test2 = Sessions.Where(item => item.StartTime.HasValue).ToArray();
-
 			Sample<int>[] samples = Sessions.Sample(sampleTicks, item => item.StartTime, item => 1)
 								.Concat(Sessions.Sample(sampleTicks, item => item.StopTime, item => -1)).ToArray();				
 
-			Sample<int>[] values = samples.AggregateAndOrder(items => items.Sum(item => item.Value)).ToArray();
-									
-
-
 			WpfPlot.Plot.Clear();
+			if (samples.Length == 0) return;
 
-			if (values.Length == 0) return;
+			Sample<int>[] values = samples.AggregateAndOrder(items => items.Sum(item => item.Value)).ToArray();
 
 			positions = values.GenerateSampledPosition(sampleTicks);
 						
