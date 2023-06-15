@@ -111,6 +111,12 @@ namespace ODP.Views
 			
 			int[] joinedValues = queryJoinedValues.Accumulate(0).ToArray();
 
+			/*string line = "";
+			for (int t=0;t<joinedValues.Length;t++)
+			{
+				line += $"{new DateTime(positions[t])};Global;{joinedValues[t]}\r\n";
+			}//*/
+
 			var scatter1 = WpfPlot.Plot.AddSignalConst(joinedValues , sampleRate, null, "Sessions count");
 
 			WpfPlot.Plot.XAxis.DateTimeFormat(true);
@@ -134,8 +140,11 @@ namespace ODP.Views
 
 			WpfPlot.Plot.Clear();
 
+
+
 			foreach (string IPGroup in IPGroups)
 			{
+
 				validCalls = Calls.Where(item => (item.SetupTime.HasValue) && (item.IPGroup == IPGroup)).ToArray();
 				Sample<int>[] samples = validCalls.Sample(sampleTicks, item => item.SetupTime, item => 1)
 									.Concat(validCalls.Sample(sampleTicks, item => item.ReleaseTime, item => -1)).ToArray();
@@ -153,6 +162,12 @@ namespace ODP.Views
 					select joinedValue.Value;
 
 				int[] joinedValues = queryJoinedValues.Accumulate(0).ToArray();
+
+				/*string line = "";
+				for (int t=0;t<joinedValues.Length;t++)
+				{
+					line += $"{new DateTime(positions[t])};{IPGroup};{joinedValues[t]}\r\n";
+				}*/
 
 				var scatter1 = WpfPlot.Plot.AddSignalConst(joinedValues, sampleRate, null, IPGroup);
 
