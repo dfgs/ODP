@@ -23,5 +23,6 @@ namespace ODP
 		public static RoutedCommand Help = new RoutedCommand();
 		public static RoutedCommand ApplyFilter = new RoutedCommand();
 		public static RoutedCommand Maximize = new RoutedCommand();
+		public static RoutedCommand OpenCallCharts = new RoutedCommand();
 	}
 }

@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:views="clr-namespace:ODP.Views"
+             xmlns:root="clr-namespace:ODP"
+			 xmlns:views="clr-namespace:ODP.Views"
 			 xmlns:viewModels="clr-namespace:ODP.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="1200">
 	<UserControl.Resources>
 
 		<Style x:Key="bulletImageStyle" TargetType="{x:Type Image}">
@@ -25,7 +26,26 @@
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
-
+		<Style x:Key="chartImageStyle" TargetType="{x:Type Image}">
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding HasRTCPReport}" Value="True" >
+					<Setter Property="Source" Value="/Images/chart_bar.png"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding HasRTCPReport}" Value="False" >
+					<Setter Property="Source" Value="{x:Null}"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+		<Style x:Key="chartButtonStyle" TargetType="{x:Type Button}">
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding HasRTCPReport}" Value="True" >
+					<Setter Property="Visibility" Value="Visible"/>
+				</DataTrigger>
+				<DataTrigger Binding="{Binding HasRTCPReport}" Value="False" >
+					<Setter Property="Visibility" Value="Hidden"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
 	</UserControl.Resources>
 
 
@@ -39,6 +59,15 @@
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>
 									<Image Stretch="None" Style="{StaticResource bulletImageStyle}"/>
+								</DataTemplate>
+							</GridViewColumn.CellTemplate>
+						</GridViewColumn>
+						<GridViewColumn  Width="30">
+							<GridViewColumn.CellTemplate>
+								<DataTemplate>
+									<Button CommandParameter="{Binding}" Command="{x:Static root:RoutedCommands.OpenCallCharts}" Style="{StaticResource chartButtonStyle}">
+										<Image Stretch="None" Source="/Images/chart_bar.png"/>
+									</Button>
 								</DataTemplate>
 							</GridViewColumn.CellTemplate>
 						</GridViewColumn>

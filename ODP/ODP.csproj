@@ -21,6 +21,7 @@
     <None Remove="Images\bullet_toggle_minus.png" />
     <None Remove="Images\bullet_toggle_plus.png" />
     <None Remove="Images\bullet_yellow.png" />
+    <None Remove="Images\chart_bar.png" />
     <None Remove="Images\Check_All.png" />
     <None Remove="Images\Check_None.png" />
     <None Remove="Images\cross.png" />
@@ -67,6 +68,7 @@
     <Resource Include="Images\bullet_toggle_minus.png" />
     <Resource Include="Images\bullet_toggle_plus.png" />
     <Resource Include="Images\bullet_yellow.png" />
+    <Resource Include="Images\chart_bar.png" />
     <Resource Include="Images\Check_All.png" />
     <Resource Include="Images\Check_None.png" />
     <Resource Include="Images\cross.png" />

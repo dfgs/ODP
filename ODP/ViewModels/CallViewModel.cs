@@ -99,6 +99,7 @@ namespace ODP.ViewModels
 			}
 		}
 
+		
 		public bool ShouldHaveAudio
 		{
 			get { return ConnectTime.HasValue; }
@@ -106,6 +107,10 @@ namespace ODP.ViewModels
 		public bool HasMediaReport
 		{
 			get { return MediaReports.Any(); }
+		}
+		public bool HasRTCPReport
+		{
+			get	{ return RTCPReports.Any();	}
 		}
 
 		public static readonly DependencyProperty SBCReportsProperty = DependencyProperty.Register("SBCReports", typeof(ViewModelCollection<CDRSBCReportViewModel>), typeof(CallViewModel), new PropertyMetadata(null));
@@ -120,11 +125,17 @@ namespace ODP.ViewModels
 			get { return (ViewModelCollection<CDRMediaReportViewModel>)GetValue(MediaReportsProperty); }
 			set { SetValue(MediaReportsProperty, value); }
 		}
-
+		public static readonly DependencyProperty RTCPReportsProperty = DependencyProperty.Register("RTCPReports", typeof(ViewModelCollection<RTCPReportViewModel>), typeof(CallViewModel), new PropertyMetadata(null));
+		public ViewModelCollection<RTCPReportViewModel> RTCPReports
+		{
+			get { return (ViewModelCollection<RTCPReportViewModel>)GetValue(RTCPReportsProperty); }
+			set { SetValue(RTCPReportsProperty, value); }
+		}
 		public CallViewModel(ILogger Logger) : base(Logger)
 		{
 			SBCReports = new ViewModelCollection<CDRSBCReportViewModel>(Logger);
 			MediaReports = new ViewModelCollection<CDRMediaReportViewModel>(Logger);
+			RTCPReports=new ViewModelCollection<RTCPReportViewModel>(Logger);
 			
 		}
 
@@ -136,13 +147,14 @@ namespace ODP.ViewModels
 				MediaReports.SelectedItem = null;				
 				SBCReports.Clear();
 				MediaReports.Clear();
+				RTCPReports.Clear();
 				return;
 			}
 
 			SBCReports.Load(Model.SBCReports.ToViewModels(() => new CDRSBCReportViewModel(Logger)));
 			MediaReports.Load(Model.MediaReports.ToViewModels(() => new CDRMediaReportViewModel(Logger)));
 			MediaReports.SelectedItem = MediaReports.FirstOrDefault();
-
+			RTCPReports.Load(Model.RTCPReports.ToViewModels(()=>new RTCPReportViewModel(Logger)));
 		}
 
 

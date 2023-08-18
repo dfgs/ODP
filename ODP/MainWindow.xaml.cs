@@ -278,7 +278,28 @@ namespace ODP
 			RunCommand(applicationViewModel.Projects.SelectedItem.RefreshSessions);
 		}
 
+		private void OpenCallChartsCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.Handled = true; e.CanExecute = (!TaskIsRunning);
+		}
 
+		private async void OpenCallChartsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			OpenFileDialog dialog;
+
+			dialog = new OpenFileDialog();
+			dialog.Title = "Open xml file";
+			dialog.DefaultExt = "xml";
+			dialog.Filter = "xml files|*.xml|All files|*.*";
+			dialog.Multiselect = false;
+
+			if (dialog.ShowDialog(this) ?? false)
+			{
+				await Task.Delay(1000);
+			}
+
+
+		}
 
 	}
 }
