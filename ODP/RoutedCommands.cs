@@ -10,6 +10,7 @@ namespace ODP
 	public static class RoutedCommands
 	{
 		public static RoutedCommand AddFile = new RoutedCommand();
+		public static RoutedCommand AddWiresharkFile = new RoutedCommand();
 		public static RoutedCommand Refresh = new RoutedCommand();
 		public static RoutedCommand OK = new RoutedCommand();
 		public static RoutedCommand Cancel = new RoutedCommand();

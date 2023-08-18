@@ -24,8 +24,8 @@ namespace ODP.CoreLib
 		public long? RemotePackLoss { get; set; }
 		public int? RTPdelay { get; set; }
 		public int? RTPjitter { get; set; }
-		public string? TxRTPssrc { get; set; }
-		public string? RxRTPssrc { get; set; }
+		public uint? TxRTPssrc { get; set; }
+		public uint? RxRTPssrc { get; set; }
 		public string? LocalRFactor { get; set; }
 		public string? RemoteRFactor { get; set; }
 		public string? LocalMosCQ { get; set; }

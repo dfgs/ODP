@@ -30,6 +30,7 @@
 		<CommandBinding Command="New" CanExecute="NewCommandBinding_CanExecute" Executed="NewCommandBinding_Executed"/>
 		<CommandBinding Command="Open" CanExecute="OpenFileCommandBinding_CanExecute" Executed="OpenFileCommandBinding_Executed"/>
 		<CommandBinding Command="{x:Static root:RoutedCommands.AddFile}" CanExecute="AddFileCommandBinding_CanExecute" Executed="AddFileCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static root:RoutedCommands.AddWiresharkFile}" CanExecute="AddWiresharkFileCommandBinding_CanExecute" Executed="AddWiresharkFileCommandBinding_Executed"/>
 		<CommandBinding Command="{x:Static root:RoutedCommands.Find}" CanExecute="FindCommandBinding_CanExecute" Executed="FindCommandBinding_Executed"/>
 		<CommandBinding Command="Save" CanExecute="SaveCommandBinding_CanExecute" Executed="SaveCommandBinding_Executed"/>
 		<CommandBinding Command="SaveAs" CanExecute="SaveAsCommandBinding_CanExecute" Executed="SaveAsCommandBinding_Executed"/>
@@ -90,6 +91,9 @@
 				</Button>
 				<Button Command="{x:Static root:RoutedCommands.AddFile}"  ToolTip="Add file" ToolTipService.ShowOnDisabled="true">
 					<Image Source="/Images/folder_add.png" Stretch="None"/>
+				</Button>
+				<Button Command="{x:Static root:RoutedCommands.AddWiresharkFile}"  ToolTip="Add wireshark file" ToolTipService.ShowOnDisabled="true">
+					<Image Source="/Images/wireshark.png" Stretch="None"/>
 				</Button>
 				<Button Command="{x:Static root:RoutedCommands.Find}"  ToolTip="Find" ToolTipService.ShowOnDisabled="true">
 					<Image Source="/Images/magnifier.png" Stretch="None"/>

@@ -48,6 +48,7 @@
     <None Remove="Images\textfield_add.png" />
     <None Remove="Images\textfield_delete.png" />
     <None Remove="Images\textfield_rename.png" />
+    <None Remove="Images\wireshark.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -93,6 +94,7 @@
     <Resource Include="Images\textfield_add.png" />
     <Resource Include="Images\textfield_delete.png" />
     <Resource Include="Images\textfield_rename.png" />
+    <Resource Include="Images\wireshark.png" />
   </ItemGroup>
 
   <ItemGroup>

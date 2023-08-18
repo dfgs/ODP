@@ -41,9 +41,28 @@ namespace ODP.CoreLib
 				Calls.Add(call);
 			}
 
-			call.AddReport(Report);
+			call.AddCDRReport(Report);
 
 		}
+
+		public void AddRTCPReport(RTCPReport Report)
+		{
+			Call? call;
+
+			if (Report == null) throw new ArgumentNullException(nameof(Report));
+
+			call = Calls.FirstOrDefault(item=> item.MediaReports.FirstOrDefault(
+				mediaReport=>(mediaReport.TxRTPssrc==Report.SSRC) || (mediaReport.RxRTPssrc == Report.SSRC)
+				) != null);
+
+			if (call == null) return;
+
+			call.AddRTCPReport(Report);
+
+		
+
+		}
+
 		public void AddPacketReorderReport(PacketReorderReport Report)
 		{
 

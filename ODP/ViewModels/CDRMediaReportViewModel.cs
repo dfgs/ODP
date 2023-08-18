@@ -106,12 +106,12 @@ namespace ODP.ViewModels
 		}
 
 		[Browsable(true)]
-		public string? TxRTPssrc
+		public uint? TxRTPssrc
 		{
 			get => Model?.TxRTPssrc ;
 		}
 		[Browsable(true)]
-		public string? RxRTPssrc
+		public uint? RxRTPssrc
 		{
 			get => Model?.RxRTPssrc ;
 		}

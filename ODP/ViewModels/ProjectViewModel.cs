@@ -1,6 +1,8 @@
-﻿using LogLib;
+﻿using EthernetFrameReaderLib;
+using LogLib;
 using Microsoft.Windows.Themes;
 using ODP.CoreLib;
+using RTCPFrameReaderLib;
 using System;
 using System.Collections.Generic;
 using System.IO.Packaging;
@@ -18,6 +20,7 @@ namespace ODP.ViewModels
 		public event EventHandler? SessionsChanged;
 
 		private List<string> loadedFiles;
+		private List<string> loadedWiresharkFiles;
 
 		public static readonly DependencyProperty NameProperty = DependencyProperty.Register("Name", typeof(string), typeof(ProjectViewModel), new PropertyMetadata("New project"));
 		public string Name
@@ -87,6 +90,7 @@ namespace ODP.ViewModels
 		{
 
 			loadedFiles = new List<string>();
+			loadedWiresharkFiles = new List<string>();
 			PacketLossReports = new PacketLossReportViewModelCollection(Logger);
 			Sessions = new SessionViewModelCollection(Logger);
 			FilteredSessions = new ViewModelCollection<SessionViewModel>(Logger);
@@ -192,6 +196,48 @@ namespace ODP.ViewModels
 			RefreshSessions();
 			RunningTask = null;
 			
+		}
+
+		public async Task AddWiresharkFilesAsync(IEnumerable<string> FileNames, IProgress<long> Progress)
+		{
+			int index, count;
+			IFrameReader frameReader;
+			IPacketReader packetReader;
+			IUDPSegmentReader udpSegmentReader;
+			IACDRReader acdrReader;
+			IRTCPReader rtcpReader;
+
+			if (Model == null) throw new InvalidOperationException("Model is not loaded");
+
+			frameReader = new FrameReader();
+			packetReader = new PacketReader();
+			udpSegmentReader=new UDPSegmentReader();
+			acdrReader = new ACDRReader();
+			rtcpReader=new RTCPReader();
+
+			index = 1; count = FileNames.Count();
+			await foreach (string fileName in FileNames.AsAsyncEnumerable())
+			{
+				RunningTask = $"Loading file ({index}/{count})...";
+				if (loadedWiresharkFiles.Contains(fileName)) continue;
+				loadedWiresharkFiles.Add(fileName);
+
+
+
+				await TryAsync(() => Model.AddWiresharkFileAsync(fileName,
+					frameReader,packetReader,udpSegmentReader,acdrReader,rtcpReader,
+					Progress)).OrThrow($"Failed to read wireshark file {fileName}");
+				index++;
+			}
+
+			PacketLossReports.Load(Model.PacketLossReports.ToViewModels(() => new PacketLossReportViewModel(Logger)));
+			Sessions.Load(Model.Sessions.ToViewModels(() => new SessionViewModel(Logger)));
+
+			OnSessionsChanged();
+			RefreshFilters();
+			RefreshSessions();
+			RunningTask = null;
+
 		}
 
 		public bool FindNext(MatchProperty Criteria,string Value)

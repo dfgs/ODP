@@ -131,6 +131,36 @@ namespace ODP
 
 
 		}
+
+
+		private void AddWiresharkFileCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+		{
+			e.Handled = true; e.CanExecute = (applicationViewModel.Projects.SelectedItem != null) && (!TaskIsRunning);
+		}
+
+		private async void AddWiresharkFileCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			OpenFileDialog dialog;
+			IProgress<long> fileProgress;
+
+			if (applicationViewModel.Projects.SelectedItem == null) return;
+
+			dialog = new OpenFileDialog();
+			dialog.Title = "Open wireshark file";
+			dialog.DefaultExt = "pcapng";
+			dialog.Filter = "pcap files|*.pcapng|All files|*.*";
+			dialog.Multiselect = true;
+
+			if (dialog.ShowDialog(this) ?? false)
+			{
+				fileProgress = new Progress<long>((percent) => progressBar.Value = percent);
+				await RunCommandAsync(applicationViewModel.Projects.SelectedItem.AddWiresharkFilesAsync(dialog.FileNames, fileProgress));
+			}
+
+
+		}
+
+
 		private void FindCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
 		{
 			e.Handled = true; e.CanExecute = (applicationViewModel.Projects.SelectedItem != null) && (!TaskIsRunning);

@@ -20,7 +20,7 @@ namespace ODP.CoreLib.UnitTest
 			call= new Call();
 
 #pragma warning disable CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
-			Assert.ThrowsException<ArgumentNullException>(() => call.AddReport(null));
+			Assert.ThrowsException<ArgumentNullException>(() => call.AddCDRReport(null));
 #pragma warning restore CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
 
 		}
@@ -35,7 +35,7 @@ namespace ODP.CoreLib.UnitTest
 
 			call = new Call() { SIPCallId = "CallID1" };
 
-			call.AddReport(report);
+			call.AddCDRReport(report);
 			Assert.AreEqual(1, call.SBCReports.Count);
 			Assert.AreEqual(0, call.MediaReports.Count);
 
@@ -50,7 +50,7 @@ namespace ODP.CoreLib.UnitTest
 
 			call = new Call() { SIPCallId = "CallID1" };
 
-			call.AddReport(report);
+			call.AddCDRReport(report);
 			Assert.AreEqual(0, call.SBCReports.Count);
 			Assert.AreEqual(1, call.MediaReports.Count);
 

@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="PcapngFile" Version="1.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\EthernetFrameReaderLib\EthernetFrameReaderLib\EthernetFrameReaderLib.csproj" />
+    <ProjectReference Include="..\..\RTCPFrameReaderLib\RTCPFrameReaderLib\RTCPFrameReaderLib.csproj" />
+  </ItemGroup>
+
 </Project>
