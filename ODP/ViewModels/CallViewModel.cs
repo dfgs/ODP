@@ -110,7 +110,7 @@ namespace ODP.ViewModels
 		}
 		public bool HasRTCPReport
 		{
-			get	{ return RTCPReports.Any();	}
+			get	{ return LocalRTCPReports.Any() || RemoteRTCPReports.Any();	}
 		}
 
 		public static readonly DependencyProperty SBCReportsProperty = DependencyProperty.Register("SBCReports", typeof(ViewModelCollection<CDRSBCReportViewModel>), typeof(CallViewModel), new PropertyMetadata(null));
@@ -125,18 +125,27 @@ namespace ODP.ViewModels
 			get { return (ViewModelCollection<CDRMediaReportViewModel>)GetValue(MediaReportsProperty); }
 			set { SetValue(MediaReportsProperty, value); }
 		}
-		public static readonly DependencyProperty RTCPReportsProperty = DependencyProperty.Register("RTCPReports", typeof(ViewModelCollection<RTCPReportViewModel>), typeof(CallViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<RTCPReportViewModel> RTCPReports
+		
+		public static readonly DependencyProperty LocalRTCPReportsProperty = DependencyProperty.Register("LocalRTCPReports", typeof(ViewModelCollection<RTCPReportViewModel>), typeof(CallViewModel), new PropertyMetadata(null));
+		public ViewModelCollection<RTCPReportViewModel> LocalRTCPReports
 		{
-			get { return (ViewModelCollection<RTCPReportViewModel>)GetValue(RTCPReportsProperty); }
-			set { SetValue(RTCPReportsProperty, value); }
+			get { return (ViewModelCollection<RTCPReportViewModel>)GetValue(LocalRTCPReportsProperty); }
+			set { SetValue(LocalRTCPReportsProperty, value); }
 		}
+		public static readonly DependencyProperty RemoteRTCPReportsProperty = DependencyProperty.Register("RemoteRTCPReports", typeof(ViewModelCollection<RTCPReportViewModel>), typeof(CallViewModel), new PropertyMetadata(null));
+		public ViewModelCollection<RTCPReportViewModel> RemoteRTCPReports
+		{
+			get { return (ViewModelCollection<RTCPReportViewModel>)GetValue(RemoteRTCPReportsProperty); }
+			set { SetValue(RemoteRTCPReportsProperty, value); }
+		}
+
+
 		public CallViewModel(ILogger Logger) : base(Logger)
 		{
 			SBCReports = new ViewModelCollection<CDRSBCReportViewModel>(Logger);
 			MediaReports = new ViewModelCollection<CDRMediaReportViewModel>(Logger);
-			RTCPReports=new ViewModelCollection<RTCPReportViewModel>(Logger);
-			
+			LocalRTCPReports=new ViewModelCollection<RTCPReportViewModel>(Logger);
+			RemoteRTCPReports = new ViewModelCollection<RTCPReportViewModel>(Logger);
 		}
 
 
@@ -147,14 +156,16 @@ namespace ODP.ViewModels
 				MediaReports.SelectedItem = null;				
 				SBCReports.Clear();
 				MediaReports.Clear();
-				RTCPReports.Clear();
+				LocalRTCPReports.Clear();
+				RemoteRTCPReports.Clear();
 				return;
 			}
 
 			SBCReports.Load(Model.SBCReports.ToViewModels(() => new CDRSBCReportViewModel(Logger)));
 			MediaReports.Load(Model.MediaReports.ToViewModels(() => new CDRMediaReportViewModel(Logger)));
 			MediaReports.SelectedItem = MediaReports.FirstOrDefault();
-			RTCPReports.Load(Model.RTCPReports.ToViewModels(()=>new RTCPReportViewModel(Logger)));
+			LocalRTCPReports.Load(Model.LocalRTCPReports.ToViewModels(() => new RTCPReportViewModel(Logger)));
+			RemoteRTCPReports.Load(Model.RemoteRTCPReports.ToViewModels(() => new RTCPReportViewModel(Logger)));
 		}
 
 

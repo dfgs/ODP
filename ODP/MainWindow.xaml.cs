@@ -283,20 +283,14 @@ namespace ODP
 			e.Handled = true; e.CanExecute = (!TaskIsRunning);
 		}
 
-		private async void OpenCallChartsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+		private void OpenCallChartsCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			OpenFileDialog dialog;
+			CallChartWindow window;
 
-			dialog = new OpenFileDialog();
-			dialog.Title = "Open xml file";
-			dialog.DefaultExt = "xml";
-			dialog.Filter = "xml files|*.xml|All files|*.*";
-			dialog.Multiselect = false;
-
-			if (dialog.ShowDialog(this) ?? false)
-			{
-				await Task.Delay(1000);
-			}
+			window = new CallChartWindow();
+			window.Owner = this;
+			window.DataContext = e.Parameter;
+			window.ShowDialog();
 
 
 		}

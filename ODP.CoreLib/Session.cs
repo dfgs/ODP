@@ -52,14 +52,25 @@ namespace ODP.CoreLib
 			if (Report == null) throw new ArgumentNullException(nameof(Report));
 
 			call = Calls.FirstOrDefault(item=> item.MediaReports.FirstOrDefault(
-				mediaReport=>(mediaReport.TxRTPssrc==Report.SSRC) || (mediaReport.RxRTPssrc == Report.SSRC)
+				mediaReport=>mediaReport.TxRTPssrc==Report.SSRC
 				) != null);
 
-			if (call == null) return;
+			if (call != null)
+			{
+				call.AddRemoteRTCPReport(Report);
+				return;
+			}
 
-			call.AddRTCPReport(Report);
+			call = Calls.FirstOrDefault(item => item.MediaReports.FirstOrDefault(
+				mediaReport => mediaReport.RxRTPssrc == Report.SSRC
+				) != null);
 
-		
+			if (call != null)
+			{
+				call.AddLocalRTCPReport(Report);
+				return;
+			}
+
 
 		}
 

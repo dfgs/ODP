@@ -21,7 +21,12 @@ namespace ODP.CoreLib
 			set;
 		}
 
-		public List<RTCPReport> RTCPReports
+		public List<RTCPReport> LocalRTCPReports
+		{
+			get;
+			set;
+		}
+		public List<RTCPReport> RemoteRTCPReports
 		{
 			get;
 			set;
@@ -31,7 +36,8 @@ namespace ODP.CoreLib
 		{
 			SBCReports= new List<CDRSBCReport>();
 			MediaReports= new List<CDRMediaReport>();
-			RTCPReports = new List<RTCPReport>();
+			LocalRTCPReports = new List<RTCPReport>();
+			RemoteRTCPReports = new List<RTCPReport>();
 		}
 
 		public void AddCDRReport(CDRReport Report)
@@ -50,13 +56,18 @@ namespace ODP.CoreLib
 			}
 
 		}
-		public void AddRTCPReport(RTCPReport Report)
+		public void AddLocalRTCPReport(RTCPReport Report)
 		{
 
 			if (Report == null) throw new ArgumentNullException(nameof(Report));
-			RTCPReports.Add(Report);
+			LocalRTCPReports.Add(Report);
 		}
+		public void AddRemoteRTCPReport(RTCPReport Report)
+		{
 
+			if (Report == null) throw new ArgumentNullException(nameof(Report));
+			RemoteRTCPReports.Add(Report);
+		}
 
 	}
 }
