@@ -38,21 +38,14 @@
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="1*"/>
-			<ColumnDefinition Width="1*"/>
-			<ColumnDefinition Width="1*"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="1*"/>
 			<RowDefinition Height="1*"/>
 		</Grid.RowDefinitions>
-		<views:ChartView x:Name="WpfPlotRemotePacketLoss" Title="Packet loss % over time (remote)" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" Style="{StaticResource chartViewStyle}"/>
-		<views:ChartView x:Name="WpfPlotRemoteDelay" Title="Delay over time (remote)"  Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="1" Style="{StaticResource chartViewStyle}" />
-		<views:ChartView x:Name="WpfPlotRemoteJitter" Title="Jitter over time (remote)"  Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="1"  Style="{StaticResource chartViewStyle}" />
-
-		<views:ChartView x:Name="WpfPlotLocalPacketLoss" Title="Packet loss % over time (local)" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="1" Style="{StaticResource chartViewStyle}"/>
-		<views:ChartView x:Name="WpfPlotLocalDelay" Title="Delay over time (local)"  Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Style="{StaticResource chartViewStyle}" />
-		<views:ChartView x:Name="WpfPlotLocalJitter" Title="Jitter over time (local)"  Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1"  Style="{StaticResource chartViewStyle}" />
-
+	
+		<views:ChartView x:Name="WpfPlotPacketLoss" Title="Packet loss reports" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" Style="{StaticResource chartViewStyle}"/>
+		<views:ChartView x:Name="WpfPlotJitter" Title="Jitter reports (timestamp unit)"  Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="1"  Style="{StaticResource chartViewStyle}" />
 
 		<views:ChartView x:Name="WpfPlotMaximized" Title="TBD" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2"  Style="{StaticResource chartViewStyle2}" />
 	</Grid>

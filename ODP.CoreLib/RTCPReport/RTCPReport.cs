@@ -18,5 +18,7 @@ namespace ODP.CoreLib
 		public uint Jitter { get; set; }
 
 		public uint SSRC { get; set; }
+
+		public string? SourceName {get; set;}
 	}
 }

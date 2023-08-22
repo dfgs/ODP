@@ -38,5 +38,21 @@ namespace ODP.CoreLib
 		public string? CoderTranscoding { get; set; }
 		public string? LegId { get; set; }
 
+		public List<RTCPReport> TxRTCPReports
+		{
+			get;
+			set;
+		}
+		public List<RTCPReport> RxRTCPReports
+		{
+			get;
+			set;
+		}
+
+		public CDRMediaReport()
+		{
+			TxRTCPReports = new List<RTCPReport>();
+			RxRTCPReports = new List<RTCPReport>();
+		}
 	}
 }

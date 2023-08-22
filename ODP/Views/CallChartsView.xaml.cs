@@ -33,73 +33,139 @@ namespace ODP.Views
 
 
 
-		private void RefreshWpfPlotRemotePacketLoss(WpfPlot WpfPlot, ViewModelCollection<RTCPReportViewModel> RTCPReports)
+		private void RefreshWpfPlotPacketLoss(WpfPlot WpfPlot, CallViewModel Call)
 		{
 			double[] positions;
 			double[] values;
-
-
-			RTCPReportViewModel[] samples = RTCPReports.ToArray();
+			RTCPReportViewModel[] samples;
 
 			WpfPlot.Plot.Clear();
-			if (samples.Length == 0) return;
 
-			positions = samples.Select(item => item.TimeStamp!.Value.ToOADate()).ToArray();
-			values = samples.Select(item => (double)item.PacketLossPercent!.Value).ToArray();
+			foreach(CDRMediaReportViewModel mediaReport in Call.MediaReports)
+			{
+				foreach (var groupedReports in mediaReport.TxRTCPReports.GroupBy(item => item.SourceName))
+				{
+					samples = groupedReports.ToArray();
 
-			var scatter1 = WpfPlot.Plot.AddScatter(positions, values);
-			scatter1.Label = "Packet loss %";
+					if (samples.Length == 0) continue;
 
+					positions = samples.Select(item => item.TimeStamp!.Value.ToOADate()).ToArray();
+					values = samples.Select(item => (double)item.PacketLossPercent!.Value).ToArray();
+
+					var scatter1 = WpfPlot.Plot.AddScatter(positions, values);
+					scatter1.Label = $"{groupedReports.Key} ({mediaReport.LocalRtpIp}->{mediaReport.RemoteRtpIp})";
+
+				}//*/
+				foreach (var groupedReports in mediaReport.RxRTCPReports.GroupBy(item => item.SourceName))
+				{
+					samples = groupedReports.ToArray();
+
+					if (samples.Length == 0) continue;
+
+					positions = samples.Select(item => item.TimeStamp!.Value.ToOADate()).ToArray();
+					values = samples.Select(item => (double)item.PacketLossPercent!.Value).ToArray();
+
+					var scatter1 = WpfPlot.Plot.AddScatter(positions, values);
+					scatter1.Label = $"{groupedReports.Key} ({mediaReport.RemoteRtpIp}->{mediaReport.LocalRtpIp})";
+
+				}//*/
+			}
+
+
+			WpfPlot.Plot.YLabel("%");
 			WpfPlot.Plot.XAxis.DateTimeFormat(true);
-			scatter1.OffsetX = values[0];
-			
 			WpfPlot.Plot.Legend(true, Alignment.UpperRight);
-
 			WpfPlot.Refresh();
 		}
-		private void RefreshWpfPlotRemoteDelay(WpfPlot WpfPlot, ViewModelCollection<RTCPReportViewModel> RTCPReports)
-		{
-
-		}
-		private void RefreshWpfPlotRemoteJitter(WpfPlot WpfPlot, ViewModelCollection<RTCPReportViewModel> RTCPReports)
-		{
-
-		}
-		private void RefreshWpfPlotLocalPacketLoss(WpfPlot WpfPlot, ViewModelCollection<RTCPReportViewModel> RTCPReports)
+		private void RefreshWpfPlotDelay(WpfPlot WpfPlot, CallViewModel Call)
 		{
 			double[] positions;
 			double[] values;
-
-
-			RTCPReportViewModel[] samples = RTCPReports.ToArray();
+			RTCPReportViewModel[] samples;
 
 			WpfPlot.Plot.Clear();
-			if (samples.Length == 0) return;
 
-			positions = samples.Select(item => item.TimeStamp!.Value.ToOADate()).ToArray();
-			values = samples.Select(item => (double)item.PacketLossPercent!.Value).ToArray();
+			foreach (CDRMediaReportViewModel mediaReport in Call.MediaReports)
+			{
+				foreach (var groupedReports in mediaReport.TxRTCPReports.GroupBy(item => item.SourceName))
+				{
+					samples = groupedReports.ToArray();
 
-			var scatter1 = WpfPlot.Plot.AddScatter(positions, values);
-			scatter1.Label = "Packet loss %";
+					if (samples.Length == 0) continue;
+
+					positions = samples.Select(item => item.TimeStamp!.Value.ToOADate()).ToArray();
+					values = samples.Select(item => (double)item.Jitter!.Value).ToArray();
+
+					var scatter1 = WpfPlot.Plot.AddScatter(positions, values);
+					scatter1.Label = $"{groupedReports.Key} ({mediaReport.LocalRtpIp}->{mediaReport.RemoteRtpIp})";
+
+				}//*/
+				foreach (var groupedReports in mediaReport.RxRTCPReports.GroupBy(item => item.SourceName))
+				{
+					samples = groupedReports.ToArray();
+
+					if (samples.Length == 0) continue;
+
+					positions = samples.Select(item => item.TimeStamp!.Value.ToOADate()).ToArray();
+					values = samples.Select(item => (double)item.Jitter!.Value).ToArray();
+
+					var scatter1 = WpfPlot.Plot.AddScatter(positions, values);
+					scatter1.Label = $"{groupedReports.Key} ({mediaReport.RemoteRtpIp}->{mediaReport.LocalRtpIp})";
+
+				}//*/
+			}
+
+
 
 			WpfPlot.Plot.XAxis.DateTimeFormat(true);
-			scatter1.OffsetX = values[0];
-
 			WpfPlot.Plot.Legend(true, Alignment.UpperRight);
-
 			WpfPlot.Refresh();
 		}
-
-		private void RefreshWpfPlotLocalDelay(WpfPlot WpfPlot, ViewModelCollection<RTCPReportViewModel> RTCPReports)
+		private void RefreshWpfPlotJitter(WpfPlot WpfPlot, CallViewModel Call)
 		{
+			double[] positions;
+			double[] values;
+			RTCPReportViewModel[] samples;
+
+			WpfPlot.Plot.Clear();
+
+			foreach (CDRMediaReportViewModel mediaReport in Call.MediaReports)
+			{
+				foreach (var groupedReports in mediaReport.TxRTCPReports.GroupBy(item => item.SourceName))
+				{
+					samples = groupedReports.ToArray();
+
+					if (samples.Length == 0) continue;
+
+					positions = samples.Select(item => item.TimeStamp!.Value.ToOADate()).ToArray();
+					values = samples.Select(item => (double)item.Jitter!.Value).ToArray();
+
+					var scatter1 = WpfPlot.Plot.AddScatter(positions, values);
+					scatter1.Label = $"{groupedReports.Key} ({mediaReport.LocalRtpIp}->{mediaReport.RemoteRtpIp})";
+
+				}//*/
+				foreach (var groupedReports in mediaReport.RxRTCPReports.GroupBy(item => item.SourceName))
+				{
+					samples = groupedReports.ToArray();
+
+					if (samples.Length == 0) continue;
+
+					positions = samples.Select(item => item.TimeStamp!.Value.ToOADate()).ToArray();
+					values = samples.Select(item => (double)item.Jitter!.Value).ToArray();
+
+					var scatter1 = WpfPlot.Plot.AddScatter(positions, values);
+					scatter1.Label = $"{groupedReports.Key} ({mediaReport.RemoteRtpIp}->{mediaReport.LocalRtpIp})";
+
+				}//*/
+			}
+
+
+			WpfPlot.Plot.YLabel("ts");
+			WpfPlot.Plot.XAxis.DateTimeFormat(true);
+			WpfPlot.Plot.Legend(true, Alignment.UpperRight);
+			WpfPlot.Refresh();
 
 		}
-		private void RefreshWpfPlotLocalJitter(WpfPlot WpfPlot, ViewModelCollection<RTCPReportViewModel> RTCPReports)
-		{
-
-		}
-
-
 
 		private void RefreshCharts()
 		{
@@ -108,14 +174,9 @@ namespace ODP.Views
 
 			//return;
 			if (call == null) return;
-			RefreshWpfPlotRemotePacketLoss(WpfPlotRemotePacketLoss.WpfPlot, call.LocalRTCPReports);
-			RefreshWpfPlotRemoteDelay(WpfPlotRemoteDelay.WpfPlot, call.LocalRTCPReports);
-			RefreshWpfPlotRemoteJitter(WpfPlotRemoteJitter.WpfPlot, call.LocalRTCPReports);
+			RefreshWpfPlotPacketLoss(WpfPlotPacketLoss.WpfPlot, call);
+			RefreshWpfPlotJitter(WpfPlotJitter.WpfPlot, call);
 	
-			RefreshWpfPlotLocalPacketLoss(WpfPlotLocalPacketLoss.WpfPlot, call.RemoteRTCPReports);
-			RefreshWpfPlotLocalDelay(WpfPlotLocalDelay.WpfPlot, call.RemoteRTCPReports);
-			RefreshWpfPlotLocalJitter(WpfPlotLocalJitter.WpfPlot, call.RemoteRTCPReports);
-
 
 		}
 
@@ -148,37 +209,19 @@ namespace ODP.Views
 			WpfPlotMaximized.Title = clickedView.Title;
 			WpfPlotMaximized.IsMaximized = true;
 
-			if (clickedView == WpfPlotRemotePacketLoss)
+			if (clickedView == WpfPlotPacketLoss)
 			{
-				RefreshWpfPlotRemotePacketLoss(WpfPlotMaximized.WpfPlot, call.LocalRTCPReports);
+				RefreshWpfPlotPacketLoss(WpfPlotMaximized.WpfPlot, call);
 				return;
 			}
-			if (clickedView == WpfPlotRemoteDelay)
+		
+			if (clickedView == WpfPlotJitter)
 			{
-				RefreshWpfPlotRemoteDelay(WpfPlotMaximized.WpfPlot, call.LocalRTCPReports);
-				return;
-			}
-			if (clickedView == WpfPlotRemoteJitter)
-			{
-				RefreshWpfPlotRemoteJitter(WpfPlotMaximized.WpfPlot, call.LocalRTCPReports);
+				RefreshWpfPlotJitter(WpfPlotMaximized.WpfPlot, call);
 				return;
 			}
 
-			if (clickedView == WpfPlotLocalPacketLoss)
-			{
-				RefreshWpfPlotLocalPacketLoss(WpfPlotMaximized.WpfPlot, call.RemoteRTCPReports);
-				return;
-			}
-			if (clickedView == WpfPlotLocalDelay)
-			{
-				RefreshWpfPlotLocalDelay(WpfPlotMaximized.WpfPlot, call.RemoteRTCPReports);
-				return;
-			}
-			if (clickedView == WpfPlotLocalJitter)
-			{
-				RefreshWpfPlotLocalJitter(WpfPlotMaximized.WpfPlot, call.RemoteRTCPReports);
-				return;
-			}
+			
 
 		}
 

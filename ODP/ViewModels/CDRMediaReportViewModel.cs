@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using ViewModelLib;
 
@@ -171,6 +172,19 @@ namespace ODP.ViewModels
 			get => Model?.LegId ;
 		}
 
+		public static readonly DependencyProperty TxRTCPReportsProperty = DependencyProperty.Register("TxRTCPReports", typeof(ViewModelCollection<RTCPReportViewModel>), typeof(CDRMediaReportViewModel), new PropertyMetadata(null));
+		public ViewModelCollection<RTCPReportViewModel> TxRTCPReports
+		{
+			get { return (ViewModelCollection<RTCPReportViewModel>)GetValue(TxRTCPReportsProperty); }
+			set { SetValue(TxRTCPReportsProperty, value); }
+		}
+		public static readonly DependencyProperty RxRTCPReportsProperty = DependencyProperty.Register("RxRTCPReports", typeof(ViewModelCollection<RTCPReportViewModel>), typeof(CDRMediaReportViewModel), new PropertyMetadata(null));
+		public ViewModelCollection<RTCPReportViewModel> RxRTCPReports
+		{
+			get { return (ViewModelCollection<RTCPReportViewModel>)GetValue(RxRTCPReportsProperty); }
+			set { SetValue(RxRTCPReportsProperty, value); }
+		}
+
 		[Browsable(true)]
 		public double? PacketLossPercent
 		{
@@ -211,6 +225,11 @@ namespace ODP.ViewModels
 			get => LocalPackLoss > -1;
 		}
 
+		public bool HasRTCPReport
+		{
+			get { return TxRTCPReports.Any() || RxRTCPReports.Any(); }
+		}
+
 		public Quality Quality
 		{
 			get
@@ -239,6 +258,24 @@ namespace ODP.ViewModels
 
 		public CDRMediaReportViewModel(ILogger Logger) : base(Logger)
 		{
+			TxRTCPReports = new ViewModelCollection<RTCPReportViewModel>(Logger);
+			RxRTCPReports = new ViewModelCollection<RTCPReportViewModel>(Logger);
+
 		}
+
+		protected override void OnLoaded()
+		{
+			if (Model==null)
+			{
+				TxRTCPReports.Clear();
+				RxRTCPReports.Clear();
+				return;
+			}
+
+			TxRTCPReports.Load(Model.TxRTCPReports.ToViewModels(() => new RTCPReportViewModel(Logger)));
+			RxRTCPReports.Load(Model.RxRTCPReports.ToViewModels(() => new RTCPReportViewModel(Logger)));
+		}
+
+
 	}
 }

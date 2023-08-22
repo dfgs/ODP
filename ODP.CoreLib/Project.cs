@@ -1,4 +1,5 @@
-﻿using EthernetFrameReaderLib;
+﻿using BigEndianReaderLib;
+using EthernetFrameReaderLib;
 using RTCPFrameReaderLib;
 using System.Reflection.Metadata;
 using System.Text;
@@ -213,8 +214,13 @@ namespace ODP.CoreLib
 			Packet packet;
 			UDPSegment udpSegment;
 			ACDR acdr;
+			IBigEndianReader bigEndianReader;
+			
 			SenderReport? senderReport ;
+			SourceDescription? sourceDescription ;
 			RTCPReport rtcpReport;
+			string? sourceName;
+			SDESItem sdesItem;
 
 			if (FileName == null) throw new ArgumentNullException(nameof(FileName));
 			if (Progress == null) throw new ArgumentNullException(nameof(Progress));
@@ -247,14 +253,24 @@ namespace ODP.CoreLib
 
 						if (acdr.Header.MediaType != MediaTypes.ACDR_RTCP) continue; // not rtcp
 
-						senderReport = RTCPReader.Read(acdr.Payload) as SenderReport;
+						bigEndianReader=new BigEndianReader(acdr.Payload);
+
+						senderReport = RTCPReader.Read(bigEndianReader) as SenderReport;
 						if (senderReport == null) continue; // not sender report
 						if (senderReport.Header.ReceptionReportCount == 0) continue;
 
-						
+						sourceDescription = RTCPReader.Read(bigEndianReader) as SourceDescription;
+						if (sourceDescription == null) continue; // not source description
+						if (sourceDescription.Header.SourceCount == 0) continue;
+
+						sdesItem=sourceDescription.Chunks.SelectMany(chunk=>chunk.Items).FirstOrDefault(item=>item.Type==SDESItemTypes.CNAME);
+						if (string.IsNullOrEmpty(sdesItem.Text)) sourceName = "anonymous";
+						else sourceName = sdesItem.Text;
+
 						rtcpReport = new RTCPReport() {
+							SourceName = sourceName,
 							SessionId = acdr.FullSessionID.ToString(),
-							TimeStamp = new DateTime(1900, 1, 1).AddSeconds((double)senderReport.SenderInfo.NTPTimeStamp / 4294967296).ToLocalTime(),
+							TimeStamp = block.GetTimestamp().ToLocalTime(),
 							SSRC = senderReport.Header.SenderSSRC,
 							Jitter = senderReport.ReceptionReports[0].InterarrivalJitter,
 							PacketLossPercent = (byte)(senderReport.ReceptionReports[0].FractionLost * 100 / 255),

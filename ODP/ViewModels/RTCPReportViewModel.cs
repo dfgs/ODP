@@ -42,7 +42,11 @@ namespace ODP.ViewModels
 			get => Model?.SSRC;
 		}
 
-
+		[Browsable(true)]
+		public string? SourceName
+		{
+			get=>Model?.SourceName;
+		}
 
 
 		public RTCPReportViewModel(ILogger Logger) : base(Logger)
