@@ -1,4 +1,5 @@
-﻿using EthernetFrameReaderLib;
+﻿using BigEndianReaderLib;
+using EthernetFrameReaderLib;
 using LogLib;
 using Microsoft.Windows.Themes;
 using ODP.CoreLib;
@@ -315,6 +316,97 @@ namespace ODP.ViewModels
 			
 		}
 
+
+		private async Task AddWiresharkFileAsync(string FileName,
+			IFrameReader FrameReader, IPacketReader PacketReader,
+			IUDPSegmentReader UDPSegmentReader,
+			IACDRReader ACDRReader, IRTCPReader RTCPReader,
+			IProgress<long> Progress)
+		{
+			long percent, oldPercent = -1;
+			Frame frame=new Frame();
+			Packet packet=new Packet();
+			UDPSegment udpSegment = new UDPSegment();
+			ACDR acdr=new ACDR();
+			IBigEndianReader bigEndianReader;
+
+			SenderReport? senderReport=null;
+			SourceDescription? sourceDescription;
+			RTCPReport rtcpReport;
+			string? sourceName;
+			SDESItem sdesItem;
+			PcapngFile.Reader? reader=null;
+
+			if (FileName == null) throw new ArgumentNullException(nameof(FileName));
+			if (Progress == null) throw new ArgumentNullException(nameof(Progress));
+
+			if (Model == null)
+			{
+				Log(LogLevels.Error, "Model is not loaded");
+				throw new InvalidOperationException("Model is not loaded");
+			}
+
+			try
+			{
+				Try(() => new PcapngFile.Reader(FileName)).Then(result => reader = result).OrThrow("Failed to open file");
+
+				await foreach (var block in reader!.EnhancedPacketBlocks.AsAsyncEnumerable())
+				{
+					if (reader.BaseStreamPosition.HasValue && reader.BaseStreamLength.HasValue) percent = reader.BaseStreamPosition.Value * 100 / reader.BaseStreamLength.Value;
+					else percent = 0;
+
+					if (percent > oldPercent)
+					{
+						oldPercent = percent;
+						Progress.Report(percent);
+					}
+
+					// Trying to load packet
+					if (!Try(() => FrameReader.Read(block.Data)).Then(result => frame = result).OrAlert("Failed to read frame")) continue;
+					if (!Try(() => PacketReader.Read(frame.Payload)).Then(result => packet = result).OrAlert("Failed to read packet")) continue;
+
+					if (packet.Header.Protocol != Protocols.UDP) continue; // not acdr
+
+					if (!Try(() => UDPSegmentReader.Read(packet.Payload)).Then(result => udpSegment = result).OrAlert("Failed to read segment")) continue;
+					if (udpSegment.Header.DestinationPort != 925) continue; // not acdr
+
+					if (!Try(() => ACDRReader.Read(udpSegment.Payload)).Then(result => acdr = result).OrAlert("Failed to read acdr")) continue;
+					if (acdr.Header.MediaType != MediaTypes.ACDR_RTCP) continue; // not rtcp
+
+					bigEndianReader = new BigEndianReader(acdr.Payload);
+
+					if (!Try(() => RTCPReader.Read(bigEndianReader)).Then(result => senderReport = result as SenderReport).OrAlert("Failed to read RTCP")) continue;
+					if (senderReport == null) continue; // not sender report
+
+					if (senderReport.Header.ReceptionReportCount == 0) continue;
+
+					sourceDescription = RTCPReader.Read(bigEndianReader) as SourceDescription;
+					if (sourceDescription == null) continue; // not source description
+					if (sourceDescription.Header.SourceCount == 0) continue;
+
+					sdesItem = sourceDescription.Chunks.SelectMany(chunk => chunk.Items).FirstOrDefault(item => item.Type == SDESItemTypes.CNAME);
+					if (string.IsNullOrEmpty(sdesItem.Text)) sourceName = "anonymous";
+					else sourceName = sdesItem.Text;
+
+					rtcpReport = new RTCPReport()
+					{
+						SourceName = sourceName,
+						SessionId = acdr.FullSessionID.ToString(),
+						TimeStamp = block.GetTimestamp().ToLocalTime(),
+						SSRC = senderReport.Header.SenderSSRC,
+						Jitter = senderReport.ReceptionReports[0].InterarrivalJitter,
+						PacketLossPercent = (byte)(senderReport.ReceptionReports[0].FractionLost * 100 / 255),
+					};
+					Model.AddRTCPReport(rtcpReport);
+				}
+
+			}
+			finally
+			{
+				if (reader != null) reader.Reset();
+
+			}
+		}
 		public async Task AddWiresharkFilesAsync(IEnumerable<string> FileNames, IProgress<long> Progress)
 		{
 			int index, count;
@@ -339,9 +431,7 @@ namespace ODP.ViewModels
 				if (loadedWiresharkFiles.Contains(fileName)) continue;
 				loadedWiresharkFiles.Add(fileName);
 
-
-
-				await TryAsync(() => Model.AddWiresharkFileAsync(fileName,
+				await TryAsync(() => AddWiresharkFileAsync(fileName,
 					frameReader,packetReader,udpSegmentReader,acdrReader,rtcpReader,
 					Progress)).OrThrow($"Failed to read wireshark file {fileName}");
 				index++;

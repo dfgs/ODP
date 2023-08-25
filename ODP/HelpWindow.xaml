@@ -51,6 +51,24 @@
 							<Paragraph>Number of packet reorder in call details</Paragraph>
 						</ListItem>
 					</List>
+					<Paragraph>
+						<Bold>
+							<Underline>
+								Version 1.2
+							</Underline>
+						</Bold>
+					</Paragraph>
+					<List>
+						<ListItem>
+							<Paragraph>Added RTCP import from debug recording file</Paragraph>
+						</ListItem>
+						<ListItem>
+							<Paragraph>Charts based on RTCP packets</Paragraph>
+						</ListItem>
+						<ListItem>
+							<Paragraph>Improved file loading and error logging</Paragraph>
+						</ListItem>
+					</List>
 				</FlowDocument>
 			</FlowDocumentReader>
 		</TabItem>

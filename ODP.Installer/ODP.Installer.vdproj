@@ -44,6 +44,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -164,15 +172,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ODP"
-        "ProductCode" = "8:{F362C02E-8149-4C48-9395-16E2973C812E}"
-        "PackageCode" = "8:{FC5EB443-1FDF-42D5-88FF-811CBD424014}"
+        "ProductCode" = "8:{5FA7C7AB-29AD-45B3-A3A8-3D2B05CE1AEF}"
+        "PackageCode" = "8:{F1E8BCD6-C69F-4FC6-BD15-4AEEB828DA50}"
         "UpgradeCode" = "8:{08C828CC-6024-4D09-9F9D-E82783289ADF}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.2.0"
         "Manufacturer" = "8:Marc GUICHARD"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -686,7 +694,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_7BB35DC0C16D44D1B0ABD6DC3B7A3B93"
             {
-            "SourcePath" = "8:..\\ODP\\obj\\Release\\net6.0-windows\\apphost.exe"
+            "SourcePath" = "8:..\\ODP\\obj\\Debug\\net6.0-windows\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_BFD4C2F94DF84516B1581D4889E12712"
