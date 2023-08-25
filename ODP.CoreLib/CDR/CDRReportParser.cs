@@ -115,9 +115,15 @@ namespace ODP.CoreLib
 				part = parts[16].Trim();
 				if (part == "4294967295") mediaReport.RTPjitter = -1;
 				else mediaReport.RTPjitter = int.Parse(part);
-				
-				mediaReport.TxRTPssrc = uint.Parse( parts[17].Trim());
-				mediaReport.RxRTPssrc = uint.Parse( parts[18].Trim());
+
+				part = parts[17].Trim();
+				if (part == "-1") mediaReport.TxRTPssrc = null;
+				else mediaReport.TxRTPssrc =  uint.Parse( part);
+
+				part = parts[18].Trim();
+				if (part == "-1") mediaReport.TxRTPssrc = null;
+				else mediaReport.RxRTPssrc = uint.Parse( part);
+
 				mediaReport.LocalRFactor = parts[19].Trim();
 				mediaReport.RemoteRFactor = parts[20].Trim();
 				mediaReport.LocalMosCQ = parts[21].Trim();

@@ -5,6 +5,7 @@ using ODP.CoreLib;
 using RTCPFrameReaderLib;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Packaging;
 using System.Linq;
 using System.Reflection;
@@ -151,7 +152,113 @@ namespace ODP.ViewModels
 			FilteredSessions.Load( Sessions.Where(session => GlobalFilter.Match(session)) );
 		}
 
-		
+
+		private  async Task AddFileAsync(string FileName,
+			ICDRSyslogParser CDRSyslogParser, ICDRReportParser CDRReportParser,
+			IPacketLossSyslogParser PacketLossSyslogParser, IPacketLossReportParser PacketLossReportParser,
+			IPacketReorderSyslogParser PacketReorderSyslogParser, IPacketReorderReportParser PacketReorderReportParser,
+			IProgress<long> Progress)
+		{
+			FileStream? stream=null;
+			StreamReader? reader=null;
+			string? syslogLine=null;
+			string? reportLine=null;
+			CDRReport? CDRReport = null;
+			PacketLossReport? packetLossReport=null;
+			PacketReorderReport? packetReorderReport=null;
+			long percent, oldPercent = -1;
+
+			if (FileName == null) throw new ArgumentNullException(nameof(FileName));
+			if (CDRSyslogParser == null) throw new ArgumentNullException(nameof(CDRSyslogParser));
+			if (CDRReportParser == null) throw new ArgumentNullException(nameof(CDRReportParser));
+			if (PacketLossSyslogParser == null) throw new ArgumentNullException(nameof(PacketLossSyslogParser));
+			if (PacketLossReportParser == null) throw new ArgumentNullException(nameof(PacketLossReportParser));
+			if (PacketReorderSyslogParser == null) throw new ArgumentNullException(nameof(PacketReorderSyslogParser));
+			if (PacketReorderReportParser == null) throw new ArgumentNullException(nameof(PacketReorderReportParser));
+			if (Progress == null) throw new ArgumentNullException(nameof(Progress));
+
+			if (Model == null)
+			{
+				Log(LogLevels.Error, "Model is not loaded");
+				throw new InvalidOperationException("Model is not loaded");
+			}
+
+			try
+			{
+				Try(() => new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)).Then(result=>stream=result).OrThrow("Failed to open file");
+				Try(() => new StreamReader(stream!)).Then(result=>reader=result).OrThrow("Failed to create reader");
+				
+				while (!reader!.EndOfStream)
+				{
+					if (!await TryAsync(() => reader.ReadLineAsync()).Then(result => syslogLine = result).OrAlert("Error while reading line in file")) break;
+
+
+					percent = stream!.Position * 100 / stream.Length;
+					if (percent > oldPercent)
+					{
+						oldPercent = percent;
+						Progress.Report(percent);
+					}
+
+					// Trying to load CDR report
+					if (Try(() => CDRSyslogParser.Parse(syslogLine)).Then(result => reportLine = result).OrAlert($"Failed to parse syslog line: {syslogLine}"))
+					{
+						if (reportLine != null)
+						{
+							if (!Try(() => CDRReportParser.Parse(reportLine)).Then(result => CDRReport = result).OrAlert($"Failed to parse report line: {reportLine}")) continue;
+							if (CDRReport != null)
+							{
+								Model.AddCDRReport(CDRReport);
+								continue;
+							}
+						}
+					}
+
+					// Trying to load PacketLoss report
+					if (Try(() => PacketLossSyslogParser.Parse(syslogLine)).Then(result => reportLine = result).OrAlert($"Failed to parse syslog line: {syslogLine}"))
+					{
+						if (reportLine != null)
+						{
+							if (!Try(() => PacketLossReportParser.Parse(reportLine)).Then(result => packetLossReport = result).OrAlert($"Failed to parse report line: {reportLine}")) continue;
+							if (packetLossReport != null)
+							{
+								Model.AddPacketLossReport(packetLossReport);
+								continue;
+							}
+						}
+					}
+
+
+					// Trying to load PacketReorder report
+					if (Try(() => PacketReorderSyslogParser.Parse(syslogLine)).Then(result => reportLine = result).OrAlert($"Failed to parse syslog line: {syslogLine}"))
+					{
+						if (reportLine != null)
+						{
+							if (!Try(() => PacketReorderReportParser.Parse(reportLine)).Then(result => packetReorderReport = result).OrAlert($"Failed to parse report line: {reportLine}")) continue;
+							if (packetReorderReport != null)
+							{
+								Model.AddPacketReorderReport(packetReorderReport);
+								continue;
+							}
+						}
+					}
+
+										
+
+				}
+			}
+			finally
+			{
+				if (stream != null) stream.Dispose();
+			}
+
+				 
+				
+
+			
+			
+			
+		}
 
 		public async Task AddFilesAsync(IEnumerable<string> FileNames,IProgress<long> Progress)
 		{
@@ -163,8 +270,13 @@ namespace ODP.ViewModels
 			IPacketReorderReportParser PacketReorderReportParser;
 			int index,count;
 
-			if (Model == null) throw new InvalidOperationException("Model is not loaded");
 
+			Log(LogLevels.Information, $"Adding syslog files to project");
+			if (Model == null)
+			{
+				Log(LogLevels.Error, "Model is not loaded");
+				throw new InvalidOperationException("Model is not loaded");
+			}
 
 
 			CDRSyslogParser = new CDRSyslogParser();
@@ -177,14 +289,19 @@ namespace ODP.ViewModels
 			index = 1;count = FileNames.Count();
 			await foreach(string fileName in FileNames.AsAsyncEnumerable())
 			{
+				Log(LogLevels.Information, $"Loading file {fileName}");
 				RunningTask = $"Loading file ({index}/{count})...";
-				if (loadedFiles.Contains(fileName)) continue;
+				if (loadedFiles.Contains(fileName))
+				{
+					Log(LogLevels.Warning, $"Project already contains file {fileName}");
+					continue;
+				}
 				loadedFiles.Add(fileName);
-				await TryAsync(() => Model.AddFileAsync(fileName,
+				await TryAsync(()=> AddFileAsync(fileName,
 					CDRSyslogParser,CDRReportParser,
 					PacketLossSyslogParser,PacketLossReportParser,
 					PacketReorderSyslogParser,PacketReorderReportParser,
-					Progress)).OrThrow($"Failed to read syslog file {fileName}");
+					Progress)).OrThrow("Failed to add file in project");
 				index++;
 			}
 			
@@ -292,10 +409,10 @@ namespace ODP.ViewModels
 
 		public async Task LoadAsync(string Path)
 		{
-			Project project;
+			Project? project=null;
 
 			RunningTask = $"Loading project...";
-			project = await TryAsync(() => Project.LoadAsync(Path)).OrThrow("Failed to open project");
+			await TryAsync(() => Project.LoadAsync(Path)).Then(result => project = result).OrThrow("Failed to open project");
 			Load(project);
 			RunningTask = null;
 		}

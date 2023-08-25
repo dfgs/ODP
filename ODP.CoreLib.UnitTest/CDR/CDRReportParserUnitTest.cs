@@ -17,8 +17,11 @@ namespace ODP.CoreLib.UnitTest
 		[DataRow("18:57:52.320  UTC Mon Dec 05 2022")]
 		public void ShouldParseDateTime(string Line)
 		{
+			DateTime dt;
 			// HH:mm:ss.fff  zzz ddd MMM dd yyyy
-			DateTime.ParseExact(Line, "HH:mm:ss.fff  'UTC' ddd MMM dd yyyy", CultureInfo.InvariantCulture);
+			dt=DateTime.ParseExact(Line, "HH:mm:ss.fff  'UTC' ddd MMM dd yyyy", CultureInfo.InvariantCulture);
+
+			//Assert.AreEqual(20, dt.Hour);
 		}
 
 		[DataTestMethod]
@@ -44,6 +47,8 @@ namespace ODP.CoreLib.UnitTest
 		[DataRow("MEDIA_END       |2596324121112023143842@groupebel-sbc01.teams-dr.nxocloudms.com  |cd91eb:43:261598        |3796 |AUDIO     |N/A            |255  |100.123.10.10       |46184          |52.112.174.44       |52247        |0         |0         |0            |0             |0        |4294967295|2748162673    |4294967295    |127         |127          |127       |127        |46             |52.112.174.44       |52247          |                    |0              |NO_TRANSCODING   |2    ")]
 		[DataRow("MEDIA_UPDATE   |3d390fc045271f32                                                |c62532:22:1009          |2    |AUDIO     |g711Ulaw64k    |20   |10.0.1.11           |6016           |10.0.1.1            |6226         |-1        |-1        |0            |0             |0        |-1       |-1            |-1            |127         |127          |127       |127        |46             |                    |0              |                    |0              |NO_TRANSCODING   |1")]
 		[DataRow("MEDIA_UPDATE    |5097296632022023104633@172.200.0.10                             |c64c90:24:3426          |350  |AUDIO     |g711Alaw64k    |20   |172.200.0.10        |34870          |10.20.40.13         |32524        |4294967295|4294967295|0            |0             |0        |4294967295|4294967295    |4294967295    |127         |127          |127       |127        |46             |                    |0              |                    |0              |NO_TRANSCODING   |2    ")]
+		[DataRow("MEDIA_END      |19266924982482023124959@10.245.172.231                          |92921:10:134688         |119  |AUDIO     |g711Alaw64k    |20   |10.245.172.231      |7670           |100.127.2.4         |20458        |20170     |20171     |0            |0             |0        |0        |1231217345    |-1            |127         |127          |127       |127        |46             |                    |0              |                    |0              |NO_TRANSCODING   |2")]
+
 		public void ShouldParseValidMediaReportLine(string Line)
 		{
 			CDRReportParser reportParser;

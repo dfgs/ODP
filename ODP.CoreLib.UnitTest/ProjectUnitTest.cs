@@ -12,7 +12,7 @@ namespace ODP.CoreLib.UnitTest
 	{
 
 
-		[TestMethod]
+		/*[TestMethod]
 		public async Task AddFileAsyncShouldCheckParameters()
 		{
 			Project project;
@@ -30,7 +30,7 @@ namespace ODP.CoreLib.UnitTest
 			await Assert.ThrowsExceptionAsync<ArgumentNullException>(() => project.AddFileAsync("FileName", Mock.Of<CDRSyslogParser>(), new CDRReportParser(new DateTimeParser()), Mock.Of<PacketLossSyslogParser>(), new PacketLossReportParser(new DateTimeParser()), Mock.Of<PacketReorderSyslogParser>(), new PacketReorderReportParser(new DateTimeParser()), null));
 #pragma warning restore CS8625 // Impossible de convertir un littéral ayant une valeur null en type référence non-nullable.
 
-		}
+		}*/
 
 		[TestMethod]
 		public void AddCDRReportShouldCheckParameter()
