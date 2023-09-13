@@ -192,8 +192,8 @@ namespace ODP.Views
 
 
 			RefreshWpfPlotPacketLossReportCount(WpfPlotPacketLossReportCount.WpfPlot, project.PacketLossReports);
-			RefreshWpfPlotActiveSessionsCount(WpfPlotActiveSessionsCount.WpfPlot, project.Sessions);
-			RefreshWpfPlotActiveCallsCount(WpfPlotActiveCallsCount.WpfPlot, project.Sessions.Calls());
+			RefreshWpfPlotActiveSessionsCount(WpfPlotActiveSessionsCount.WpfPlot, project.FilteredSessions);
+			RefreshWpfPlotActiveCallsCount(WpfPlotActiveCallsCount.WpfPlot, project.FilteredSessions.Calls());
 		}
 
 		private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -201,11 +201,11 @@ namespace ODP.Views
 			ProjectViewModel? project;
 
 			project = e.OldValue as ProjectViewModel;
-			if (project != null) project.SessionsChanged -= Project_SessionsChanged;
+			if (project != null) project.FilteredSessionsChanged -= Project_SessionsChanged;
 			project = e.NewValue as ProjectViewModel;
 			if (project == null) return;
 
-			project.SessionsChanged += Project_SessionsChanged;
+			project.FilteredSessionsChanged += Project_SessionsChanged;
 			RefreshCharts();
 
 
@@ -248,12 +248,12 @@ namespace ODP.Views
 			}
 			if (clickedView == WpfPlotActiveSessionsCount)
 			{
-				RefreshWpfPlotActiveSessionsCount(WpfPlotMaximized.WpfPlot, project.Sessions);
+				RefreshWpfPlotActiveSessionsCount(WpfPlotMaximized.WpfPlot, project.FilteredSessions);
 				return;
 			}
 			if (clickedView == WpfPlotActiveCallsCount)
 			{
-				RefreshWpfPlotActiveCallsCount(WpfPlotMaximized.WpfPlot, project.Sessions.Calls());
+				RefreshWpfPlotActiveCallsCount(WpfPlotMaximized.WpfPlot, project.FilteredSessions.Calls());
 				return;
 			}
 		}

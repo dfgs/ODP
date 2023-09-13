@@ -20,6 +20,7 @@ namespace ODP.ViewModels
 	public class ProjectViewModel:ViewModel<Project>
 	{
 		public event EventHandler? SessionsChanged;
+		public event EventHandler? FilteredSessionsChanged;
 
 		private List<string> loadedFiles;
 		private List<string> loadedWiresharkFiles;
@@ -99,13 +100,17 @@ namespace ODP.ViewModels
 			//session = new ViewModelCollection<FilterViewModel>(Logger);
 			GlobalFilter = new GlobalFilterViewModel(Logger);
 			OnSessionsChanged();
+			OnFilteredSessionsChanged();
 		}
 
 		protected void OnSessionsChanged()
 		{
 			SessionsChanged?.Invoke(this,EventArgs.Empty);
 		}
-
+		protected void OnFilteredSessionsChanged()
+		{
+			FilteredSessionsChanged?.Invoke(this, EventArgs.Empty);
+		}
 
 		protected override void OnLoaded()
 		{
@@ -151,6 +156,7 @@ namespace ODP.ViewModels
 		public void RefreshSessions()
 		{
 			FilteredSessions.Load( Sessions.Where(session => GlobalFilter.Match(session)) );
+			OnFilteredSessionsChanged();
 		}
 
 

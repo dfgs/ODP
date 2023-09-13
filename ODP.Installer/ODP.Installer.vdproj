@@ -173,7 +173,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ODP"
         "ProductCode" = "8:{5FA7C7AB-29AD-45B3-A3A8-3D2B05CE1AEF}"
-        "PackageCode" = "8:{F1E8BCD6-C69F-4FC6-BD15-4AEEB828DA50}"
+        "PackageCode" = "8:{4B334C62-9EB7-451F-852F-BB25685FAFB7}"
         "UpgradeCode" = "8:{08C828CC-6024-4D09-9F9D-E82783289ADF}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"

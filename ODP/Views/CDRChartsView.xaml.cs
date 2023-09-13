@@ -272,14 +272,14 @@ namespace ODP.Views
 
 			
 
-			RefreshWpfPlotMediaReportCountByQuality(WpfPlotMediaReportCountByQuality.WpfPlot, project.Sessions);
-			RefreshWpfPlotCallsCountByInterface(WpfPlotCallsCountByInterface.WpfPlot, project.Sessions);
-			RefreshWpfPlotMaxPacketLossByInterface(WpfPlotMaxPacketLossByInterface.WpfPlot, project.Sessions);
-			RefreshWpfPlotMaxDelayByInterface(WpfPlotMaxDelayByInterface.WpfPlot, project.Sessions);
-			RefreshWpfPlotMaxJitterByInterface(WpfPlotMaxJitterByInterface.WpfPlot, project.Sessions);
-			RefreshWpfPlotAvgPacketLossByInterface(WpfPlotAvgPacketLossByInterface.WpfPlot, project.Sessions);
-			RefreshWpfPlotAvgDelayByInterface(WpfPlotAvgDelayByInterface.WpfPlot, project.Sessions);
-			RefreshWpfPlotAvgJitterByInterface(WpfPlotAvgJitterByInterface.WpfPlot, project.Sessions);
+			RefreshWpfPlotMediaReportCountByQuality(WpfPlotMediaReportCountByQuality.WpfPlot, project.FilteredSessions);
+			RefreshWpfPlotCallsCountByInterface(WpfPlotCallsCountByInterface.WpfPlot, project.FilteredSessions);
+			RefreshWpfPlotMaxPacketLossByInterface(WpfPlotMaxPacketLossByInterface.WpfPlot, project.FilteredSessions);
+			RefreshWpfPlotMaxDelayByInterface(WpfPlotMaxDelayByInterface.WpfPlot, project.FilteredSessions);
+			RefreshWpfPlotMaxJitterByInterface(WpfPlotMaxJitterByInterface.WpfPlot, project.FilteredSessions);
+			RefreshWpfPlotAvgPacketLossByInterface(WpfPlotAvgPacketLossByInterface.WpfPlot, project.FilteredSessions);
+			RefreshWpfPlotAvgDelayByInterface(WpfPlotAvgDelayByInterface.WpfPlot, project.FilteredSessions);
+			RefreshWpfPlotAvgJitterByInterface(WpfPlotAvgJitterByInterface.WpfPlot, project.FilteredSessions);
 		}
 
 
@@ -289,11 +289,11 @@ namespace ODP.Views
 			ProjectViewModel? project;
 
 			project = e.OldValue as ProjectViewModel;
-			if (project != null) project.SessionsChanged -= Project_SessionsChanged;
+			if (project != null) project.FilteredSessionsChanged -= Project_SessionsChanged;
 			project = e.NewValue as ProjectViewModel;
 			if (project == null) return;
 
-			project.SessionsChanged += Project_SessionsChanged;
+			project.FilteredSessionsChanged += Project_SessionsChanged;
 			RefreshCharts();
 
 
@@ -331,42 +331,42 @@ namespace ODP.Views
 
 			if (clickedView == WpfPlotMediaReportCountByQuality)
 			{
-				RefreshWpfPlotMediaReportCountByQuality(WpfPlotMaximized.WpfPlot, project.Sessions);
+				RefreshWpfPlotMediaReportCountByQuality(WpfPlotMaximized.WpfPlot, project.FilteredSessions);
 				return;
 			}
 			if (clickedView == WpfPlotCallsCountByInterface)
 			{
-				RefreshWpfPlotCallsCountByInterface(WpfPlotMaximized.WpfPlot, project.Sessions);
+				RefreshWpfPlotCallsCountByInterface(WpfPlotMaximized.WpfPlot, project.FilteredSessions);
 				return;
 			}
 			if (clickedView == WpfPlotMaxPacketLossByInterface)
 			{
-				RefreshWpfPlotMaxPacketLossByInterface(WpfPlotMaximized.WpfPlot, project.Sessions);
+				RefreshWpfPlotMaxPacketLossByInterface(WpfPlotMaximized.WpfPlot, project.FilteredSessions);
 				return;
 			}
 			if (clickedView == WpfPlotMaxJitterByInterface)
 			{
-				RefreshWpfPlotMaxJitterByInterface(WpfPlotMaximized.WpfPlot, project.Sessions);
+				RefreshWpfPlotMaxJitterByInterface(WpfPlotMaximized.WpfPlot, project.FilteredSessions);
 				return;
 			}
 			if (clickedView == WpfPlotMaxDelayByInterface)
 			{
-				RefreshWpfPlotMaxDelayByInterface(WpfPlotMaximized.WpfPlot, project.Sessions);
+				RefreshWpfPlotMaxDelayByInterface(WpfPlotMaximized.WpfPlot, project.FilteredSessions);
 				return;
 			}
 			if (clickedView == WpfPlotAvgPacketLossByInterface)
 			{
-				RefreshWpfPlotAvgPacketLossByInterface(WpfPlotMaximized.WpfPlot, project.Sessions);
+				RefreshWpfPlotAvgPacketLossByInterface(WpfPlotMaximized.WpfPlot, project.FilteredSessions);
 				return;
 			}
 			if (clickedView == WpfPlotAvgJitterByInterface)
 			{
-				RefreshWpfPlotAvgJitterByInterface(WpfPlotMaximized.WpfPlot, project.Sessions);
+				RefreshWpfPlotAvgJitterByInterface(WpfPlotMaximized.WpfPlot, project.FilteredSessions);
 				return;
 			}
 			if (clickedView == WpfPlotAvgDelayByInterface)
 			{
-				RefreshWpfPlotAvgDelayByInterface(WpfPlotMaximized.WpfPlot, project.Sessions);
+				RefreshWpfPlotAvgDelayByInterface(WpfPlotMaximized.WpfPlot, project.FilteredSessions);
 				return;
 			}
 
