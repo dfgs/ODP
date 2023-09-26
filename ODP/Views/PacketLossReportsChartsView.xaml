@@ -44,7 +44,8 @@
 			<RowDefinition Height="1*"/>
 			<RowDefinition Height="1*"/>
 		</Grid.RowDefinitions>
-		<views:ChartView x:Name="WpfPlotPacketLossReportCount" Title="Calls with packet loss over time" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource chartViewStyle}"/>
+		<views:ChartView x:Name="WpfPlotPacketLossReportCount" Title="Calls with packet loss over time" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" Style="{StaticResource chartViewStyle}"/>
+		<views:ChartView x:Name="WpfPlotCallAdmissionControlErrorCount" Title="CAC failures by IP group over time" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="1" Style="{StaticResource chartViewStyle}"/>
 		<views:ChartView x:Name="WpfPlotActiveSessionsCount" Title="Active sessions over time" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="1" Style="{StaticResource chartViewStyle}"/>
 		<views:ChartView x:Name="WpfPlotActiveCallsCount" Title="Active calls by IP group over time" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Style="{StaticResource chartViewStyle}"/>
 

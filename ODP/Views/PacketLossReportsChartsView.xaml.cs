@@ -85,16 +85,67 @@ namespace ODP.Views
 			WpfPlot.Refresh();
 
 		}
+
+		private void RefreshWpfPlotCallAdmissionControlErrorCount(WpfPlot WpfPlot, IEnumerable<CallViewModel> Calls)
+		{
+			long[] positions;
+			CallViewModel[] validCalls;
+
+
+			TimeSpan ts = TimeSpan.FromSeconds(30); // time between data points
+			long sampleTicks = ts.Ticks;
+			double sampleRate = (double)TimeSpan.TicksPerDay / ts.Ticks;
+			string[] IPGroups = Calls.Select(item => item.IPGroup ?? "Unknow").Distinct().ToArray();
+
+			WpfPlot.Plot.Clear();
+
+
+			foreach (string IPGroup in IPGroups)
+			{
+				validCalls = Calls.Where(item => ((item.TrmReason== "RELEASE_BECAUSE_IN_ADMISSION_FAILED") || (item.TrmReason == "RELEASE_BECAUSE_OUT_ADMISSION_FAILED")) && (item.IPGroup == IPGroup)).ToArray();
+				Sample<int>[] samples = validCalls.Sample(sampleTicks, item => item.SetupTime, item => 1).ToArray();
+
+				if (samples.Length == 0) continue;
+
+				Sample<int>[] values = samples.AggregateAndOrder(items => items.Sum(item => item.Value)).ToArray();
+
+				positions = values.GenerateSampledPosition(sampleTicks);
+
+				var queryJoinedValues =
+					from position in positions
+					join value in values on position equals value.Ticks into gj
+					from joinedValue in gj.DefaultIfEmpty()
+					select joinedValue.Value;
+
+				int[] joinedValues = queryJoinedValues.ToArray();
+
+				
+				var scatter1 = WpfPlot.Plot.AddSignalConst(joinedValues, sampleRate, null, IPGroup);
+
+				WpfPlot.Plot.XAxis.DateTimeFormat(true);
+				scatter1.OffsetX = new DateTime(values[0].Ticks).ToOADate();
+
+			}
+
+			WpfPlot.Plot.Legend(true, Alignment.UpperRight);
+
+			WpfPlot.Refresh();
+
+		}
+
 		private void RefreshWpfPlotActiveSessionsCount(WpfPlot WpfPlot, IEnumerable<SessionViewModel> Sessions)
 		{
 			long[] positions;
+			SessionViewModel[] validSessions;
 
 			TimeSpan ts = TimeSpan.FromSeconds(30); // time between data points
 			long sampleTicks = ts.Ticks;
 			double sampleRate = (double)TimeSpan.TicksPerDay / ts.Ticks;
 
-			Sample<int>[] samples = Sessions.Sample(sampleTicks, item => item.StartTime, item => 1)
-								.Concat(Sessions.Sample(sampleTicks, item => item.StopTime, item => -1)).ToArray();				
+			validSessions = Sessions.Where(item => (item.StartTime.HasValue) ).ToArray();
+
+			Sample<int>[] samples = validSessions.Sample(sampleTicks, item => item.StartTime, item => 1)
+								.Concat(validSessions.Sample(sampleTicks, item => item.StopTime, item => -1)).ToArray();				
 
 			WpfPlot.Plot.Clear();
 			if (samples.Length == 0) return;
@@ -181,6 +232,7 @@ namespace ODP.Views
 
 		}
 
+
 		private void RefreshCharts()
 		{
 			ProjectViewModel? project;
@@ -192,6 +244,7 @@ namespace ODP.Views
 
 
 			RefreshWpfPlotPacketLossReportCount(WpfPlotPacketLossReportCount.WpfPlot, project.PacketLossReports);
+			RefreshWpfPlotCallAdmissionControlErrorCount(WpfPlotCallAdmissionControlErrorCount.WpfPlot, project.FilteredSessions.Calls());
 			RefreshWpfPlotActiveSessionsCount(WpfPlotActiveSessionsCount.WpfPlot, project.FilteredSessions);
 			RefreshWpfPlotActiveCallsCount(WpfPlotActiveCallsCount.WpfPlot, project.FilteredSessions.Calls());
 		}
@@ -244,6 +297,11 @@ namespace ODP.Views
 			if (clickedView == WpfPlotPacketLossReportCount)
 			{
 				RefreshWpfPlotPacketLossReportCount(WpfPlotMaximized.WpfPlot, project.PacketLossReports);
+				return;
+			}
+			if (clickedView == WpfPlotCallAdmissionControlErrorCount)
+			{
+				RefreshWpfPlotCallAdmissionControlErrorCount(WpfPlotMaximized.WpfPlot, project.FilteredSessions.Calls());
 				return;
 			}
 			if (clickedView == WpfPlotActiveSessionsCount)
