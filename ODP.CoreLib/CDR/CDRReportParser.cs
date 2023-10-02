@@ -33,7 +33,7 @@ namespace ODP.CoreLib
 				CDRSBCReport sbcReport;
 				
 				parts = Line.Split('|');
-				if (parts.Length != 39) 
+				if (parts.Length < 38) 
 					throw new InvalidDataException("Invalid SBC report format, please check SBC configuration");
 
 				sbcReport = new CDRSBCReport();
@@ -75,7 +75,8 @@ namespace ODP.CoreLib
 				sbcReport.Callee = parts[35].Trim();
 				sbcReport.Trigger = parts[36].Trim();
 				sbcReport.LegId = parts[37].Trim();
-				sbcReport.VoiceAIConnectorName = parts[38].Trim();
+				if (parts.Length == 39) sbcReport.VoiceAIConnectorName = parts[38].Trim();
+				else sbcReport.VoiceAIConnectorName = "";
 
 				return sbcReport;
 
