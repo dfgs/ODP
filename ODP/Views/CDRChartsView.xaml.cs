@@ -42,7 +42,7 @@ namespace ODP.Views
 		
 
 
-		private void RefreshWpfPlotMediaReportCountByQuality(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
+		private void RefreshWpfPlotMediaReportCountByQuality(WpfPlot WpfPlot, SessionViewModelCollection Sessions)
 		{
 			CDRMediaReportViewModel[] mediaReports = Sessions.Calls().WithAudio().MediaReports().ToArray();
 			double[] values = mediaReports.GroupByQuality(Qualities).Select(mediaReports => (double)mediaReports.Count()).ToArray();
@@ -71,7 +71,7 @@ namespace ODP.Views
 				// bug in graphics.drawPie
 			}
 		}
-		private void RefreshWpfPlotCallsCountByInterface(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
+		private void RefreshWpfPlotCallsCountByInterface(WpfPlot WpfPlot, SessionViewModelCollection Sessions)
 		{
 			CallViewModel[] calls = Sessions.Calls().ToArray();
 			string[] sipInterfaces = calls.SIPInterfaces().ToArray();
@@ -102,7 +102,7 @@ namespace ODP.Views
 
 			WpfPlot.Refresh();
 		}
-		private void RefreshWpfPlotMaxPacketLossByInterface(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
+		private void RefreshWpfPlotMaxPacketLossByInterface(WpfPlot WpfPlot, SessionViewModelCollection Sessions)
 		{
 			CallViewModel[] calls = Sessions.Calls().ToArray();
 			string[] sipInterfaces = calls.SIPInterfaces().ToArray();
@@ -128,7 +128,7 @@ namespace ODP.Views
 			WpfPlot.Refresh();
 			//WpfPlot.Plot.AxisAuto(chartScale,chartScale);
 		}
-		private void RefreshWpfPlotMaxDelayByInterface(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
+		private void RefreshWpfPlotMaxDelayByInterface(WpfPlot WpfPlot, SessionViewModelCollection Sessions)
 		{
 			CallViewModel[] calls = Sessions.Calls().ToArray();
 			string[] sipInterfaces = calls.SIPInterfaces().ToArray();
@@ -155,7 +155,7 @@ namespace ODP.Views
 			WpfPlot.Refresh();
 			//WpfPlot.Plot.AxisAuto(chartScale, chartScale);
 		}
-		private void RefreshWpfPlotMaxJitterByInterface(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
+		private void RefreshWpfPlotMaxJitterByInterface(WpfPlot WpfPlot, SessionViewModelCollection Sessions)
 		{
 			CallViewModel[] calls = Sessions.Calls().ToArray();
 			string[] sipInterfaces = calls.SIPInterfaces().ToArray();
@@ -181,7 +181,7 @@ namespace ODP.Views
 			WpfPlot.Refresh();
 			//WpfPlot.Plot.AxisAuto(chartScale, chartScale);
 		}
-		private void RefreshWpfPlotAvgPacketLossByInterface(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
+		private void RefreshWpfPlotAvgPacketLossByInterface(WpfPlot WpfPlot, SessionViewModelCollection Sessions)
 		{
 			CallViewModel[] calls = Sessions.Calls().ToArray();
 			string[] sipInterfaces = calls.SIPInterfaces().ToArray();
@@ -206,7 +206,7 @@ namespace ODP.Views
 			WpfPlot.Refresh();
 			//WpfPlot.Plot.AxisAuto(chartScale, chartScale);
 		}
-		private void RefreshWpfPlotAvgDelayByInterface(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
+		private void RefreshWpfPlotAvgDelayByInterface(WpfPlot WpfPlot, SessionViewModelCollection Sessions)
 		{
 			CallViewModel[] calls = Sessions.Calls().ToArray();
 			string[] sipInterfaces = calls.SIPInterfaces().ToArray();
@@ -233,7 +233,7 @@ namespace ODP.Views
 			WpfPlot.Refresh();
 			//WpfPlot.Plot.AxisAuto(chartScale, chartScale);
 		}
-		private void RefreshWpfPlotAvgJitterByInterface(WpfPlot WpfPlot, ViewModelCollection<SessionViewModel> Sessions)
+		private void RefreshWpfPlotAvgJitterByInterface(WpfPlot WpfPlot, SessionViewModelCollection Sessions)
 		{
 			CallViewModel[] calls = Sessions.Calls().ToArray();
 			string[] sipInterfaces = calls.SIPInterfaces().ToArray();

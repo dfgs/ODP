@@ -37,7 +37,7 @@ namespace ODP.Views
         }
 
 
-		private void RefreshWpfPlotPacketLossReportCount(WpfPlot WpfPlot, ViewModelCollection<PacketLossReportViewModel> PacketLossReports)
+		private void RefreshWpfPlotPacketLossReportCount(WpfPlot WpfPlot, PacketLossReportViewModelCollection PacketLossReports)
 		{
 			long[] positions;
 

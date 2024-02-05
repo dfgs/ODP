@@ -62,10 +62,10 @@ namespace ODP.ViewModels
 			set { SetValue(SessionsProperty, value); }
 		}
 
-		public static readonly DependencyProperty FilteredSessionsProperty = DependencyProperty.Register("FilteredSessions", typeof(ViewModelCollection<SessionViewModel>), typeof(ProjectViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<SessionViewModel> FilteredSessions
+		public static readonly DependencyProperty FilteredSessionsProperty = DependencyProperty.Register("FilteredSessions", typeof(SessionViewModelCollection), typeof(ProjectViewModel), new PropertyMetadata(null));
+		public SessionViewModelCollection FilteredSessions
 		{
-			get { return (ViewModelCollection<SessionViewModel>)GetValue(FilteredSessionsProperty); }
+			get { return (SessionViewModelCollection)GetValue(FilteredSessionsProperty); }
 			set { SetValue(FilteredSessionsProperty, value); }
 		}
 
@@ -96,7 +96,7 @@ namespace ODP.ViewModels
 			loadedWiresharkFiles = new List<string>();
 			PacketLossReports = new PacketLossReportViewModelCollection(Logger);
 			Sessions = new SessionViewModelCollection(Logger);
-			FilteredSessions = new ViewModelCollection<SessionViewModel>(Logger);
+			FilteredSessions = new SessionViewModelCollection(Logger);
 			//session = new ViewModelCollection<FilterViewModel>(Logger);
 			GlobalFilter = new GlobalFilterViewModel(Logger);
 			OnSessionsChanged();
@@ -114,12 +114,7 @@ namespace ODP.ViewModels
 
 		protected override void OnLoaded()
 		{
-			if (Model == null)
-			{
-				Sessions.Clear();
-				PacketLossReports.Clear();
-				return;
-			}
+			
 			PacketLossReports.Load(Model.PacketLossReports.ToViewModels(() => new PacketLossReportViewModel(Logger)));
 			Sessions.Load( Model.Sessions.ToViewModels(()=>new SessionViewModel(Logger)));
 			OnSessionsChanged();

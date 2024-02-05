@@ -172,16 +172,16 @@ namespace ODP.ViewModels
 			get => Model?.LegId ;
 		}
 
-		public static readonly DependencyProperty TxRTCPReportsProperty = DependencyProperty.Register("TxRTCPReports", typeof(ViewModelCollection<RTCPReportViewModel>), typeof(CDRMediaReportViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<RTCPReportViewModel> TxRTCPReports
+		public static readonly DependencyProperty TxRTCPReportsProperty = DependencyProperty.Register("TxRTCPReports", typeof(RTCPReportViewModelCollection), typeof(CDRMediaReportViewModel), new PropertyMetadata(null));
+		public RTCPReportViewModelCollection TxRTCPReports
 		{
-			get { return (ViewModelCollection<RTCPReportViewModel>)GetValue(TxRTCPReportsProperty); }
+			get { return (RTCPReportViewModelCollection)GetValue(TxRTCPReportsProperty); }
 			set { SetValue(TxRTCPReportsProperty, value); }
 		}
-		public static readonly DependencyProperty RxRTCPReportsProperty = DependencyProperty.Register("RxRTCPReports", typeof(ViewModelCollection<RTCPReportViewModel>), typeof(CDRMediaReportViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<RTCPReportViewModel> RxRTCPReports
+		public static readonly DependencyProperty RxRTCPReportsProperty = DependencyProperty.Register("RxRTCPReports", typeof(RTCPReportViewModelCollection), typeof(CDRMediaReportViewModel), new PropertyMetadata(null));
+		public RTCPReportViewModelCollection RxRTCPReports
 		{
-			get { return (ViewModelCollection<RTCPReportViewModel>)GetValue(RxRTCPReportsProperty); }
+			get { return (RTCPReportViewModelCollection)GetValue(RxRTCPReportsProperty); }
 			set { SetValue(RxRTCPReportsProperty, value); }
 		}
 
@@ -258,20 +258,13 @@ namespace ODP.ViewModels
 
 		public CDRMediaReportViewModel(ILogger Logger) : base(Logger)
 		{
-			TxRTCPReports = new ViewModelCollection<RTCPReportViewModel>(Logger);
-			RxRTCPReports = new ViewModelCollection<RTCPReportViewModel>(Logger);
+			TxRTCPReports = new RTCPReportViewModelCollection(Logger);
+			RxRTCPReports = new RTCPReportViewModelCollection(Logger);
 
 		}
 
 		protected override void OnLoaded()
 		{
-			if (Model==null)
-			{
-				TxRTCPReports.Clear();
-				RxRTCPReports.Clear();
-				return;
-			}
-
 			TxRTCPReports.Load(Model.TxRTCPReports.ToViewModels(() => new RTCPReportViewModel(Logger)));
 			RxRTCPReports.Load(Model.RxRTCPReports.ToViewModels(() => new RTCPReportViewModel(Logger)));
 		}

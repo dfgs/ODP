@@ -1,4 +1,5 @@
 ﻿using LogLib;
+using ODP.CoreLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class SessionViewModelCollection : ViewModelCollection<SessionViewModel>
+	public class SessionViewModelCollection : ODPViewModelCollection<Session,SessionViewModel>
 	{
 		public SessionViewModelCollection(ILogger Logger) : base(Logger)
 		{

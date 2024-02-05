@@ -13,16 +13,16 @@ namespace ODP.ViewModels
 {
 	public class SessionViewModel : ViewModel<Session>, IQualityProvider
 	{
-		public static readonly DependencyProperty CallsProperty = DependencyProperty.Register("Calls", typeof(ViewModelCollection<CallViewModel>), typeof(SessionViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<CallViewModel> Calls
+		public static readonly DependencyProperty CallsProperty = DependencyProperty.Register("Calls", typeof(CallViewModelCollection), typeof(SessionViewModel), new PropertyMetadata(null));
+		public CallViewModelCollection Calls
 		{
-			get { return (ViewModelCollection<CallViewModel>)GetValue(CallsProperty); }
+			get { return (CallViewModelCollection)GetValue(CallsProperty); }
 			set { SetValue(CallsProperty, value); }
 		}
-		public static readonly DependencyProperty PacketReorderReportsProperty = DependencyProperty.Register("PacketReorderReports", typeof(ViewModelCollection<PacketReorderReportViewModel>), typeof(SessionViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<PacketReorderReportViewModel> PacketReorderReports
+		public static readonly DependencyProperty PacketReorderReportsProperty = DependencyProperty.Register("PacketReorderReports", typeof(PacketReorderReportViewModelCollection), typeof(SessionViewModel), new PropertyMetadata(null));
+		public PacketReorderReportViewModelCollection PacketReorderReports
 		{
-			get { return (ViewModelCollection<PacketReorderReportViewModel>)GetValue(PacketReorderReportsProperty); }
+			get { return (PacketReorderReportViewModelCollection)GetValue(PacketReorderReportsProperty); }
 			set { SetValue(PacketReorderReportsProperty, value); }
 		}
 
@@ -77,8 +77,8 @@ namespace ODP.ViewModels
 
 		public SessionViewModel(ILogger Logger) : base(Logger)
 		{
-			Calls = new ViewModelCollection<CallViewModel>(Logger);
-			PacketReorderReports = new ViewModelCollection<PacketReorderReportViewModel>(Logger);
+			Calls = new CallViewModelCollection(Logger);
+			PacketReorderReports = new PacketReorderReportViewModelCollection(Logger);
 		}
 
 		private void AssociatePacketReorderReport(PacketReorderReport Report)
@@ -109,15 +109,7 @@ namespace ODP.ViewModels
 
 		protected override void OnLoaded()
 		{
-			if (Model==null)
-			{
-				Calls.SelectedItem= null;
-				Calls.Clear();
-				PacketReorderReports.SelectedItem = null;
-				PacketReorderReports.Clear();
-				return;
-			}
-
+			
 			Calls.Load(Model.Calls.ToViewModels(() => new CallViewModel(Logger)));
 			Calls.SelectedItem = Calls.FirstOrDefault();
 

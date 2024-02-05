@@ -14,10 +14,10 @@ namespace ODP.ViewModels
 	{
 
 
-		public static readonly DependencyProperty ProjectsProperty = DependencyProperty.Register("Projects", typeof(ViewModelCollection<ProjectViewModel>), typeof(ApplicationViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<ProjectViewModel> Projects
+		public static readonly DependencyProperty ProjectsProperty = DependencyProperty.Register("Projects", typeof(ProjectViewModelCollection), typeof(ApplicationViewModel), new PropertyMetadata(null));
+		public ProjectViewModelCollection Projects
 		{
-			get { return (ViewModelCollection<ProjectViewModel>)GetValue(ProjectsProperty); }
+			get { return (ProjectViewModelCollection)GetValue(ProjectsProperty); }
 			set { SetValue(ProjectsProperty, value); }
 		}
 
@@ -26,40 +26,22 @@ namespace ODP.ViewModels
 
 		public ApplicationViewModel(ILogger Logger) : base(Logger)
 		{
-			Projects = new ViewModelCollection<ProjectViewModel>(Logger);
+			Projects = new ProjectViewModelCollection(Logger);
 		}
 		public void AddNewProject()
 		{
-			Project project;
-			ProjectViewModel projectViewModel;
-
-			project = new Project();
-
-			projectViewModel = new ProjectViewModel(Logger);
-			projectViewModel.Load(project);
-
-			Projects.Add(projectViewModel);
-			Projects.SelectedItem = projectViewModel;
+			Projects.AddNew();
 		}
 
 		public void CloseCurrentProject()
 		{
-			if (Projects.SelectedItem == null) return;
-
-			Projects.Remove(Projects.SelectedItem);
-			Projects.SelectedItem = Projects.FirstOrDefault();
+			Projects.CloseCurrent();
 		}
 
 		public async Task OpenProjectAsync(string Path)
 		{
-			
-			ProjectViewModel projectViewModel;
 
-			projectViewModel = new ProjectViewModel(Logger);
-			Projects.Add(projectViewModel);
-			Projects.SelectedItem = projectViewModel;
-
-			await projectViewModel.LoadAsync(Path);
+			await Projects.AddAsync(Path);
 
 			
 

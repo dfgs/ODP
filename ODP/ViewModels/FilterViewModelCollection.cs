@@ -9,16 +9,16 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class FilterViewModelCollection<T> : ViewModelCollection<T>
+	public class FilterViewModelCollection<FilterT, T> : ODPViewModelCollection<FilterT,T>
 		where T:BaseFilterViewModel
 	{
-		public static readonly DependencyProperty SelectAllCommandProperty = DependencyProperty.Register("SelectAllCommand", typeof(ViewModelCommand), typeof(FilterViewModelCollection<T>), new PropertyMetadata(null));
+		public static readonly DependencyProperty SelectAllCommandProperty = DependencyProperty.Register("SelectAllCommand", typeof(ViewModelCommand), typeof(FilterViewModelCollection<FilterT, T>), new PropertyMetadata(null));
 		public ViewModelCommand SelectAllCommand
 		{
 			get { return (ViewModelCommand)GetValue(SelectAllCommandProperty); }
 			set { SetValue(SelectAllCommandProperty, value); }
 		}
-		public static readonly DependencyProperty SelectNoneCommandProperty = DependencyProperty.Register("SelectNoneCommand", typeof(ViewModelCommand), typeof(FilterViewModelCollection<T>), new PropertyMetadata(null));
+		public static readonly DependencyProperty SelectNoneCommandProperty = DependencyProperty.Register("SelectNoneCommand", typeof(ViewModelCommand), typeof(FilterViewModelCollection<FilterT, T>), new PropertyMetadata(null));
 		public ViewModelCommand SelectNoneCommand
 		{
 			get { return (ViewModelCommand)GetValue(SelectNoneCommandProperty); }
@@ -58,6 +58,11 @@ namespace ODP.ViewModels
 				if (comparer.Compare(Item.Name , this[t].Name)<0) return t;
 			}
 			return Count;
+		}
+
+		public void Add(T Item)
+		{
+			AddInternal(Item);
 		}
 
 

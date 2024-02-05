@@ -1,4 +1,5 @@
 ﻿using LogLib;
+using ODP.CoreLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class PacketLossReportViewModelCollection : ViewModelCollection<PacketLossReportViewModel>
+	public class PacketLossReportViewModelCollection : ODPViewModelCollection<PacketLossReport,PacketLossReportViewModel>
 	{
 		public PacketLossReportViewModelCollection(ILogger Logger) : base(Logger)
 		{

@@ -113,16 +113,16 @@ namespace ODP.ViewModels
 			get	{ return MediaReports.Where(item=>item.HasRTCPReport).Any();	}
 		}
 
-		public static readonly DependencyProperty SBCReportsProperty = DependencyProperty.Register("SBCReports", typeof(ViewModelCollection<CDRSBCReportViewModel>), typeof(CallViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<CDRSBCReportViewModel> SBCReports
+		public static readonly DependencyProperty SBCReportsProperty = DependencyProperty.Register("SBCReports", typeof(CDRSBCReportViewModelCollection), typeof(CallViewModel), new PropertyMetadata(null));
+		public CDRSBCReportViewModelCollection SBCReports
 		{
-			get { return (ViewModelCollection<CDRSBCReportViewModel>)GetValue(SBCReportsProperty); }
+			get { return (CDRSBCReportViewModelCollection)GetValue(SBCReportsProperty); }
 			set { SetValue(SBCReportsProperty, value); }
 		}
-		public static readonly DependencyProperty MediaReportsProperty = DependencyProperty.Register("MediaReports", typeof(ViewModelCollection<CDRMediaReportViewModel>), typeof(CallViewModel), new PropertyMetadata(null));
-		public ViewModelCollection<CDRMediaReportViewModel> MediaReports
+		public static readonly DependencyProperty MediaReportsProperty = DependencyProperty.Register("MediaReports", typeof(CDRMediaReportViewModelCollection), typeof(CallViewModel), new PropertyMetadata(null));
+		public CDRMediaReportViewModelCollection MediaReports
 		{
-			get { return (ViewModelCollection<CDRMediaReportViewModel>)GetValue(MediaReportsProperty); }
+			get { return (CDRMediaReportViewModelCollection)GetValue(MediaReportsProperty); }
 			set { SetValue(MediaReportsProperty, value); }
 		}
 		
@@ -131,20 +131,20 @@ namespace ODP.ViewModels
 
 		public CallViewModel(ILogger Logger) : base(Logger)
 		{
-			SBCReports = new ViewModelCollection<CDRSBCReportViewModel>(Logger);
-			MediaReports = new ViewModelCollection<CDRMediaReportViewModel>(Logger);
+			SBCReports = new CDRSBCReportViewModelCollection(Logger);
+			MediaReports = new CDRMediaReportViewModelCollection(Logger);
 		}
 
 
 		protected override void OnLoaded()
 		{
-			if (Model==null)
+			/*if (Model==null)
 			{
 				MediaReports.SelectedItem = null;				
 				SBCReports.Clear();
 				MediaReports.Clear();
 				return;
-			}
+			}*/
 
 			SBCReports.Load(Model.SBCReports.ToViewModels(() => new CDRSBCReportViewModel(Logger)));
 			MediaReports.Load(Model.MediaReports.ToViewModels(() => new CDRMediaReportViewModel(Logger)));
