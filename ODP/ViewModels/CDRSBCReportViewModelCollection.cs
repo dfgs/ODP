@@ -1,4 +1,5 @@
 ﻿using LogLib;
+using ODP.CoreLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +9,14 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class CDRSBCReportViewModelCollection : ODPViewModelCollection<CDRSBCReportViewModel, CDRSBCReportViewModel>
+	public class CDRSBCReportViewModelCollection : ListViewModel<CDRSBCReport, CDRSBCReportViewModel>
 	{
 		public CDRSBCReportViewModelCollection(ILogger Logger) : base(Logger)
 		{
+		}
+		protected override CDRSBCReportViewModel OnCreateItem()
+		{
+			return new CDRSBCReportViewModel(Logger);
 		}
 	}
 }

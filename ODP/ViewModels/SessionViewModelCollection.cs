@@ -9,7 +9,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class SessionViewModelCollection : ODPViewModelCollection<Session,SessionViewModel>
+	public class SessionViewModelCollection : ListViewModel<Session, SessionViewModel>
 	{
 		public SessionViewModelCollection(ILogger Logger) : base(Logger)
 		{
@@ -28,5 +28,16 @@ namespace ODP.ViewModels
 			}
 			return Count;//*/
 		}//*/
+
+		protected override SessionViewModel OnCreateItem()
+		{
+			return new SessionViewModel(Logger);
+		}
+
+		public void Load(IEnumerable<SessionViewModel> Items)
+		{
+			LoadInternal(Items);
+		}
+
 	}
 }

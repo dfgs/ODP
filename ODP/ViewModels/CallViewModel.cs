@@ -146,8 +146,8 @@ namespace ODP.ViewModels
 				return;
 			}*/
 
-			SBCReports.Load(Model.SBCReports.ToViewModels(() => new CDRSBCReportViewModel(Logger)));
-			MediaReports.Load(Model.MediaReports.ToViewModels(() => new CDRMediaReportViewModel(Logger)));
+			SBCReports.Load(Model.SBCReports);
+			MediaReports.Load(Model.MediaReports);
 			MediaReports.SelectedItem = MediaReports.FirstOrDefault();
 		}
 

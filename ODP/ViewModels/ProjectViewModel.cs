@@ -115,8 +115,8 @@ namespace ODP.ViewModels
 		protected override void OnLoaded()
 		{
 			
-			PacketLossReports.Load(Model.PacketLossReports.ToViewModels(() => new PacketLossReportViewModel(Logger)));
-			Sessions.Load( Model.Sessions.ToViewModels(()=>new SessionViewModel(Logger)));
+			PacketLossReports.Load(Model.PacketLossReports);
+			Sessions.Load( Model.Sessions);
 			OnSessionsChanged();
 			RefreshFilters();
 			RefreshSessions();
@@ -307,8 +307,8 @@ namespace ODP.ViewModels
 				index++;
 			}
 			
-			PacketLossReports.Load(Model.PacketLossReports.ToViewModels(() => new PacketLossReportViewModel(Logger)));
-			Sessions.Load(Model.Sessions.ToViewModels(() => new SessionViewModel(Logger)));
+			PacketLossReports.Load(Model.PacketLossReports);
+			Sessions.Load(Model.Sessions);
 
 			OnSessionsChanged();
 			RefreshFilters();
@@ -438,8 +438,8 @@ namespace ODP.ViewModels
 				index++;
 			}
 
-			PacketLossReports.Load(Model.PacketLossReports.ToViewModels(() => new PacketLossReportViewModel(Logger)));
-			Sessions.Load(Model.Sessions.ToViewModels(() => new SessionViewModel(Logger)));
+			PacketLossReports.Load(Model.PacketLossReports);
+			Sessions.Load(Model.Sessions);
 
 			OnSessionsChanged();
 			RefreshFilters();

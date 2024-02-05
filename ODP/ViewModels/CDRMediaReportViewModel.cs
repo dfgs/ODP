@@ -265,8 +265,8 @@ namespace ODP.ViewModels
 
 		protected override void OnLoaded()
 		{
-			TxRTCPReports.Load(Model.TxRTCPReports.ToViewModels(() => new RTCPReportViewModel(Logger)));
-			RxRTCPReports.Load(Model.RxRTCPReports.ToViewModels(() => new RTCPReportViewModel(Logger)));
+			TxRTCPReports.Load(Model.TxRTCPReports);
+			RxRTCPReports.Load(Model.RxRTCPReports);
 		}
 
 

@@ -9,7 +9,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class FilterViewModelCollection<FilterT, T> : ODPViewModelCollection<FilterT,T>
+	public class FilterViewModelCollection<FilterT, T> : ViewModelCollection<FilterT, T>
 		where T:BaseFilterViewModel
 	{
 		public static readonly DependencyProperty SelectAllCommandProperty = DependencyProperty.Register("SelectAllCommand", typeof(ViewModelCommand), typeof(FilterViewModelCollection<FilterT, T>), new PropertyMetadata(null));
@@ -65,6 +65,6 @@ namespace ODP.ViewModels
 			AddInternal(Item);
 		}
 
-
+		
 	}
 }

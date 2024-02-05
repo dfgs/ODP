@@ -110,10 +110,10 @@ namespace ODP.ViewModels
 		protected override void OnLoaded()
 		{
 			
-			Calls.Load(Model.Calls.ToViewModels(() => new CallViewModel(Logger)));
+			Calls.Load(Model.Calls);
 			Calls.SelectedItem = Calls.FirstOrDefault();
 
-			PacketReorderReports.Load(Model.PacketReorderReports.ToViewModels(()=>new PacketReorderReportViewModel(Logger)));
+			PacketReorderReports.Load(Model.PacketReorderReports);
 
 			AssociatePacketReorderReports();
 

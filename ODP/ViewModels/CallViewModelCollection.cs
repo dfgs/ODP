@@ -5,13 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class CallViewModelCollection : ODPViewModelCollection<Call, CallViewModel>
+	public class CallViewModelCollection : ListViewModel<Call, CallViewModel>
 	{
 		public CallViewModelCollection(ILogger Logger) : base(Logger)
 		{
+		}
+
+		protected override CallViewModel OnCreateItem()
+		{
+			return new CallViewModel(Logger);
 		}
 	}
 }
