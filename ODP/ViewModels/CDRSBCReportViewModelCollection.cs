@@ -11,12 +11,9 @@ namespace ODP.ViewModels
 {
 	public class CDRSBCReportViewModelCollection : GenericViewModelList<CDRSBCReport, CDRSBCReportViewModel>
 	{
-		public CDRSBCReportViewModelCollection(IList<CDRSBCReport> Source) : base(Source)
+		public CDRSBCReportViewModelCollection(IList<CDRSBCReport> Source) : base(Source, (SourceItem) => new CDRSBCReportViewModel(SourceItem))
 		{
 		}
-		protected override CDRSBCReportViewModel OnCreateItem(CDRSBCReport Model)
-		{
-			return new CDRSBCReportViewModel(Model);
-		}
+	
 	}
 }

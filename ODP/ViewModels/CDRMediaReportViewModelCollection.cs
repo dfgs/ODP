@@ -11,13 +11,10 @@ namespace ODP.ViewModels
 {
 	public class CDRMediaReportViewModelCollection : GenericViewModelList<CDRMediaReport, CDRMediaReportViewModel>
     {
-		public CDRMediaReportViewModelCollection(IList<CDRMediaReport> Source) : base(Source)
+		public CDRMediaReportViewModelCollection(IList<CDRMediaReport> Source) : base(Source, (SourceItem) => new CDRMediaReportViewModel(SourceItem))
 		{
 		}
 
-		protected override CDRMediaReportViewModel OnCreateItem(CDRMediaReport Model)
-		{
-			return new CDRMediaReportViewModel(Model);
-		}
+		
 	}
 }

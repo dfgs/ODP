@@ -25,7 +25,7 @@ namespace ODP.ViewModels
 			set { SetValue(SelectNoneCommandProperty, value); }
 		}
 
-		public FilterViewModelCollection() : base(new List<FilterT>())
+		public FilterViewModelCollection() : base(new List<FilterT>(),(SourceItem)=>null)
 		{
 			SelectAllCommand = new ViewModelCommand(SelectAllCanExecute, SelectAllExecute);
 			SelectNoneCommand = new ViewModelCommand(SelectNoneCanExecute, SelectNoneExecute);
@@ -60,10 +60,7 @@ namespace ODP.ViewModels
 			return Count;
 		}
 
-		protected override T OnCreateItem(FilterT SourceItem)
-		{
-			throw new NotImplementedException();
-		}
+		
 
 	}
 }

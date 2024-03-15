@@ -11,13 +11,10 @@ namespace ODP.ViewModels
 {
 	public class RTCPReportViewModelCollection : GenericViewModelList<RTCPReport, RTCPReportViewModel>
 	{
-		public RTCPReportViewModelCollection(IList<RTCPReport> Source) : base(Source)
+		public RTCPReportViewModelCollection(IList<RTCPReport> Source) : base(Source, (SourceItem) => new RTCPReportViewModel(SourceItem))
 		{
 		}
 
-		protected override RTCPReportViewModel OnCreateItem(RTCPReport Model)
-		{
-			return new RTCPReportViewModel(Model);
-		}
+		
 	}
 }

@@ -11,7 +11,7 @@ namespace ODP.ViewModels
 {
 	public class ProjectViewModelCollection : GenericViewModelList<Project, ProjectViewModel>
 	{
-		public ProjectViewModelCollection(IList<Project> Source) : base(Source)
+		public ProjectViewModelCollection(IList<Project> Source) : base(Source, (SourceItem) => new ProjectViewModel(SourceItem))
 		{
 		}
 
@@ -46,10 +46,7 @@ namespace ODP.ViewModels
 			SelectedItem = this.FirstOrDefault();
 		}
 
-		protected override ProjectViewModel OnCreateItem(Project SourceItem)
-		{
-			throw new NotImplementedException();
-		}
+		
 
 	}
 }

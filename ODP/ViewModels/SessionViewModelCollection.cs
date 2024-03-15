@@ -11,7 +11,7 @@ namespace ODP.ViewModels
 {
 	public class SessionViewModelCollection : GenericViewModelList<Session, SessionViewModel>
 	{
-		public SessionViewModelCollection(IList<Session> Source) : base(Source)
+		public SessionViewModelCollection(IList<Session> Source) : base(Source, (SourceItem) => new SessionViewModel(SourceItem))
 		{
 		}
 		public override int GetNewItemIndex(SessionViewModel Item)
@@ -29,10 +29,7 @@ namespace ODP.ViewModels
 			return Count;//*/
 		}//*/
 
-		protected override SessionViewModel OnCreateItem(Session Model)
-		{
-			return new SessionViewModel(Model);
-		}
+		
 
 		
 

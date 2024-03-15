@@ -11,7 +11,7 @@ namespace ODP.ViewModels
 {
 	public class PacketLossReportViewModelCollection : GenericViewModelList<PacketLossReport, PacketLossReportViewModel>
 	{
-		public PacketLossReportViewModelCollection(IList<PacketLossReport> Source) : base(Source)
+		public PacketLossReportViewModelCollection(IList<PacketLossReport> Source) : base(Source, (SourceItem) => new PacketLossReportViewModel(SourceItem))
 		{
 		}
 
@@ -25,9 +25,6 @@ namespace ODP.ViewModels
 			return 0;
 		}//*/
 
-		protected override PacketLossReportViewModel OnCreateItem(PacketLossReport Model)
-		{
-			return new PacketLossReportViewModel(Model);
-		}
+		
 	}
 }

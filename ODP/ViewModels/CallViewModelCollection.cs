@@ -11,13 +11,10 @@ namespace ODP.ViewModels
 {
 	public class CallViewModelCollection : GenericViewModelList<Call, CallViewModel>
 	{
-		public CallViewModelCollection(IList<Call> Source) : base(Source)
+		public CallViewModelCollection(IList<Call> Source) : base(Source,(SourceItem)=>new CallViewModel(SourceItem))
 		{
 		}
 
-		protected override CallViewModel OnCreateItem(Call Model)
-		{
-			return new CallViewModel(Model);
-		}
+		
 	}
 }

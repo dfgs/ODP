@@ -11,13 +11,10 @@ namespace ODP.ViewModels
 {
 	public class PacketReorderReportViewModelCollection : GenericViewModelList<PacketReorderReport, PacketReorderReportViewModel>
 	{
-		public PacketReorderReportViewModelCollection(IList<PacketReorderReport> Source) : base(Source)
+		public PacketReorderReportViewModelCollection(IList<PacketReorderReport> Source) : base(Source, (SourceItem) => new PacketReorderReportViewModel(SourceItem))
 		{
 		}
 
-		protected override PacketReorderReportViewModel OnCreateItem(PacketReorderReport Model)
-		{
-			return new PacketReorderReportViewModel(Model);
-		}
+		
 	}
 }
