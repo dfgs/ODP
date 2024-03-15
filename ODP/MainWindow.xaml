@@ -8,6 +8,17 @@
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" WindowState="Maximized"
         Title="ODP" Height="450" Width="800" Icon="/Images/hypnotoad.png">
 
+	<Window.Resources>
+		<ResourceDictionary>
+			<Style TargetType="{x:Type Image}">
+				<Style.Triggers>
+					<Trigger Property="IsEnabled" Value="False">
+						<Setter Property="Opacity" Value="0.3"/>
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+		</ResourceDictionary>
+	</Window.Resources>
 
 	<Window.Style>
 		<Style TargetType="{x:Type Window}">
