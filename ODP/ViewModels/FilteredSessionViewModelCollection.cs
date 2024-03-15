@@ -9,11 +9,13 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class SessionViewModelCollection : GenericViewModelList<Session, SessionViewModel>
+	public class FilteredSessionViewModelCollection : BaseViewModelEnumerable<SessionViewModel>
 	{
-		public SessionViewModelCollection(IList<Session> Source) : base(Source)
+		public FilteredSessionViewModelCollection(IEnumerable<SessionViewModel> Source) : base()
 		{
+			LoadInternal(Source);
 		}
+
 		public override int GetNewItemIndex(SessionViewModel Item)
 		{
 			if (Item.StartTime == null) return Count;
@@ -29,12 +31,8 @@ namespace ODP.ViewModels
 			return Count;//*/
 		}//*/
 
-		protected override SessionViewModel OnCreateItem(Session Model)
-		{
-			return new SessionViewModel(Model);
-		}
-
 		
+
 
 	}
 }

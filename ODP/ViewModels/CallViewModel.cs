@@ -11,7 +11,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class CallViewModel : ViewModel<Call>, IQualityProvider
+	public class CallViewModel : GenericViewModel<Call>, IQualityProvider
 	{
 		[Browsable(true)]
 		public string? SIPCallID
@@ -129,27 +129,15 @@ namespace ODP.ViewModels
 		
 
 
-		public CallViewModel(ILogger Logger) : base(Logger)
+		public CallViewModel(Call Model) : base(Model)
 		{
-			SBCReports = new CDRSBCReportViewModelCollection(Logger);
-			MediaReports = new CDRMediaReportViewModelCollection(Logger);
-		}
-
-
-		protected override void OnLoaded()
-		{
-			/*if (Model==null)
-			{
-				MediaReports.SelectedItem = null;				
-				SBCReports.Clear();
-				MediaReports.Clear();
-				return;
-			}*/
-
-			SBCReports.Load(Model.SBCReports);
-			MediaReports.Load(Model.MediaReports);
+			SBCReports = new CDRSBCReportViewModelCollection(Model.SBCReports);
+			MediaReports = new CDRMediaReportViewModelCollection(Model.MediaReports);
 			MediaReports.SelectedItem = MediaReports.FirstOrDefault();
 		}
+
+
+	
 
 
 	}

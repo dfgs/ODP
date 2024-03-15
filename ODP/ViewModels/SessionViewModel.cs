@@ -11,7 +11,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class SessionViewModel : ViewModel<Session>, IQualityProvider
+	public class SessionViewModel : GenericViewModel<Session>, IQualityProvider
 	{
 		public static readonly DependencyProperty CallsProperty = DependencyProperty.Register("Calls", typeof(CallViewModelCollection), typeof(SessionViewModel), new PropertyMetadata(null));
 		public CallViewModelCollection Calls
@@ -75,12 +75,13 @@ namespace ODP.ViewModels
 
 
 
-		public SessionViewModel(ILogger Logger) : base(Logger)
+		public SessionViewModel(Session Model) : base(Model)
 		{
-			Calls = new CallViewModelCollection(Logger);
-			PacketReorderReports = new PacketReorderReportViewModelCollection(Logger);
+			Calls = new CallViewModelCollection(Model.Calls);
+			Calls.SelectedItem = Calls.FirstOrDefault();
+			PacketReorderReports = new PacketReorderReportViewModelCollection(Model.PacketReorderReports);
+			AssociatePacketReorderReports();
 		}
-
 		private void AssociatePacketReorderReport(PacketReorderReport Report)
 		{
 			if (Report == null) throw new ArgumentNullException(nameof(Report));
@@ -107,17 +108,7 @@ namespace ODP.ViewModels
 			}
 		}
 
-		protected override void OnLoaded()
-		{
-			
-			Calls.Load(Model.Calls);
-			Calls.SelectedItem = Calls.FirstOrDefault();
-
-			PacketReorderReports.Load(Model.PacketReorderReports);
-
-			AssociatePacketReorderReports();
-
-		}
+		
 		public bool Match(MatchProperty Property, string Value)
 		{
 			switch(Property)
@@ -137,6 +128,7 @@ namespace ODP.ViewModels
 			return Filters.All(filter=>filter.Match(this));
 		}
 
+		
 
 	}
 }

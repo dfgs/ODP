@@ -9,9 +9,9 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class PacketLossReportViewModelCollection : ListViewModel<PacketLossReport, PacketLossReportViewModel>
+	public class PacketLossReportViewModelCollection : GenericViewModelList<PacketLossReport, PacketLossReportViewModel>
 	{
-		public PacketLossReportViewModelCollection(ILogger Logger) : base(Logger)
+		public PacketLossReportViewModelCollection(IList<PacketLossReport> Source) : base(Source)
 		{
 		}
 
@@ -25,9 +25,9 @@ namespace ODP.ViewModels
 			return 0;
 		}//*/
 
-		protected override PacketLossReportViewModel OnCreateItem()
+		protected override PacketLossReportViewModel OnCreateItem(PacketLossReport Model)
 		{
-			return new PacketLossReportViewModel(Logger);
+			return new PacketLossReportViewModel(Model);
 		}
 	}
 }

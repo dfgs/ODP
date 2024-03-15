@@ -8,6 +8,7 @@
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" WindowState="Maximized"
         Title="ODP" Height="450" Width="800" Icon="/Images/hypnotoad.png">
 
+
 	<Window.Style>
 		<Style TargetType="{x:Type Window}">
 			<Style.Triggers>
@@ -16,6 +17,7 @@
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
+
 	</Window.Style>
 	
 	<Window.InputBindings>

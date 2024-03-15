@@ -26,7 +26,7 @@ namespace ODP.ViewModels
 			get { return GetValue(ValueProperty); }
 			set { SetValue(ValueProperty, value); }
 		}
-		public PropertyViewModel() : base(NullLogger.Instance)
+		public PropertyViewModel() : base()
 		{
 		}
 	}

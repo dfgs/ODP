@@ -9,7 +9,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class DelayFilterViewModel : BaseFilterViewModel
+	public class DelayFilterViewModel : BaseFilterViewModel<string>
 	{
 
 		public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register("MinValue", typeof(int), typeof(DelayFilterViewModel), new PropertyMetadata(0));
@@ -32,7 +32,7 @@ namespace ODP.ViewModels
 			set { SetValue(AnyValueProperty, value); }
 		}
 
-		public DelayFilterViewModel(ILogger Logger) : base(Logger)
+		public DelayFilterViewModel() : base("")
 		{
 		}
 

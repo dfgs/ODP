@@ -11,7 +11,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class PacketReorderReportViewModel : ViewModel<PacketReorderReport>
+	public class PacketReorderReportViewModel : GenericViewModel<PacketReorderReport>
 	{
 
 		[Browsable(true)]
@@ -50,7 +50,7 @@ namespace ODP.ViewModels
 		}
 
 
-		public PacketReorderReportViewModel(ILogger Logger) : base(Logger)
+		public PacketReorderReportViewModel(PacketReorderReport Model) : base(Model)
 		{
 		}
 	}

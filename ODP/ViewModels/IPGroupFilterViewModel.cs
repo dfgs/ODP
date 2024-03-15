@@ -9,11 +9,11 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class IPGroupFilterViewModel : BaseFilterViewModel
+	public class IPGroupFilterViewModel : BaseFilterViewModel<string>
 	{
 
 
-		public IPGroupFilterViewModel(ILogger Logger) : base(Logger)
+		public IPGroupFilterViewModel() : base("")
 		{
 		}
 

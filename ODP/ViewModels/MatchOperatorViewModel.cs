@@ -26,7 +26,7 @@ namespace ODP.ViewModels
 			get { return (MatchOperator)GetValue(ValueProperty); }
 			set { SetValue(ValueProperty, value); }
 		}
-		public MatchOperatorViewModel() : base(NullLogger.Instance)
+		public MatchOperatorViewModel() : base()
 		{
 		}
 	}

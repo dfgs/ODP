@@ -9,15 +9,15 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class CallViewModelCollection : ListViewModel<Call, CallViewModel>
+	public class CallViewModelCollection : GenericViewModelList<Call, CallViewModel>
 	{
-		public CallViewModelCollection(ILogger Logger) : base(Logger)
+		public CallViewModelCollection(IList<Call> Source) : base(Source)
 		{
 		}
 
-		protected override CallViewModel OnCreateItem()
+		protected override CallViewModel OnCreateItem(Call Model)
 		{
-			return new CallViewModel(Logger);
+			return new CallViewModel(Model);
 		}
 	}
 }

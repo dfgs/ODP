@@ -9,15 +9,15 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class PacketReorderReportViewModelCollection : ListViewModel<PacketReorderReport, PacketReorderReportViewModel>
+	public class PacketReorderReportViewModelCollection : GenericViewModelList<PacketReorderReport, PacketReorderReportViewModel>
 	{
-		public PacketReorderReportViewModelCollection(ILogger Logger) : base(Logger)
+		public PacketReorderReportViewModelCollection(IList<PacketReorderReport> Source) : base(Source)
 		{
 		}
 
-		protected override PacketReorderReportViewModel OnCreateItem()
+		protected override PacketReorderReportViewModel OnCreateItem(PacketReorderReport Model)
 		{
-			return new PacketReorderReportViewModel(Logger);
+			return new PacketReorderReportViewModel(Model);
 		}
 	}
 }

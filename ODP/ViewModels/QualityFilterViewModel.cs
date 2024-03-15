@@ -9,7 +9,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class QualityFilterViewModel : BaseFilterViewModel
+	public class QualityFilterViewModel : BaseFilterViewModel<string>
 	{
 
 		public static readonly DependencyProperty QualityProperty = DependencyProperty.Register("Quality", typeof(Quality), typeof(QualityFilterViewModel), new PropertyMetadata(Quality.NA));
@@ -20,7 +20,7 @@ namespace ODP.ViewModels
 		}
 
 
-		public QualityFilterViewModel(ILogger Logger) : base(Logger)
+		public QualityFilterViewModel() : base("")
 		{
 		}
 

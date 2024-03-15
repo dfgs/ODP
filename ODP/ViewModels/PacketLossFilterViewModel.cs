@@ -9,7 +9,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class PacketLossFilterViewModel : BaseFilterViewModel
+	public class PacketLossFilterViewModel : BaseFilterViewModel<string>
 	{
 
 		public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register("MinValue", typeof(int), typeof(PacketLossFilterViewModel), new PropertyMetadata(0));
@@ -31,7 +31,7 @@ namespace ODP.ViewModels
 			get { return (bool)GetValue(AnyValueProperty); }
 			set { SetValue(AnyValueProperty, value); }
 		}
-		public PacketLossFilterViewModel(ILogger Logger) : base(Logger)
+		public PacketLossFilterViewModel() : base("")
 		{
 		}
 

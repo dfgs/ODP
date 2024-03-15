@@ -12,7 +12,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class CDRMediaReportViewModel : CDRReportViewModel<CDRMediaReport>, IQualityProvider
+	public class CDRMediaReportViewModel : CDRReportGenericViewModel<CDRMediaReport>, IQualityProvider
 	{
 		private static SolidColorBrush NABrush = new SolidColorBrush(Colors.Gray);
 		private static SolidColorBrush BadBrush = new SolidColorBrush(Colors.Red);
@@ -256,18 +256,14 @@ namespace ODP.ViewModels
 		}
 
 
-		public CDRMediaReportViewModel(ILogger Logger) : base(Logger)
+		public CDRMediaReportViewModel(CDRMediaReport Model) : base(Model)
 		{
-			TxRTCPReports = new RTCPReportViewModelCollection(Logger);
-			RxRTCPReports = new RTCPReportViewModelCollection(Logger);
+			TxRTCPReports = new RTCPReportViewModelCollection(Model.TxRTCPReports);
+			RxRTCPReports = new RTCPReportViewModelCollection(Model.RxRTCPReports);
 
 		}
 
-		protected override void OnLoaded()
-		{
-			TxRTCPReports.Load(Model.TxRTCPReports);
-			RxRTCPReports.Load(Model.RxRTCPReports);
-		}
+		
 
 
 	}

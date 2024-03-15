@@ -9,14 +9,14 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class CDRSBCReportViewModelCollection : ListViewModel<CDRSBCReport, CDRSBCReportViewModel>
+	public class CDRSBCReportViewModelCollection : GenericViewModelList<CDRSBCReport, CDRSBCReportViewModel>
 	{
-		public CDRSBCReportViewModelCollection(ILogger Logger) : base(Logger)
+		public CDRSBCReportViewModelCollection(IList<CDRSBCReport> Source) : base(Source)
 		{
 		}
-		protected override CDRSBCReportViewModel OnCreateItem()
+		protected override CDRSBCReportViewModel OnCreateItem(CDRSBCReport Model)
 		{
-			return new CDRSBCReportViewModel(Logger);
+			return new CDRSBCReportViewModel(Model);
 		}
 	}
 }

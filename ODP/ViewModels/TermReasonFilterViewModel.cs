@@ -9,11 +9,11 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class TermReasonFilterViewModel : BaseFilterViewModel
+	public class TermReasonFilterViewModel : BaseFilterViewModel<string>
 	{
 
 
-		public TermReasonFilterViewModel(ILogger Logger) : base(Logger)
+		public TermReasonFilterViewModel() : base("")
 		{
 		}
 

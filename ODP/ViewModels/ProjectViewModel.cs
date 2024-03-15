@@ -17,7 +17,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class ProjectViewModel:ViewModel<Project>
+	public class ProjectViewModel:GenericViewModel<Project>
 	{
 		public event EventHandler? SessionsChanged;
 		public event EventHandler? FilteredSessionsChanged;
@@ -62,10 +62,10 @@ namespace ODP.ViewModels
 			set { SetValue(SessionsProperty, value); }
 		}
 
-		public static readonly DependencyProperty FilteredSessionsProperty = DependencyProperty.Register("FilteredSessions", typeof(SessionViewModelCollection), typeof(ProjectViewModel), new PropertyMetadata(null));
-		public SessionViewModelCollection FilteredSessions
+		public static readonly DependencyProperty FilteredSessionsProperty = DependencyProperty.Register("FilteredSessions", typeof(FilteredSessionViewModelCollection), typeof(ProjectViewModel), new PropertyMetadata(null));
+		public FilteredSessionViewModelCollection FilteredSessions
 		{
-			get { return (SessionViewModelCollection)GetValue(FilteredSessionsProperty); }
+			get { return (FilteredSessionViewModelCollection)GetValue(FilteredSessionsProperty); }
 			set { SetValue(FilteredSessionsProperty, value); }
 		}
 
@@ -89,20 +89,21 @@ namespace ODP.ViewModels
 
 
 
-		public ProjectViewModel(ILogger Logger) : base(Logger)
+		public ProjectViewModel(Project Model) : base(Model)
 		{
 
 			loadedFiles = new List<string>();
 			loadedWiresharkFiles = new List<string>();
-			PacketLossReports = new PacketLossReportViewModelCollection(Logger);
-			Sessions = new SessionViewModelCollection(Logger);
-			FilteredSessions = new SessionViewModelCollection(Logger);
+			PacketLossReports = new PacketLossReportViewModelCollection(Model.PacketLossReports);
+			Sessions = new SessionViewModelCollection(Model.Sessions);
 			//session = new ViewModelCollection<FilterViewModel>(Logger);
-			GlobalFilter = new GlobalFilterViewModel(Logger);
+			GlobalFilter = new GlobalFilterViewModel();
 			OnSessionsChanged();
 			OnFilteredSessionsChanged();
+			RefreshFilters();
+			RefreshSessions();
 		}
-
+		
 		protected void OnSessionsChanged()
 		{
 			SessionsChanged?.Invoke(this,EventArgs.Empty);
@@ -112,15 +113,7 @@ namespace ODP.ViewModels
 			FilteredSessionsChanged?.Invoke(this, EventArgs.Empty);
 		}
 
-		protected override void OnLoaded()
-		{
-			
-			PacketLossReports.Load(Model.PacketLossReports);
-			Sessions.Load( Model.Sessions);
-			OnSessionsChanged();
-			RefreshFilters();
-			RefreshSessions();
-		}
+		
 
 		public void RefreshFilters()
 		{
@@ -129,28 +122,28 @@ namespace ODP.ViewModels
 			{
 				if (ipGroup == null) continue;
 				if (GlobalFilter.IPGroupFilters.Select(filter=>filter.Name).Contains(ipGroup)) continue;
-				GlobalFilter.IPGroupFilters.Add(new IPGroupFilterViewModel(Logger) { Name=ipGroup });
+				GlobalFilter.IPGroupFilters.Add(new IPGroupFilterViewModel() { Name=ipGroup });
 			}
 
 			foreach (string? sipInterface in Sessions.SelectMany(session => session.Calls).Select(call => call.SIPInterfaceId).Distinct())
 			{
 				if (sipInterface == null) continue;
 				if (GlobalFilter.SIPInterfaceFilters.Select(filter => filter.Name).Contains(sipInterface)) continue;
-				GlobalFilter.SIPInterfaceFilters.Add(new SIPInterfaceFilterViewModel(Logger) { Name = sipInterface });
+				GlobalFilter.SIPInterfaceFilters.Add(new SIPInterfaceFilterViewModel() { Name = sipInterface });
 			}
 			
 			foreach (string? termReason in Sessions.SelectMany(session => session.Calls).Select(call => call.TrmReason).Distinct())
 			{
 				if (termReason == null) continue;
 				if (GlobalFilter.TermReasonFilters.Select(filter => filter.Name).Contains(termReason)) continue;
-				GlobalFilter.TermReasonFilters.Add(new TermReasonFilterViewModel(Logger) { Name = termReason });
+				GlobalFilter.TermReasonFilters.Add(new TermReasonFilterViewModel() { Name = termReason });
 			}
 		}
 
 
 		public void RefreshSessions()
 		{
-			FilteredSessions.Load( Sessions.Where(session => GlobalFilter.Match(session)) );
+			FilteredSessions = new FilteredSessionViewModelCollection( Sessions.Where(session => GlobalFilter.Match(session))  );
 			OnFilteredSessionsChanged();
 		}
 
@@ -306,9 +299,10 @@ namespace ODP.ViewModels
 					Progress)).OrThrow("Failed to add file in project");
 				index++;
 			}
-			
-			PacketLossReports.Load(Model.PacketLossReports);
-			Sessions.Load(Model.Sessions);
+
+			PacketLossReports = new PacketLossReportViewModelCollection(Model.PacketLossReports);
+			Sessions = new SessionViewModelCollection(Model.Sessions);
+				
 
 			OnSessionsChanged();
 			RefreshFilters();
@@ -438,8 +432,8 @@ namespace ODP.ViewModels
 				index++;
 			}
 
-			PacketLossReports.Load(Model.PacketLossReports);
-			Sessions.Load(Model.Sessions);
+			PacketLossReports = new PacketLossReportViewModelCollection(Model.PacketLossReports);
+			Sessions = new SessionViewModelCollection(Model.Sessions);
 
 			OnSessionsChanged();
 			RefreshFilters();
@@ -498,14 +492,16 @@ namespace ODP.ViewModels
 
 		}
 
-		public async Task LoadAsync(string Path)
+		public static async Task<ProjectViewModel> LoadAsync(string Path)
 		{
-			Project? project=null;
+			Project project;
+			ProjectViewModel projectViewModel;
 
-			RunningTask = $"Loading project...";
-			await TryAsync(() => Project.LoadAsync(Path)).Then(result => project = result).OrThrow("Failed to open project");
-			Load(project);
-			RunningTask = null;
+			project = await Project.LoadAsync(Path);
+			
+			projectViewModel = new ProjectViewModel(project);
+			
+			return projectViewModel;
 		}
 
 

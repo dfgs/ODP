@@ -9,15 +9,15 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class CDRMediaReportViewModelCollection : ListViewModel<CDRMediaReport, CDRMediaReportViewModel>
+	public class CDRMediaReportViewModelCollection : GenericViewModelList<CDRMediaReport, CDRMediaReportViewModel>
     {
-		public CDRMediaReportViewModelCollection(ILogger Logger) : base(Logger)
+		public CDRMediaReportViewModelCollection(IList<CDRMediaReport> Source) : base(Source)
 		{
 		}
 
-		protected override CDRMediaReportViewModel OnCreateItem()
+		protected override CDRMediaReportViewModel OnCreateItem(CDRMediaReport Model)
 		{
-			return new CDRMediaReportViewModel(Logger);
+			return new CDRMediaReportViewModel(Model);
 		}
 	}
 }

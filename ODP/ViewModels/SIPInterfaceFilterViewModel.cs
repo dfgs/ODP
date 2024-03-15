@@ -9,11 +9,11 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class SIPInterfaceFilterViewModel : BaseFilterViewModel
+	public class SIPInterfaceFilterViewModel : BaseFilterViewModel<string>
 	{
 
 
-		public SIPInterfaceFilterViewModel(ILogger Logger) : base(Logger)
+		public SIPInterfaceFilterViewModel() : base("")
 		{
 		}
 

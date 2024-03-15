@@ -9,7 +9,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class JitterFilterViewModel : BaseFilterViewModel
+	public class JitterFilterViewModel : BaseFilterViewModel<string>
 	{
 
 		public static readonly DependencyProperty MinValueProperty = DependencyProperty.Register("MinValue", typeof(int), typeof(JitterFilterViewModel), new PropertyMetadata(0));
@@ -31,7 +31,7 @@ namespace ODP.ViewModels
 			get { return (bool)GetValue(AnyValueProperty); }
 			set { SetValue(AnyValueProperty, value); }
 		}
-		public JitterFilterViewModel(ILogger Logger) : base(Logger)
+		public JitterFilterViewModel() : base("")
 		{
 		}
 

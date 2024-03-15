@@ -9,9 +9,9 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public abstract class BaseFilterViewModel : BaseViewModel,IFilterViewModel
+	public abstract class BaseFilterViewModel<FilterT> : GenericViewModel<FilterT>,IFilterViewModel
 	{
-		public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(bool), typeof(BaseFilterViewModel), new PropertyMetadata(true));
+		public static readonly DependencyProperty IsSelectedProperty = DependencyProperty.Register("IsSelected", typeof(bool), typeof(BaseFilterViewModel<FilterT>), new PropertyMetadata(true));
 		public bool IsSelected
 		{
 			get { return (bool)GetValue(IsSelectedProperty); }
@@ -20,7 +20,7 @@ namespace ODP.ViewModels
 
 
 
-		public static readonly DependencyProperty NameProperty = DependencyProperty.Register("Name", typeof(string), typeof(BaseFilterViewModel), new PropertyMetadata(null));
+		public static readonly DependencyProperty NameProperty = DependencyProperty.Register("Name", typeof(string), typeof(BaseFilterViewModel<FilterT>), new PropertyMetadata(null));
 		public string Name
 		{
 			get { return (string)GetValue(NameProperty); }
@@ -28,7 +28,7 @@ namespace ODP.ViewModels
 		}
 
 
-		public BaseFilterViewModel(ILogger Logger) : base(Logger)
+		public BaseFilterViewModel(FilterT Model) : base(Model)
 		{
 		}
 

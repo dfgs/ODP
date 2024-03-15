@@ -9,8 +9,8 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class FilterViewModelCollection<FilterT, T> : ViewModelCollection<FilterT, T>
-		where T:BaseFilterViewModel
+	public class FilterViewModelCollection<FilterT, T> : GenericViewModelList<FilterT, T>
+		where T:BaseFilterViewModel<FilterT>
 	{
 		public static readonly DependencyProperty SelectAllCommandProperty = DependencyProperty.Register("SelectAllCommand", typeof(ViewModelCommand), typeof(FilterViewModelCollection<FilterT, T>), new PropertyMetadata(null));
 		public ViewModelCommand SelectAllCommand
@@ -25,7 +25,7 @@ namespace ODP.ViewModels
 			set { SetValue(SelectNoneCommandProperty, value); }
 		}
 
-		public FilterViewModelCollection(ILogger Logger) : base(Logger)
+		public FilterViewModelCollection() : base(new List<FilterT>())
 		{
 			SelectAllCommand = new ViewModelCommand(SelectAllCanExecute, SelectAllExecute);
 			SelectNoneCommand = new ViewModelCommand(SelectNoneCanExecute, SelectNoneExecute);
@@ -60,11 +60,10 @@ namespace ODP.ViewModels
 			return Count;
 		}
 
-		public void Add(T Item)
+		protected override T OnCreateItem(FilterT SourceItem)
 		{
-			AddInternal(Item);
+			throw new NotImplementedException();
 		}
 
-		
 	}
 }

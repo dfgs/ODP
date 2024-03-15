@@ -9,15 +9,15 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class RTCPReportViewModelCollection : ListViewModel<RTCPReport, RTCPReportViewModel>
+	public class RTCPReportViewModelCollection : GenericViewModelList<RTCPReport, RTCPReportViewModel>
 	{
-		public RTCPReportViewModelCollection(ILogger Logger) : base(Logger)
+		public RTCPReportViewModelCollection(IList<RTCPReport> Source) : base(Source)
 		{
 		}
 
-		protected override RTCPReportViewModel OnCreateItem()
+		protected override RTCPReportViewModel OnCreateItem(RTCPReport Model)
 		{
-			return new RTCPReportViewModel(Logger);
+			return new RTCPReportViewModel(Model);
 		}
 	}
 }

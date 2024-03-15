@@ -37,7 +37,7 @@ namespace ODP.ViewModels
 
 
 
-		public FilterViewModel() : base(NullLogger.Instance)
+		public FilterViewModel() : base()
 		{
 		}
 

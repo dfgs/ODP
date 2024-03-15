@@ -11,7 +11,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class PacketLossReportViewModel : ViewModel<PacketLossReport>
+	public class PacketLossReportViewModel : GenericViewModel<PacketLossReport>
 	{
 
 		[Browsable(true)]
@@ -101,7 +101,7 @@ namespace ODP.ViewModels
 		}
 
 
-		public PacketLossReportViewModel(ILogger Logger) : base(Logger)
+		public PacketLossReportViewModel(PacketLossReport Model) : base(Model)
 		{
 		}
 	}

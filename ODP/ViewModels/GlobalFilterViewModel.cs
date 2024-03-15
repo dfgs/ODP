@@ -65,38 +65,38 @@ namespace ODP.ViewModels
 
 
 
-		public GlobalFilterViewModel(ILogger Logger) : base(Logger)
+		public GlobalFilterViewModel() : base()
 		{
-			QualityFilters = new FilterViewModelCollection<string, QualityFilterViewModel>(Logger);
-			QualityFilters.Add(new QualityFilterViewModel(Logger) { Quality = Quality.Bad, Name = "Bad quality" });
-			QualityFilters.Add(new QualityFilterViewModel(Logger) { Quality = Quality.Average, Name = "Average quality" });
-			QualityFilters.Add(new QualityFilterViewModel(Logger) { Quality = Quality.Good, Name = "Good quality" });
-			QualityFilters.Add(new QualityFilterViewModel(Logger) { Quality = Quality.NA, Name = "Not applicable" });
+			QualityFilters = new FilterViewModelCollection<string, QualityFilterViewModel>();
+			QualityFilters.Add(new QualityFilterViewModel() { Quality = Quality.Bad, Name = "Bad quality" });
+			QualityFilters.Add(new QualityFilterViewModel() { Quality = Quality.Average, Name = "Average quality" });
+			QualityFilters.Add(new QualityFilterViewModel() { Quality = Quality.Good, Name = "Good quality" });
+			QualityFilters.Add(new QualityFilterViewModel() { Quality = Quality.NA, Name = "Not applicable" });
 
-			DelayFilters = new FilterViewModelCollection<string, DelayFilterViewModel>(Logger);
-			DelayFilters.Add(new DelayFilterViewModel(Logger) { MinValue = int.MinValue, MaxValue = int.MaxValue, Name = "Any delay", AnyValue = true });
-			DelayFilters.Add(new DelayFilterViewModel(Logger) { MinValue = 150, MaxValue = int.MaxValue, Name = "Above 150 ms", IsSelected = false });
-			DelayFilters.Add(new DelayFilterViewModel(Logger) { MinValue = 250, MaxValue = int.MaxValue, Name = "Above 250 ms", IsSelected = false });
-			DelayFilters.Add(new DelayFilterViewModel(Logger) { MinValue = 350, MaxValue = int.MaxValue, Name = "Above 350 ms", IsSelected = false });
+			DelayFilters = new FilterViewModelCollection<string, DelayFilterViewModel>();
+			DelayFilters.Add(new DelayFilterViewModel() { MinValue = int.MinValue, MaxValue = int.MaxValue, Name = "Any delay", AnyValue = true });
+			DelayFilters.Add(new DelayFilterViewModel() { MinValue = 150, MaxValue = int.MaxValue, Name = "Above 150 ms", IsSelected = false });
+			DelayFilters.Add(new DelayFilterViewModel() { MinValue = 250, MaxValue = int.MaxValue, Name = "Above 250 ms", IsSelected = false });
+			DelayFilters.Add(new DelayFilterViewModel() { MinValue = 350, MaxValue = int.MaxValue, Name = "Above 350 ms", IsSelected = false });
 			DelayFilters.SelectedItem = DelayFilters.LastOrDefault();
 
-			JitterFilters = new FilterViewModelCollection<string, JitterFilterViewModel>(Logger);
-			JitterFilters.Add(new JitterFilterViewModel(Logger) { MinValue = int.MinValue, MaxValue = int.MaxValue, Name = "Any jitter", AnyValue = true });
-			JitterFilters.Add(new JitterFilterViewModel(Logger) { MinValue = 20, MaxValue = int.MaxValue, Name = "Above 20 ms", IsSelected = false });
-			JitterFilters.Add(new JitterFilterViewModel(Logger) { MinValue = 30, MaxValue = int.MaxValue, Name = "Above 30 ms", IsSelected = false });
-			JitterFilters.Add(new JitterFilterViewModel(Logger) { MinValue = 50, MaxValue = int.MaxValue, Name = "Above 50 ms", IsSelected = false });
+			JitterFilters = new FilterViewModelCollection<string, JitterFilterViewModel>();
+			JitterFilters.Add(new JitterFilterViewModel() { MinValue = int.MinValue, MaxValue = int.MaxValue, Name = "Any jitter", AnyValue = true });
+			JitterFilters.Add(new JitterFilterViewModel() { MinValue = 20, MaxValue = int.MaxValue, Name = "Above 20 ms", IsSelected = false });
+			JitterFilters.Add(new JitterFilterViewModel() { MinValue = 30, MaxValue = int.MaxValue, Name = "Above 30 ms", IsSelected = false });
+			JitterFilters.Add(new JitterFilterViewModel() { MinValue = 50, MaxValue = int.MaxValue, Name = "Above 50 ms", IsSelected = false });
 			JitterFilters.SelectedItem = JitterFilters.LastOrDefault();
 
-			PacketLossFilters = new FilterViewModelCollection<string, PacketLossFilterViewModel>(Logger);
-			PacketLossFilters.Add(new PacketLossFilterViewModel(Logger) { MinValue = int.MinValue, MaxValue = int.MaxValue, Name = "Any packet loss", AnyValue = true });
-			PacketLossFilters.Add(new PacketLossFilterViewModel(Logger) { MinValue = 1, MaxValue = int.MaxValue, Name = "Above 1%", IsSelected = false });
-			PacketLossFilters.Add(new PacketLossFilterViewModel(Logger) { MinValue = 5, MaxValue = int.MaxValue, Name = "Above 5%", IsSelected = false });
-			PacketLossFilters.Add(new PacketLossFilterViewModel(Logger) { MinValue = 10, MaxValue = int.MaxValue, Name = "Above 10%", IsSelected = false });
+			PacketLossFilters = new FilterViewModelCollection<string, PacketLossFilterViewModel>();
+			PacketLossFilters.Add(new PacketLossFilterViewModel() { MinValue = int.MinValue, MaxValue = int.MaxValue, Name = "Any packet loss", AnyValue = true });
+			PacketLossFilters.Add(new PacketLossFilterViewModel() { MinValue = 1, MaxValue = int.MaxValue, Name = "Above 1%", IsSelected = false });
+			PacketLossFilters.Add(new PacketLossFilterViewModel() { MinValue = 5, MaxValue = int.MaxValue, Name = "Above 5%", IsSelected = false });
+			PacketLossFilters.Add(new PacketLossFilterViewModel() { MinValue = 10, MaxValue = int.MaxValue, Name = "Above 10%", IsSelected = false });
 			PacketLossFilters.SelectedItem = PacketLossFilters.LastOrDefault();
 
-			IPGroupFilters = new FilterViewModelCollection<string, IPGroupFilterViewModel>(Logger);
-			SIPInterfaceFilters = new FilterViewModelCollection<string, SIPInterfaceFilterViewModel>(Logger);
-			TermReasonFilters = new FilterViewModelCollection<string, TermReasonFilterViewModel>(Logger);
+			IPGroupFilters = new FilterViewModelCollection<string, IPGroupFilterViewModel>();
+			SIPInterfaceFilters = new FilterViewModelCollection<string, SIPInterfaceFilterViewModel>();
+			TermReasonFilters = new FilterViewModelCollection<string, TermReasonFilterViewModel>();
 		}
 
 		public bool Match(SessionViewModel Session)

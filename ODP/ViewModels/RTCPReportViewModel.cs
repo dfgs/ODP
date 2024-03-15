@@ -11,7 +11,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class RTCPReportViewModel : ViewModel<RTCPReport>
+	public class RTCPReportViewModel : GenericViewModel<RTCPReport>
 	{
 
 
@@ -49,7 +49,7 @@ namespace ODP.ViewModels
 		}
 
 
-		public RTCPReportViewModel(ILogger Logger) : base(Logger)
+		public RTCPReportViewModel(RTCPReport Model) : base(Model)
 		{
 		}
 	}

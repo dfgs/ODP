@@ -10,7 +10,7 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class ApplicationViewModel : ViewModel<string>
+	public class ApplicationViewModel : GenericViewModel<string>
 	{
 
 
@@ -24,9 +24,9 @@ namespace ODP.ViewModels
 
 
 
-		public ApplicationViewModel(ILogger Logger) : base(Logger)
+		public ApplicationViewModel() : base("")
 		{
-			Projects = new ProjectViewModelCollection(Logger);
+			Projects = new ProjectViewModelCollection(new List<Project>());
 		}
 		public void AddNewProject()
 		{
