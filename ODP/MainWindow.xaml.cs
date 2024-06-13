@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using ODP.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -293,6 +294,30 @@ namespace ODP
 			window.DataContext = e.Parameter;
 			window.ShowDialog();
 
+
+		}
+
+		private void TabControl_DragOver(object sender, DragEventArgs e)
+		{
+			e.Handled = true;
+			if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effects = DragDropEffects.Copy;
+			else e.Effects = DragDropEffects.None;
+        }
+
+		private async void TabControl_Drop(object sender, DragEventArgs e)
+		{
+			Progress<long> fileProgress;
+
+			e.Handled = true;
+			if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+
+			if (applicationViewModel.Projects.SelectedItem == null) RunCommand(applicationViewModel.AddNewProject);
+			if (applicationViewModel.Projects.SelectedItem == null) return;
+
+			fileProgress = new Progress<long>((percent) => progressBar.Value = percent);
+			await RunCommandAsync(applicationViewModel.Projects.SelectedItem.AddFilesAsync(files, fileProgress));
 
 		}
 

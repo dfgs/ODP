@@ -69,6 +69,18 @@
 							<Paragraph>Improved file loading and error logging</Paragraph>
 						</ListItem>
 					</List>
+					<Paragraph>
+						<Bold>
+							<Underline>
+								Version 1.3
+							</Underline>
+						</Bold>
+					</Paragraph>
+					<List>
+						<ListItem>
+							<Paragraph>Added file drag and drop support</Paragraph>
+						</ListItem>
+					</List>
 				</FlowDocument>
 			</FlowDocumentReader>
 		</TabItem>

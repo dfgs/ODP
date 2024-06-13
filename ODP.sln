@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot.WPF", "..\ScottPl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScottPlot", "..\ScottPlot\src\ScottPlot4\ScottPlot\ScottPlot.csproj", "{F27D48CE-EC55-456B-9261-DF13BD07CBE4}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ODP.Installer", "ODP.Installer\ODP.Installer.vdproj", "{3AE8DA31-3B7E-4600-8FB2-536F3E82F393}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EthernetFrameReaderLib", "..\EthernetFrameReaderLib\EthernetFrameReaderLib\EthernetFrameReaderLib.csproj", "{7F86EF1D-94C6-44DF-9C8F-4701ADA054FC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RTCPFrameReaderLib", "..\RTCPFrameReaderLib\RTCPFrameReaderLib\RTCPFrameReaderLib.csproj", "{0A8B76C1-9057-432A-80C6-4EE6114EEF1C}"
@@ -181,16 +179,6 @@ Global
 		{F27D48CE-EC55-456B-9261-DF13BD07CBE4}.Release|x64.Build.0 = Release|Any CPU
 		{F27D48CE-EC55-456B-9261-DF13BD07CBE4}.Release|x86.ActiveCfg = Release|Any CPU
 		{F27D48CE-EC55-456B-9261-DF13BD07CBE4}.Release|x86.Build.0 = Release|Any CPU
-		{3AE8DA31-3B7E-4600-8FB2-536F3E82F393}.Debug|Any CPU.ActiveCfg = Debug
-		{3AE8DA31-3B7E-4600-8FB2-536F3E82F393}.Debug|ARM.ActiveCfg = Debug
-		{3AE8DA31-3B7E-4600-8FB2-536F3E82F393}.Debug|ARM64.ActiveCfg = Debug
-		{3AE8DA31-3B7E-4600-8FB2-536F3E82F393}.Debug|x64.ActiveCfg = Debug
-		{3AE8DA31-3B7E-4600-8FB2-536F3E82F393}.Debug|x86.ActiveCfg = Debug
-		{3AE8DA31-3B7E-4600-8FB2-536F3E82F393}.Release|Any CPU.ActiveCfg = Release
-		{3AE8DA31-3B7E-4600-8FB2-536F3E82F393}.Release|ARM.ActiveCfg = Release
-		{3AE8DA31-3B7E-4600-8FB2-536F3E82F393}.Release|ARM64.ActiveCfg = Release
-		{3AE8DA31-3B7E-4600-8FB2-536F3E82F393}.Release|x64.ActiveCfg = Release
-		{3AE8DA31-3B7E-4600-8FB2-536F3E82F393}.Release|x86.ActiveCfg = Release
 		{7F86EF1D-94C6-44DF-9C8F-4701ADA054FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7F86EF1D-94C6-44DF-9C8F-4701ADA054FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F86EF1D-94C6-44DF-9C8F-4701ADA054FC}.Debug|ARM.ActiveCfg = Debug|Any CPU
