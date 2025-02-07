@@ -184,13 +184,16 @@ namespace ODP.ViewModels
 
 			try
 			{
-				Try(() => new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)).Then(result=>stream=result).OrThrow("Failed to open file");
+				Try(() => new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite,4096, FileOptions.Asynchronous)).Then(result=>stream=result).OrThrow("Failed to open file");
 				Try(() => new StreamReader(stream!)).Then(result=>reader=result).OrThrow("Failed to create reader");
 				
 				while (!reader!.EndOfStream)
 				{
-					if (!await TryAsync(() => reader.ReadLineAsync()).Then(result => syslogLine = result).OrAlert("Error while reading line in file")) break;
+					//await reader.ReadLineAsync() 
 
+					if (!await TryAsync(async () => await reader.ReadLineAsync()).Then(result => syslogLine = result).OrAlert("Error while reading line in file")) break;
+					//await Task.Delay(100);
+					//syslogLine = "test";
 
 					percent = stream!.Position * 100 / stream.Length;
 					if (percent > oldPercent)
