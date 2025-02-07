@@ -9,12 +9,15 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class CallViewModelCollection : GenericViewModelList<Call, CallViewModel>
+	public class CallViewModelCollection : BaseViewModelEnumerable< CallViewModel>
 	{
-		public CallViewModelCollection(IList<Call> Source) : base(Source,(SourceItem)=>new CallViewModel(SourceItem))
+		public CallViewModelCollection(IList<Call> Source,GlobalFilterViewModel GlobalFilter) : base()
 		{
+			LoadInternal(
+				Source.Select(item => new CallViewModel(item)).Where(call => GlobalFilter.Match(call))
+			);
 		}
 
-		
+
 	}
 }

@@ -9,10 +9,13 @@ using ViewModelLib;
 
 namespace ODP.ViewModels
 {
-	public class SessionViewModelCollection : GenericViewModelList<Session, SessionViewModel>
+	public class SessionViewModelCollection : BaseViewModelEnumerable<SessionViewModel>
 	{
-		public SessionViewModelCollection(IList<Session> Source) : base(Source, (SourceItem) => new SessionViewModel(SourceItem))
+		public SessionViewModelCollection(IList<Session> Source,GlobalFilterViewModel GlobalFilter) 
 		{
+			LoadInternal(
+				Source.Select(item => new SessionViewModel(item, GlobalFilter)).Where(session => GlobalFilter.Match(session))
+			);
 		}
 		public override int GetNewItemIndex(SessionViewModel Item)
 		{

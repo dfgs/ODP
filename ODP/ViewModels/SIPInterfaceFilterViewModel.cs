@@ -12,7 +12,12 @@ namespace ODP.ViewModels
 	public class SIPInterfaceFilterViewModel : BaseFilterViewModel<string>
 	{
 
-
+		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(string), typeof(SIPInterfaceFilterViewModel), new PropertyMetadata(null));
+		public string? Value
+		{
+			get { return (string)GetValue(ValueProperty); }
+			set { SetValue(ValueProperty, value); }
+		}
 		public SIPInterfaceFilterViewModel() : base("")
 		{
 		}

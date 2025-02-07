@@ -81,6 +81,21 @@
 							<Paragraph>Added file drag and drop support</Paragraph>
 						</ListItem>
 					</List>
+					<Paragraph>
+						<Bold>
+							<Underline>
+								Version 1.4
+							</Underline>
+						</Bold>
+					</Paragraph>
+					<List>
+						<ListItem>
+							<Paragraph>Filters apply on session and calls</Paragraph>
+						</ListItem>
+						<ListItem>
+							<Paragraph>Updated to new net core framework</Paragraph>
+						</ListItem>
+					</List>
 				</FlowDocument>
 			</FlowDocumentReader>
 		</TabItem>

@@ -61,7 +61,7 @@ namespace ODP.ViewModels
 		[Browsable(true)]
 		public string? TrmReason
 		{
-			get => Model?.SBCReports.FirstOrDefault(item => item.TrmReason != null)?.TrmReason;
+			get => string.Join(',',Model?.SBCReports.Select(item=>item.TrmReason).Where(item => !string.IsNullOrEmpty(item) && (item!= "REASON N/A")).Distinct() ?? [""]);
 		}
 
 		[Browsable(true)]
@@ -79,13 +79,13 @@ namespace ODP.ViewModels
 		[Browsable(true)]
 		public string? IPGroup
 		{
-			get => Model?.SBCReports.FirstOrDefault(item => item.IPGroup != null)?.IPGroup;
+			get => Model?.SBCReports.FirstOrDefault(item => !string.IsNullOrEmpty(item.IPGroup ))?.IPGroup??"N/A";
 		}
 
 		[Browsable(true)]
 		public string? SIPInterfaceId
 		{
-			get => Model?.SBCReports.FirstOrDefault(item => item.SIPInterfaceId != null)?.SIPInterfaceId;
+			get => Model?.SBCReports.FirstOrDefault(item => !string.IsNullOrEmpty(item.SIPInterfaceId))?.SIPInterfaceId ?? "N/A";
 		}
 
 		[Browsable(true)]

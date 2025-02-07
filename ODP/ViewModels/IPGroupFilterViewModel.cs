@@ -12,7 +12,12 @@ namespace ODP.ViewModels
 	public class IPGroupFilterViewModel : BaseFilterViewModel<string>
 	{
 
-
+		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(string), typeof(IPGroupFilterViewModel), new PropertyMetadata(null));
+		public string? Value
+		{
+			get { return (string)GetValue(ValueProperty); }
+			set { SetValue(ValueProperty, value); }
+		}
 		public IPGroupFilterViewModel() : base("")
 		{
 		}

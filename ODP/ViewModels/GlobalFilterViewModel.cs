@@ -1,4 +1,5 @@
 ﻿using LogLib;
+using ODP.CoreLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,38 +99,52 @@ namespace ODP.ViewModels
 			SIPInterfaceFilters = new FilterViewModelCollection<string, SIPInterfaceFilterViewModel>();
 			TermReasonFilters = new FilterViewModelCollection<string, TermReasonFilterViewModel>();
 		}
+		public bool Match(CDRSBCReportViewModel CDRSBCReport)
+		{
+			if (!IPGroupFilters.Where(filter => (filter.IsSelected) && (filter.Value == CDRSBCReport.IPGroup)).Any()) return false;
 
-		public bool Match(SessionViewModel Session)
+			if (!SIPInterfaceFilters.Where(filter => (filter.IsSelected) && (filter.Value == CDRSBCReport.SIPInterfaceId)).Any()) return false;
+			if (!TermReasonFilters.Where(filter => (filter.IsSelected) && (filter.Value == CDRSBCReport.TrmReason)).Any()) return false;
+
+			return true;
+		}
+
+		public bool Match(CallViewModel Call)
 		{
 			DelayFilterViewModel? delayFilter;
 			JitterFilterViewModel? jitterFilter;
 			PacketLossFilterViewModel? packetLossFilter;
 
 
-			if (!QualityFilters.Where(filter => filter.IsSelected).Select(filter => filter.Quality).Contains(Session.Quality)) return false;
-			if (!IPGroupFilters.Where(filter => filter.IsSelected).Join(Session.Calls, filter => filter.Name, call => call.IPGroup, (ipGroup, call) => call).Any()) return false;
-			if (!SIPInterfaceFilters.Where(filter => filter.IsSelected).Join(Session.Calls, filter => filter.Name, call => call.SIPInterfaceId, (SIPInterface, call) => call).Any()) return false;
-			if (!TermReasonFilters.Where(filter => filter.IsSelected).Join(Session.Calls, filter => filter.Name, call => call.TrmReason, (TermReason, call) => call).Any()) return false;
+			if (!QualityFilters.Where(filter => filter.IsSelected).Select(filter => filter.Quality).Contains(Call.Quality)) return false;
+
+			if (!Call.SBCReports.Where(report => Match(report)).Any()) return false;
 
 			delayFilter = DelayFilters.SelectedItem;
-			if ((delayFilter!= null) && (!delayFilter.AnyValue))
+			if ((delayFilter != null) && (!delayFilter.AnyValue))
 			{
-				if (Session.Calls.SelectMany(call => call.MediaReports).All(mediaReport => (mediaReport.RTPdelay <= delayFilter.MinValue) || (mediaReport.RTPdelay > delayFilter.MaxValue))) return false;
+				if (Call.MediaReports.All(mediaReport => (mediaReport.RTPdelay <= delayFilter.MinValue) || (mediaReport.RTPdelay > delayFilter.MaxValue))) return false;
 			}
 
 			jitterFilter = JitterFilters.SelectedItem;
-			if ((jitterFilter != null) && (!jitterFilter.AnyValue)) 
+			if ((jitterFilter != null) && (!jitterFilter.AnyValue))
 			{
-				if (Session.Calls.SelectMany(call => call.MediaReports).All(mediaReport => (mediaReport.RTPjitterms <= jitterFilter.MinValue) || (mediaReport.RTPjitterms > jitterFilter.MaxValue))) return false;
+				if (Call.MediaReports.All(mediaReport => (mediaReport.RTPjitterms <= jitterFilter.MinValue) || (mediaReport.RTPjitterms > jitterFilter.MaxValue))) return false;
 			}
 
 			packetLossFilter = PacketLossFilters.SelectedItem;
 			if ((packetLossFilter != null) && (!packetLossFilter.AnyValue))
 			{
-				if (Session.Calls.SelectMany(call => call.MediaReports).All(mediaReport => (mediaReport.PacketLossPercent <= packetLossFilter.MinValue) || (mediaReport.PacketLossPercent > packetLossFilter.MaxValue))) return false;
+				if (Call.MediaReports.All(mediaReport => (mediaReport.PacketLossPercent <= packetLossFilter.MinValue) || (mediaReport.PacketLossPercent > packetLossFilter.MaxValue))) return false;
 			}
 
 			return true;
+		}
+
+		public bool Match(SessionViewModel Session)
+		{
+
+			return Session.Calls.Where(call => Match(call)).Any();
 		}
 
 

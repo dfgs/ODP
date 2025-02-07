@@ -75,9 +75,20 @@ namespace ODP.ViewModels
 
 
 
-		public SessionViewModel(Session Model) : base(Model)
+		public SessionViewModel(Session Model, GlobalFilterViewModel GlobalFilter) : base(Model)
 		{
-			Calls = new CallViewModelCollection(Model.Calls);
+			/*if (Model.SessionId== "c64c90:24:3499")
+			{
+				CallViewModel vm;
+				bool b1, b2, b3;
+				vm = new CallViewModel(Model.Calls[0]);
+
+				b1 = GlobalFilter.Match(vm.SBCReports[0]);
+				b2 = GlobalFilter.Match(vm.SBCReports[1]);
+
+				int t = 0;
+			}*/
+			Calls = new CallViewModelCollection(Model.Calls,GlobalFilter);
 			Calls.SelectedItem = Calls.FirstOrDefault();
 			PacketReorderReports = new PacketReorderReportViewModelCollection(Model.PacketReorderReports);
 			AssociatePacketReorderReports();

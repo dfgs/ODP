@@ -56,17 +56,17 @@ namespace ODP.ViewModels
 		}
 
 
-		public static readonly DependencyProperty SessionsProperty = DependencyProperty.Register("Sessions", typeof(SessionViewModelCollection), typeof(ProjectViewModel), new PropertyMetadata(null));
+		/*public static readonly DependencyProperty SessionsProperty = DependencyProperty.Register("Sessions", typeof(SessionViewModelCollection), typeof(ProjectViewModel), new PropertyMetadata(null));
 		public SessionViewModelCollection Sessions
 		{
 			get { return (SessionViewModelCollection)GetValue(SessionsProperty); }
 			set { SetValue(SessionsProperty, value); }
-		}
+		}*/
 
-		public static readonly DependencyProperty FilteredSessionsProperty = DependencyProperty.Register("FilteredSessions", typeof(FilteredSessionViewModelCollection), typeof(ProjectViewModel), new PropertyMetadata(null));
-		public FilteredSessionViewModelCollection FilteredSessions
+		public static readonly DependencyProperty FilteredSessionsProperty = DependencyProperty.Register("FilteredSessions", typeof(SessionViewModelCollection), typeof(ProjectViewModel), new PropertyMetadata(null));
+		public SessionViewModelCollection FilteredSessions
 		{
-			get { return (FilteredSessionViewModelCollection)GetValue(FilteredSessionsProperty); }
+			get { return (SessionViewModelCollection)GetValue(FilteredSessionsProperty); }
 			set { SetValue(FilteredSessionsProperty, value); }
 		}
 
@@ -96,7 +96,7 @@ namespace ODP.ViewModels
 			loadedFiles = new List<string>();
 			loadedWiresharkFiles = new List<string>();
 			PacketLossReports = new PacketLossReportViewModelCollection(Model.PacketLossReports);
-			Sessions = new SessionViewModelCollection(Model.Sessions);
+			//Sessions = new SessionViewModelCollection(Model.Sessions);
 			//session = new ViewModelCollection<FilterViewModel>(Logger);
 			GlobalFilter = new GlobalFilterViewModel();
 			OnSessionsChanged();
@@ -118,34 +118,37 @@ namespace ODP.ViewModels
 
 		public void RefreshFilters()
 		{
+			string name;
 
-			foreach(string? ipGroup in Sessions.SelectMany(session => session.Calls).Select(call => call.IPGroup).Distinct())
+			foreach(string? ipGroup in Model.Sessions.SelectMany(session => session.Calls).SelectMany(call => call.SBCReports).Select(item=>item.IPGroup).Distinct())
 			{
-				if (ipGroup == null) continue;
+				if (string.IsNullOrEmpty(ipGroup)) name = "N/A"; else name = ipGroup;
 				if (GlobalFilter.IPGroupFilters.Select(filter=>filter.Name).Contains(ipGroup)) continue;
-				GlobalFilter.IPGroupFilters.Add(new IPGroupFilterViewModel() { Name=ipGroup });
+				GlobalFilter.IPGroupFilters.Add(new IPGroupFilterViewModel() { Name=name,Value=ipGroup });
 			}
 
-			foreach (string? sipInterface in Sessions.SelectMany(session => session.Calls).Select(call => call.SIPInterfaceId).Distinct())
+			foreach (string? sipInterface in Model.Sessions.SelectMany(session => session.Calls).SelectMany(call => call.SBCReports).Select(item=> item.SIPInterfaceId).Distinct())
 			{
-				if (sipInterface == null) continue;
+				if (string.IsNullOrEmpty(sipInterface)) name = "N/A"; else name = sipInterface;
 				if (GlobalFilter.SIPInterfaceFilters.Select(filter => filter.Name).Contains(sipInterface)) continue;
-				GlobalFilter.SIPInterfaceFilters.Add(new SIPInterfaceFilterViewModel() { Name = sipInterface });
+				GlobalFilter.SIPInterfaceFilters.Add(new SIPInterfaceFilterViewModel() { Name = name, Value = sipInterface });
 			}
-			
-			foreach (string? termReason in Sessions.SelectMany(session => session.Calls).Select(call => call.TrmReason).Distinct())
+
+			// filter REASON N/A
+			foreach (string? termReason in Model.Sessions.SelectMany(session => session.Calls).SelectMany(call => call.SBCReports).Select(item => item.TrmReason).Where(item => (item!= "REASON N/A")).Distinct())
 			{
-				if (termReason == null) continue;
+				if (string.IsNullOrEmpty(termReason)) name = "N/A"; else name = termReason;
 				if (GlobalFilter.TermReasonFilters.Select(filter => filter.Name).Contains(termReason)) continue;
-				GlobalFilter.TermReasonFilters.Add(new TermReasonFilterViewModel() { Name = termReason });
+				GlobalFilter.TermReasonFilters.Add(new TermReasonFilterViewModel() { Name =name,Value= termReason });
 			}
 		}
 
 
 		public void RefreshSessions()
 		{
-			FilteredSessions = new FilteredSessionViewModelCollection( Sessions.Where(session => GlobalFilter.Match(session))  );
+			FilteredSessions = new SessionViewModelCollection( Model.Sessions,GlobalFilter );
 			OnFilteredSessionsChanged();
+
 		}
 
 
@@ -302,7 +305,7 @@ namespace ODP.ViewModels
 			}
 
 			PacketLossReports = new PacketLossReportViewModelCollection(Model.PacketLossReports);
-			Sessions = new SessionViewModelCollection(Model.Sessions);
+			//Sessions = new SessionViewModelCollection(Model.Sessions);
 				
 
 			OnSessionsChanged();
@@ -434,7 +437,7 @@ namespace ODP.ViewModels
 			}
 
 			PacketLossReports = new PacketLossReportViewModelCollection(Model.PacketLossReports);
-			Sessions = new SessionViewModelCollection(Model.Sessions);
+			//Sessions = new SessionViewModelCollection(Model.Sessions);
 
 			OnSessionsChanged();
 			RefreshFilters();

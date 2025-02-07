@@ -12,7 +12,12 @@ namespace ODP.ViewModels
 	public class TermReasonFilterViewModel : BaseFilterViewModel<string>
 	{
 
-
+		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(string), typeof(TermReasonFilterViewModel), new PropertyMetadata(null));
+		public string? Value
+		{
+			get { return (string)GetValue(ValueProperty); }
+			set { SetValue(ValueProperty, value); }
+		}
 		public TermReasonFilterViewModel() : base("")
 		{
 		}
