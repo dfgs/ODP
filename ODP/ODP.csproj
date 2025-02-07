@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
+    <UseWPF>True</UseWPF>
     <ApplicationIcon>hypnotoad.ico</ApplicationIcon>
   </PropertyGroup>
 
@@ -100,6 +100,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ACDRFrameReaderLib\ACDRFrameReaderLib\ACDRFrameReaderLib.csproj" />
     <ProjectReference Include="..\..\LogLib\LogLib\LogLib.csproj" />
     <ProjectReference Include="..\..\ScottPlot\src\ScottPlot4\ScottPlot.WPF\ScottPlot.WPF.csproj" />
     <ProjectReference Include="..\..\ViewModelLib\ViewModelLib\ViewModelLib.csproj" />

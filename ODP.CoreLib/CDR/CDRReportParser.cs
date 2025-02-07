@@ -33,7 +33,7 @@ namespace ODP.CoreLib
 				CDRSBCReport sbcReport;
 				
 				parts = Line.Split('|');
-				if (parts.Length < 38) 
+				if ((parts.Length < 38) || (parts.Length > 39))
 					throw new InvalidDataException("Invalid SBC report format, please check SBC configuration");
 
 				sbcReport = new CDRSBCReport();
