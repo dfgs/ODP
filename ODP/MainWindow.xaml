@@ -52,6 +52,7 @@
 		<CommandBinding Command="{x:Static root:RoutedCommands.ApplyFilter}" CanExecute="ApplyFilterCommandBinding_CanExecute" Executed="ApplyFilterCommandBinding_Executed"/>
 
 		<CommandBinding Command="{x:Static root:RoutedCommands.OpenCallCharts}" CanExecute="OpenCallChartsCommandBinding_CanExecute" Executed="OpenCallChartsCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static root:RoutedCommands.PlayRTP}" CanExecute="PlayRTPCommandBinding_CanExecute" Executed="PlayRTPCommandBinding_Executed"/>
 	</Window.CommandBindings>
     
 	<DockPanel>
@@ -107,7 +108,7 @@
 				<Button Command="{x:Static root:RoutedCommands.AddFile}"  ToolTip="Add file" ToolTipService.ShowOnDisabled="true">
 					<Image Source="/Images/folder_add.png" Stretch="None"/>
 				</Button>
-				<Button Command="{x:Static root:RoutedCommands.AddWiresharkFile}"  ToolTip="Add wireshark file" ToolTipService.ShowOnDisabled="true">
+				<Button Command="{x:Static root:RoutedCommands.AddWiresharkFile}"  ToolTip="Add debug recording" ToolTipService.ShowOnDisabled="true">
 					<Image Source="/Images/wireshark.png" Stretch="None"/>
 				</Button>
 				<Button Command="{x:Static root:RoutedCommands.Find}"  ToolTip="Find" ToolTipService.ShowOnDisabled="true">

@@ -1,11 +1,14 @@
 ﻿using LogLib;
 using Microsoft.Win32;
+using NAudio.Wave;
 using ODP.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -148,15 +151,15 @@ namespace ODP
 			if (applicationViewModel.Projects.SelectedItem == null) return;
 
 			dialog = new OpenFileDialog();
-			dialog.Title = "Open wireshark file";
-			dialog.DefaultExt = "pcapng";
-			dialog.Filter = "pcap files|*.pcapng|All files|*.*";
+			dialog.Title = "Open debug recording";
+			dialog.DefaultExt = "pcap";
+			dialog.Filter = "pcap files|*.pcap|All files|*.*";
 			dialog.Multiselect = true;
 
 			if (dialog.ShowDialog(this) ?? false)
 			{
 				fileProgress = new Progress<long>((percent) => progressBar.Value = percent);
-				await RunCommandAsync(applicationViewModel.Projects.SelectedItem.AddWiresharkFilesAsync(dialog.FileNames, fileProgress));
+				await RunCommandAsync(applicationViewModel.Projects.SelectedItem.AddDebugRecordingAsync(dialog.FileNames, fileProgress));
 			}
 
 
@@ -296,8 +299,38 @@ namespace ODP
 
 
 		}
+        private void PlayRTPCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.Handled = true; e.CanExecute = (!TaskIsRunning);
+        }
 
-		private void TabControl_DragOver(object sender, DragEventArgs e)
+        private void PlayRTPCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+			CDRMediaReportViewModel? mediaReport;
+			WaveFormat format;
+
+            mediaReport = e.Parameter as CDRMediaReportViewModel;
+			if (mediaReport == null) return;
+
+			
+
+            format = WaveFormat.CreateMuLawFormat(8000, 1);
+
+            IWaveProvider provider = new RawSourceWaveStream(new MemoryStream(mediaReport.RxRTPBuffer), format);
+            var _waveOut = new WaveOutEvent();
+            _waveOut.Init(provider);
+            _waveOut.Play();
+
+            while (_waveOut.PlaybackState == PlaybackState.Playing)
+            {
+                Thread.Sleep(1000);
+            }
+            _waveOut.Dispose();
+
+        }
+
+
+        private void TabControl_DragOver(object sender, DragEventArgs e)
 		{
 			e.Handled = true;
 			if (e.Data.GetDataPresent(DataFormats.FileDrop)) e.Effects = DragDropEffects.Copy;

@@ -24,6 +24,7 @@
     <None Remove="Images\chart_bar.png" />
     <None Remove="Images\Check_All.png" />
     <None Remove="Images\Check_None.png" />
+    <None Remove="Images\control_play.png" />
     <None Remove="Images\cross.png" />
     <None Remove="Images\disk.png" />
     <None Remove="Images\disk_multiple.png" />
@@ -57,6 +58,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\attach.png" />
     <Resource Include="Images\audiocodes.png" />
     <Resource Include="Images\bug_edit.png" />
@@ -71,6 +76,7 @@
     <Resource Include="Images\chart_bar.png" />
     <Resource Include="Images\Check_All.png" />
     <Resource Include="Images\Check_None.png" />
+    <Resource Include="Images\control_play.png" />
     <Resource Include="Images\cross.png" />
     <Resource Include="Images\disk.png" />
     <Resource Include="Images\disk_multiple.png" />
@@ -102,6 +108,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\ACDRFrameReaderLib\ACDRFrameReaderLib\ACDRFrameReaderLib.csproj" />
     <ProjectReference Include="..\..\LogLib\LogLib\LogLib.csproj" />
+    <ProjectReference Include="..\..\RTPFrameReaderLib\RTPFrameReaderLib\RTPFrameReaderLib.csproj" />
     <ProjectReference Include="..\..\ScottPlot\src\ScottPlot4\ScottPlot.WPF\ScottPlot.WPF.csproj" />
     <ProjectReference Include="..\..\ViewModelLib\ViewModelLib\ViewModelLib.csproj" />
     <ProjectReference Include="..\ODP.CoreLib\ODP.CoreLib.csproj" />

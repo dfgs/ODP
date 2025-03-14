@@ -1,9 +1,11 @@
-﻿using System;
+﻿using RTPFrameReaderLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace ODP.CoreLib
 {
@@ -48,11 +50,24 @@ namespace ODP.CoreLib
 			get;
 			set;
 		}
-
-		public CDRMediaReport()
+        [XmlIgnore]
+        public SortedList<uint, RTP> TxRTPPackets
+        {
+            get;
+            set;
+        }
+        [XmlIgnore]
+        public SortedList<uint, RTP> RxRTPPackets
+        {
+            get;
+            set;
+        }
+        public CDRMediaReport()
 		{
 			TxRTCPReports = new List<RTCPReport>();
 			RxRTCPReports = new List<RTCPReport>();
-		}
-	}
+            TxRTPPackets = new SortedList<uint, RTP>();
+            RxRTPPackets = new SortedList<uint, RTP>();
+        }
+    }
 }

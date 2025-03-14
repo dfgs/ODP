@@ -9,7 +9,7 @@
 	<Grid>
 		<TabControl>
 			<TabItem Header="Sessions">
-				<Grid>
+				<Grid >
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="200"/>
 						<ColumnDefinition Width="5"/>
@@ -17,7 +17,7 @@
 					</Grid.ColumnDefinitions>
 					<views:GlobalFilterView Grid.Column="0" DataContext="{Binding GlobalFilter}"/>
 					<GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-					<views:SessionsView Grid.Column="2" DataContext="{Binding FilteredSessions}"/>
+					<views:SessionsView Grid.Column="2" DataContext="{Binding FilteredSessions}" />
 				</Grid>
 			</TabItem>
 			<TabItem Header="Packet loss reports" >

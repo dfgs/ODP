@@ -49,8 +49,15 @@
 	</UserControl.Resources>
 
 
-	<DockPanel>
-		<views:MediaReportsView DockPanel.Dock="Bottom" MinHeight="50" DataContext="{Binding SelectedItem.MediaReports}"/>
+	<DockPanel Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+		<TabControl DockPanel.Dock="Bottom" MinHeight="130">
+			<TabItem Header="CDR view">
+				<views:MediaReportsView  DataContext="{Binding SelectedItem.MediaReports}"/>
+			</TabItem>
+			<TabItem Header="DR view">
+				<views:PlaybacksView  DataContext="{Binding SelectedItem.MediaReports}"/>
+			</TabItem>
+		</TabControl>
 		<ListView ItemsSource="{Binding}" SelectedItem="{Binding SelectedItem}" MouseDoubleClick="ListView_MouseDoubleClick">
 			<ListView.View>
 				<GridView>

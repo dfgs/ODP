@@ -1,6 +1,7 @@
 ﻿using BigEndianReaderLib;
 using EthernetFrameReaderLib;
 using RTCPFrameReaderLib;
+using RTPFrameReaderLib;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -23,11 +24,14 @@ namespace ODP.CoreLib
 			set;
 		}
 
+		
 
 		public Project()
 		{
 			Sessions= new List<Session>();
 			PacketLossReports= new List<PacketLossReport>();
+			//RTPPackets=new Dictionary<uint, SortedList<uint,RTP>>();
+			
 		}
 
 		public void AddCDRReport(CDRReport Report)
@@ -82,10 +86,32 @@ namespace ODP.CoreLib
 			PacketLossReports.Add(Report);
 		}
 
-		
-	
 
-		public async Task SaveAsync(string Path)
+        public void AddRTP(RTP RTP)
+        {
+			CDRMediaReport? mediaReport;
+
+            if (RTP == null) throw new ArgumentNullException(nameof(RTP));
+            
+			mediaReport=Sessions.SelectMany(session=>session.Calls).SelectMany(call=>call.MediaReports).FirstOrDefault(item=>item.TxRTPssrc==RTP.SSRC);
+			if (mediaReport!=null)
+			{
+				if (mediaReport.TxRTPPackets.ContainsKey(RTP.SequenceNumber)) return; //duplicate packet
+				mediaReport.TxRTPPackets.Add(RTP.SequenceNumber, RTP);
+				return;
+			}
+            mediaReport = Sessions.SelectMany(session => session.Calls).SelectMany(call => call.MediaReports).FirstOrDefault(item => item.RxRTPssrc == RTP.SSRC);
+            if (mediaReport != null)
+            {
+                if (mediaReport.RxRTPPackets.ContainsKey(RTP.SequenceNumber)) return; //duplicate packet
+                mediaReport.RxRTPPackets.Add(RTP.SequenceNumber, RTP);
+                return;
+            }
+
+
+        }
+
+        public async Task SaveAsync(string Path)
 		{
 			XmlSerializer serializer;
 

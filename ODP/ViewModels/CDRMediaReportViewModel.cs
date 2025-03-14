@@ -212,7 +212,36 @@ namespace ODP.ViewModels
 			set;
 		}
 
-		public bool HasValidDelay
+        [Browsable(true)]
+        public int? TxRTPCount
+        {
+            get => Model?.TxRTPPackets.Count;
+        }
+
+        [Browsable(true)]
+        public int? RxRTPCount
+        {
+            get => Model?.RxRTPPackets.Count;
+        }
+
+		public byte[] RxRTPBuffer
+		{
+			get
+			{
+				if(Model==null) return Array.Empty<byte>();
+				return Model.RxRTPPackets.SelectMany(item => item.Value.Payload).ToArray();
+			}
+		}
+        public byte[] TxRTPBuffer
+        {
+            get
+            {
+                if (Model == null) return Array.Empty<byte>();
+                return Model.TxRTPPackets.SelectMany(item => item.Value.Payload).ToArray();
+            }
+        }
+
+        public bool HasValidDelay
 		{
 			get => RTPdelay > -1;
 		}
