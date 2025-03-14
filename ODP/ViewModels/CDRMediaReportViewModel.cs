@@ -116,7 +116,20 @@ namespace ODP.ViewModels
 		{
 			get => Model?.RxRTPssrc ;
 		}
-		[Browsable(true)]
+
+        [Browsable(true)]
+        public string? TxRTPssrcDisplay
+        {
+            get => $"0x{Model?.TxRTPssrc:X}";
+        }
+        [Browsable(true)]
+        public string? RxRTPssrcDisplay
+        {
+            get => $"0x{Model?.RxRTPssrc:X}";
+        }
+
+
+        [Browsable(true)]
 		public string? LocalRFactor
 		{
 			get => Model?.LocalRFactor ;

@@ -24,6 +24,7 @@ namespace ODP
 		public static RoutedCommand ApplyFilter = new RoutedCommand();
 		public static RoutedCommand Maximize = new RoutedCommand();
         public static RoutedCommand OpenCallCharts = new RoutedCommand();
-        public static RoutedCommand PlayRTP = new RoutedCommand();
+        public static RoutedCommand PlayTxRTP = new RoutedCommand();
+        public static RoutedCommand PlayRxRTP = new RoutedCommand();
     }
 }

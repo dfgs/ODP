@@ -87,29 +87,37 @@ namespace ODP.CoreLib
 		}
 
 
-        public void AddRTP(RTP RTP)
+        public void AddTxRTP(RTP RTP,string RemoteIP)
         {
 			CDRMediaReport? mediaReport;
 
             if (RTP == null) throw new ArgumentNullException(nameof(RTP));
             
-			mediaReport=Sessions.SelectMany(session=>session.Calls).SelectMany(call=>call.MediaReports).FirstOrDefault(item=>item.TxRTPssrc==RTP.SSRC);
+			mediaReport=Sessions.SelectMany(session=>session.Calls).SelectMany(call=>call.MediaReports).FirstOrDefault(item=> (item.TxRTPssrc==RTP.SSRC) && (item.RemoteRtpIp== RemoteIP) );
 			if (mediaReport!=null)
 			{
 				if (mediaReport.TxRTPPackets.ContainsKey(RTP.SequenceNumber)) return; //duplicate packet
 				mediaReport.TxRTPPackets.Add(RTP.SequenceNumber, RTP);
 				return;
 			}
-            mediaReport = Sessions.SelectMany(session => session.Calls).SelectMany(call => call.MediaReports).FirstOrDefault(item => item.RxRTPssrc == RTP.SSRC);
+           
+        }
+
+        public void AddRxRTP(RTP RTP, string RemoteIP)
+        {
+            CDRMediaReport? mediaReport;
+
+            if (RTP == null) throw new ArgumentNullException(nameof(RTP));
+            
+            mediaReport = Sessions.SelectMany(session => session.Calls).SelectMany(call => call.MediaReports).FirstOrDefault(item => (item.RxRTPssrc == RTP.SSRC) && (item.RemoteRtpIp == RemoteIP) );
             if (mediaReport != null)
             {
                 if (mediaReport.RxRTPPackets.ContainsKey(RTP.SequenceNumber)) return; //duplicate packet
                 mediaReport.RxRTPPackets.Add(RTP.SequenceNumber, RTP);
                 return;
             }
-
-
         }
+
 
         public async Task SaveAsync(string Path)
 		{

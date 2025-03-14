@@ -356,21 +356,40 @@ namespace ODP.ViewModels
             };
             Model.AddRTCPReport(rtcpReport);
         }
-        private void ReadRTP(IRTPReader RTPReader, ACDR ACDR)
+        private void ReadTxRTP(IRTPReader RTPReader, ACDR ACDR)
         {
             IBigEndianReader bigEndianReader;
             RTP? rtp=default;
+			string ip;
+
+            if (ACDR.Header.HeaderExtensionLength < 4) return;// invalid header extension
+
+            ip = $"{ACDR.Extensions[0]}.{ACDR.Extensions[1]}.{ACDR.Extensions[2]}.{ACDR.Extensions[3]}";
 
             bigEndianReader = new BigEndianReader(ACDR.Payload);
 
             if (!Try(() => RTPReader.Read(bigEndianReader)).Then(result => rtp = result ).OrAlert("Failed to read RTP")) return;
 			if (rtp == null) return;
 
-			Model.AddRTP(rtp);
-
-            
+			Model.AddTxRTP(rtp,ip);
         }
+        private void ReadRxRTP(IRTPReader RTPReader, ACDR ACDR)
+        {
+            IBigEndianReader bigEndianReader;
+            RTP? rtp = default;
+            string ip;
 
+            if (ACDR.Header.HeaderExtensionLength < 4) return;// invalid header extension
+
+            ip = $"{ACDR.Extensions[0]}.{ACDR.Extensions[1]}.{ACDR.Extensions[2]}.{ACDR.Extensions[3]}";
+
+            bigEndianReader = new BigEndianReader(ACDR.Payload);
+
+            if (!Try(() => RTPReader.Read(bigEndianReader)).Then(result => rtp = result).OrAlert("Failed to read RTP")) return;
+            if (rtp == null) return;
+
+            Model.AddRxRTP(rtp, ip);
+        }
         private async Task AddDebugRecordingAsync(string FileName,
 			IFrameReader FrameReader, IPacketReader PacketReader,
 			IUDPSegmentReader UDPSegmentReader,
@@ -386,6 +405,7 @@ namespace ODP.ViewModels
 			BinaryReader? binaryReader=null;
 			FileHeader? header=null;
 			PacketRecord? packetRecord = null;
+			string ip;
 
             if (FileName == null) throw new ArgumentNullException(nameof(FileName));
 			if (Progress == null) throw new ArgumentNullException(nameof(Progress));
@@ -429,7 +449,22 @@ namespace ODP.ViewModels
 									 
 				if (acdr.Header.MediaType == MediaTypes.ACDR_RTCP) ReadRTCP(RTCPReader, acdr, header.GetTimeTimeUTC(packetRecord).ToLocalTime());
 
-                if ( (acdr.Header.MediaType==MediaTypes.ACDR_RTP) && ((acdr.Header.TracePoint == TracePoints.VoipDecoder) || (acdr.Header.TracePoint == TracePoints.NetEncoder))) ReadRTP(RTPReader,acdr);
+				if (acdr.Header.MediaType == MediaTypes.ACDR_RTP)
+				{
+					switch(acdr.Header.TracePoint)
+					{
+                        case TracePoints.VoipDecoder:
+                            ReadRxRTP(RTPReader, acdr);
+                            break;
+                        case TracePoints.NetEncoder:
+                             ReadTxRTP(RTPReader, acdr);
+                            break;
+						default:
+							break;
+                    }
+
+                    
+				}
 
             }
 			

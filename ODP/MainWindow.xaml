@@ -52,7 +52,8 @@
 		<CommandBinding Command="{x:Static root:RoutedCommands.ApplyFilter}" CanExecute="ApplyFilterCommandBinding_CanExecute" Executed="ApplyFilterCommandBinding_Executed"/>
 
 		<CommandBinding Command="{x:Static root:RoutedCommands.OpenCallCharts}" CanExecute="OpenCallChartsCommandBinding_CanExecute" Executed="OpenCallChartsCommandBinding_Executed"/>
-		<CommandBinding Command="{x:Static root:RoutedCommands.PlayRTP}" CanExecute="PlayRTPCommandBinding_CanExecute" Executed="PlayRTPCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static root:RoutedCommands.PlayTxRTP}" CanExecute="PlayRTPCommandBinding_CanExecute" Executed="PlayTxRTPCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static root:RoutedCommands.PlayRxRTP}" CanExecute="PlayRTPCommandBinding_CanExecute" Executed="PlayRxRTPCommandBinding_Executed"/>
 	</Window.CommandBindings>
     
 	<DockPanel>
