@@ -58,19 +58,20 @@ namespace ODP.Views
 
             if (sourceItem == null) return;
 
+            await StopPlayAsync();
             await viewModel.LoadAsync(sourceItem);
         }
 
-        /*private void PlayStopCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+       
+
+        private async Task StopPlayAsync()
         {
-            e.Handled = true; e.CanExecute = (playerCancellationToken != null) && (!playerCancellationToken.IsCancellationRequested);
+            if (playerCancellationToken != null)
+            {
+                playerCancellationToken.Cancel();
+                await Task.Delay(500);
+            }
         }
-        private void PlayStopCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (playerCancellationToken != null) playerCancellationToken.Cancel();
-        }//*/
-
-
 
         private async Task PlayRTPAsync(RTPStreamViewModel RTPStream, CancellationTokenSource CancellationToken)
         {
@@ -117,6 +118,8 @@ namespace ODP.Views
 
         }
 
+      
+
         private void PlayRTPCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.Handled = true; e.CanExecute = (e.Parameter as RTPStreamViewModel) != null;
@@ -129,13 +132,8 @@ namespace ODP.Views
             rtpStream = e.Parameter as RTPStreamViewModel;
             if (rtpStream == null) return;
 
-            if (playerCancellationToken != null)
-            {
-                playerCancellationToken.Cancel();
-                await Task.Delay(500);
-            }
+            await StopPlayAsync();
 
-            if (rtpStream.Coder == null) return;
             playerCancellationToken = new CancellationTokenSource();
             await PlayRTPAsync(rtpStream, playerCancellationToken);
         }
@@ -147,11 +145,7 @@ namespace ODP.Views
 
         private async void StopRTPCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (playerCancellationToken != null)
-            {
-                playerCancellationToken.Cancel();
-                await Task.Delay(500);
-            }
+            await StopPlayAsync();
         }
 
 

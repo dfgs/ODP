@@ -40,7 +40,7 @@
 						<DataTrigger Binding="{Binding State}" Value="NoAudio">
 							<Setter Property="Text" Value="No audio present"/>
 						</DataTrigger>
-						<DataTrigger Binding="{Binding State}" Value="InvalidCoded">
+						<DataTrigger Binding="{Binding State}" Value="InvalidCodec">
 							<Setter Property="Text" Value="Unsupported codec"/>
 						</DataTrigger>
 						<DataTrigger Binding="{Binding State}" Value="ReadyToPlay">
