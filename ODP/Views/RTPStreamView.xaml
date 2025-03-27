@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="ODP.Views.RTPStreamView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:local="clr-namespace:ODP.Views"
+            xmlns:views="clr-namespace:ODP.Views"
+            xmlns:root="clr-namespace:ODP"
+            mc:Ignorable="d"  x:Name="root" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+            d:DesignWidth="800">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ControlTemplate x:Key="playbuttonTemplate" TargetType="{x:Type Button}">
+				<Image Source="/Images/control_play.png" Stretch="None"/>
+			</ControlTemplate>
+			<ControlTemplate x:Key="stopButtonTemplate" TargetType="{x:Type Button}">
+				<Image Source="/Images/control_stop.png" Stretch="None"/>
+			</ControlTemplate>
+
+			<Style TargetType="{x:Type Button}" x:Key="PlayStopButton">
+				<Setter Property="Template" Value="{StaticResource playbuttonTemplate}"/>
+				<Setter Property="Command" Value="{x:Static root:RoutedCommands.PlayRTP}"/>
+				<Style.Triggers>
+					<DataTrigger Binding="{Binding IsPlaying}" Value="True">
+						<Setter Property="Template" Value="{StaticResource stopButtonTemplate}"/>
+						<Setter Property="Command" Value="{x:Static root:RoutedCommands.StopRTP}"/>
+					</DataTrigger>
+				</Style.Triggers>
+			</Style>
+
+		
+
+		</ResourceDictionary>
+	</UserControl.Resources>
+	<StackPanel>
+		<TextBlock Margin="2" Text="{Binding ElementName=root,Path=Header,FallbackValue='Header'}" Background="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}" Foreground="White"/>
+		<TextBlock Text="{Binding RTPCount,StringFormat=Captured RTP: {0},FallbackValue=Captured RTP: 0}"/>
+		<TextBlock Text="{Binding SSRC,StringFormat=SRRC: {0},FallbackValue=SSRC: NA}"/>
+		<DockPanel>
+			<Button  DockPanel.Dock="Left" CommandParameter="{Binding}" Margin="0,0,5,0" Style="{StaticResource ResourceKey=PlayStopButton}" />
+			<ProgressBar Height="5" Margin="5" Maximum="100" Value="{Binding Progress}"/>
+		</DockPanel>
+	</StackPanel>
+</UserControl>

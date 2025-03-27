@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="ODP.Views.PlayerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ODP.Views"
+            xmlns:views="clr-namespace:ODP.Views"
+            xmlns:root="clr-namespace:ODP"
+             mc:Ignorable="d"  x:Name="root"
+			 xmlns:dd="urn:gong-wpf-dragdrop" dd:DragDrop.IsDropTarget="True"  dd:DragDrop.DropHandler="{Binding ElementName=root}"
+			d:DesignWidth="800">
+
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ControlTemplate x:Key="playbuttonTemplate" TargetType="{x:Type Button}">
+				<Image Source="/Images/control_play.png" Stretch="None"/>
+			</ControlTemplate>
+			<ControlTemplate x:Key="stopPlaybuttonTemplate" TargetType="{x:Type Button}">
+				<Image Source="/Images/control_stop.png" Stretch="None"/>
+			</ControlTemplate>
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+	<UserControl.CommandBindings>
+		<CommandBinding Command="{x:Static root:RoutedCommands.PlayRTP}" CanExecute="PlayRTPCommandBinding_CanExecute" Executed="PlayRTPCommandBinding_Executed"/>
+		<CommandBinding Command="{x:Static root:RoutedCommands.StopRTP}" CanExecute="StopRTPCommandBinding_CanExecute" Executed="StopRTPCommandBinding_Executed"/>
+	</UserControl.CommandBindings>
+
+	<StackPanel>
+		<TextBlock>
+			<TextBlock.Style>
+				<Style TargetType="{x:Type TextBlock}">
+					<Setter Property="HorizontalAlignment" Value="Center"/>
+					<Setter Property="FontWeight" Value="Bold"/>
+					<Setter Property="Text" Value="Drag and drop media report here"/>
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding State}" Value="Loading">
+							<Setter Property="Text" Value="Loading"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding State}" Value="NoAudio">
+							<Setter Property="Text" Value="No audio present"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding State}" Value="InvalidCoded">
+							<Setter Property="Text" Value="Unsupported codec"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding State}" Value="ReadyToPlay">
+							<Setter Property="Text" Value="Ready to play"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding State}" Value="Playing">
+							<Setter Property="Text" Value="Playing"/>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</TextBlock.Style>
+		</TextBlock>
+		<views:RTPStreamView Header="TX stream" DataContext="{Binding TxRTPStream}"/>
+		<views:RTPStreamView Header="RX stream" DataContext="{Binding RxRTPStream}"/>
+	</StackPanel>
+</UserControl>

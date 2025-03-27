@@ -405,7 +405,6 @@ namespace ODP.ViewModels
 			BinaryReader? binaryReader=null;
 			FileHeader? header=null;
 			PacketRecord? packetRecord = null;
-			string ip;
 
             if (FileName == null) throw new ArgumentNullException(nameof(FileName));
 			if (Progress == null) throw new ArgumentNullException(nameof(Progress));

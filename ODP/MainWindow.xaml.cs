@@ -33,7 +33,6 @@ namespace ODP
 		private ApplicationViewModel applicationViewModel;
 
 
-
 		public static readonly DependencyProperty TaskIsRunningProperty = DependencyProperty.Register("TaskIsRunning", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
 		public bool TaskIsRunning
 		{
@@ -300,62 +299,11 @@ namespace ODP
 
 
 		}
-        private void PlayRTPCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.Handled = true; e.CanExecute = (!TaskIsRunning);
-        }
+ 
+       
 
-		private void PlayRTP(string Coder, byte[] Data)
-        {
-            WaveFormat format;
 
-			switch(Coder)
-			{
-                case "g711Ulaw64k":
-                    format = WaveFormat.CreateMuLawFormat(8000, 1);
-                    break;
-                case "g711Alaw64k":
-                    format = WaveFormat.CreateALawFormat(8000, 1);
-                    break;
-				default:
-					ShowError(new InvalidOperationException($"Unsupported media format {Coder}"));
-					return;
-
-            }
-
-            IWaveProvider provider = new RawSourceWaveStream(new MemoryStream(Data), format);
-            WaveOutEvent _waveOut = new WaveOutEvent();
-            _waveOut.Init(provider);
-            _waveOut.Play();
-
-            while (_waveOut.PlaybackState == PlaybackState.Playing)
-            {
-                Thread.Sleep(1000);
-            }
-            _waveOut.Dispose();
-
-        }
-        private void PlayRxRTPCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-			CDRMediaReportViewModel? mediaReport;
-
-            mediaReport = e.Parameter as CDRMediaReportViewModel;
-			if (mediaReport == null) return;
-			
-			if (mediaReport.Coder== null) return;	
-			PlayRTP(mediaReport.Coder, mediaReport.RxRTPBuffer);
-        }
-
-        private void PlayTxRTPCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            CDRMediaReportViewModel? mediaReport;
-
-            mediaReport = e.Parameter as CDRMediaReportViewModel;
-            if (mediaReport == null) return;
-
-            if (mediaReport.Coder == null) return;
-            PlayRTP(mediaReport.Coder, mediaReport.TxRTPBuffer);
-        }
+ 
 
         private void TabControl_DragOver(object sender, DragEventArgs e)
 		{

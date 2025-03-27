@@ -16,11 +16,22 @@ using System.Windows.Shapes;
 namespace ODP.Views
 {
     /// <summary>
-    /// Logique d'interaction pour PlaybacksView.xaml
+    /// Logique d'interaction pour RTPStreamView.xaml
     /// </summary>
-    public partial class PlaybacksView : UserControl
+    public partial class RTPStreamView : UserControl
     {
-        public PlaybacksView()
+
+
+        public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register("Header", typeof(string), typeof(RTPStreamView), new PropertyMetadata("Header"));
+        public string Header
+        {
+            get { return (string)GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
+        }
+
+
+
+        public RTPStreamView()
         {
             InitializeComponent();
         }

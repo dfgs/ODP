@@ -96,6 +96,21 @@
 							<Paragraph>Updated to new net core framework</Paragraph>
 						</ListItem>
 					</List>
+					<Paragraph>
+						<Bold>
+							<Underline>
+								Version 1.5
+							</Underline>
+						</Bold>
+					</Paragraph>
+					<List>
+						<ListItem>
+							<Paragraph>Can play back RTP from debug recording capture</Paragraph>
+						</ListItem>
+						<ListItem>
+							<Paragraph>G711 A law and µ law currently supported</Paragraph>
+						</ListItem>
+					</List>
 				</FlowDocument>
 			</FlowDocumentReader>
 		</TabItem>
@@ -129,6 +144,47 @@
 						LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 						OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 						SOFTWARE.
+						<LineBreak/>
+					</Paragraph>
+					<Paragraph>
+						GongSolutions.WPF.DragDrop is licensed under the
+						<Bold>BSD License</Bold>
+					</Paragraph>
+					<Paragraph>
+						BSD 3-Clause License
+						<LineBreak/>
+						<LineBreak/>
+						Copyright (c) Jan Karger, Steven Kirk and Contributors. All rights reserved.
+						<LineBreak/>
+						<LineBreak/>
+						Redistribution and use in source and binary forms, with or without
+						modification, are permitted provided that the following conditions are met:
+						<LineBreak/>
+						<LineBreak/>
+						* Redistributions of source code must retain the above copyright notice, this
+						  list of conditions and the following disclaimer.
+						<LineBreak/>
+						<LineBreak/>
+						* Redistributions in binary form must reproduce the above copyright notice,
+						  this list of conditions and the following disclaimer in the documentation
+						  and/or other materials provided with the distribution.
+						<LineBreak/>
+						<LineBreak/>
+						* Neither the name of gong-wpf-dragdrop nor the names of its
+						  contributors may be used to endorse or promote products derived from
+						  this software without specific prior written permission.
+						<LineBreak/>
+						<LineBreak/>
+						THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+						AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+						IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+						DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+						FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+						DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+						SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+						CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+						OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+						OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 						<LineBreak/>
 					</Paragraph>
 				</FlowDocument>
